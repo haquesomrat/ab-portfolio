@@ -1,5 +1,11 @@
 import type { Config } from "tailwindcss";
 
+const svgToDataUri = require("mini-svg-data-uri");
+const colors = require("tailwindcss/colors");
+const {
+  default: flattenColorPalette,
+} = require("tailwindcss/lib/util/flattenColorPalette");
+
 const config: Config = {
   darkMode: ["class"],
   content: [
@@ -69,8 +75,47 @@ const config: Config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      animation: {
+        shimmer: "shimmer 2s linear infinite",
+      },
+      keyframes: {
+        shimmer: {
+          from: {
+            backgroundPosition: "0 0",
+          },
+          to: {
+            backgroundPosition: "-200% 0",
+          },
+        },
+      },
+      boxShadow: {
+        bubble: "0px 0px 11px 0px rgba(255, 255, 255, 0.2) inset",
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ matchUtilities, theme }: any) {
+      matchUtilities(
+        {
+          "bg-grid": (value: any) => {
+            const smallSvg = svgToDataUri(
+              `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="64" height="64" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`
+            );
+            const largeSvg = svgToDataUri(
+              `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="220" height="220" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`
+            );
+
+            return {
+              backgroundImage: `url("${smallSvg}")`,
+              "@media (min-width: 768px)": {
+                backgroundImage: `url("${largeSvg}")`,
+              },
+            };
+          },
+        },
+        { values: flattenColorPalette(theme("backgroundColor")), type: "color" }
+      );
+    },
+  ],
 };
 export default config;

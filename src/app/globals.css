@@ -35,49 +35,16 @@
     --radius: 0.5rem;
 
     /* colors */
-    --p-900: 359 98% 49%;
-    --p-800: 359 90% 62%;
-    --p-700: 359 89% 67%;
-    --p-600: 359 89% 71%;
-    --p-500: 359 89% 76%;
-    --p-400: 359 90% 81%;
-    --p-300: 0 100% 97%;
-    --t-900: 0 0% 11%;
-    --t-800: 0 0% 29%;
-    --t-700: 0 0% 38%;
-    --t-600: 0 0% 47%;
-    --t-500: 0 0% 55%;
-    --t-400: 0 0% 73%;
+    --p-900: 231 100% 4%;
+    --t-900: 222 19% 63%;
   }
 
   .dark {
     --background: 231 100% 4%;
-    --foreground: 0 0% 98%;
-
-    --card: 0 0% 11%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 0 0% 11%;
-    --popover-foreground: 0 0% 98%;
 
     --primary: 353 82% 66%;
-    --primary-foreground: 359 98% 49%;
 
     --secondary: 46 100% 74%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 0 0% 38%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --accent: 0 0% 38%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 55% 48%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 38%;
-    --input: 0 0% 38%;
-    --ring: 240 4.9% 83.9%;
   }
 }
 
