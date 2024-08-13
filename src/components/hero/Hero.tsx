@@ -17,9 +17,15 @@ const Hero = () => {
             </p>
           </div>
           <div className="space-y-4 lg:space-y-6">
-            <h2 className="uppercase tracking-[-0.0375em] text-2xl lg:text-[54px] leading-[1.18] text-center text-blue-100">
-              Turning <span className="font-semibold">Ideas</span> into Reality
-              with <span className="font-semibold">Code</span>
+            <h2 className="uppercase tracking-[-0.0375em] text-2xl lg:text-[54px] leading-[1.2] text-center text-blue-100">
+              Turning{" "}
+              <span className="font-semibold border-l-[3px] border-[#FFEBA8] bg-gradient-to-r from-[#E5B30A] to-[#E5B30A00]">
+                Ideas
+              </span>{" "}
+              into Reality with{" "}
+              <span className="font-semibold border-l-[3px] border-[#FF96A2] bg-gradient-to-r from-[#F06373] to-[#F0637300]">
+                Code
+              </span>
             </h2>
             <p className="text-t-900/90">
               Hi, I&apos;m Amin, a passionate Full-Stack Developer dedicated to
