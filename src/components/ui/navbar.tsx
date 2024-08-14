@@ -18,7 +18,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
-const MyNavbar: React.FC = () => {
+const MyNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
 
@@ -40,6 +40,7 @@ const MyNavbar: React.FC = () => {
       isBlurred={false}
       maxWidth="xl"
       height="5rem"
+      className="bg-transparent absolute"
     >
       <NavbarContent>
         <NavbarBrand>
@@ -63,7 +64,7 @@ const MyNavbar: React.FC = () => {
         {menuItems.map((item) => (
           <NavbarMenuItem
             className={cn(
-              "px-3 py-1 text-sm  tracking-normal leading-relaxed font-bold text-[#8F9AB2E5]",
+              "px-3 py-1 text-sm  tracking-normal leading-relaxed font-bold text-[#8F9AB2E5] hover:text-white duration-300",
               item.active && "bg-[#FFFFFF26] rounded-full text-[#FFFFFFE5]"
             )}
             key={item.id}
@@ -76,7 +77,7 @@ const MyNavbar: React.FC = () => {
       </NavbarContent>
       <NavbarContent justify="end">
         <NavbarItem>
-          <Button className="hidden lg:block">Contact</Button>
+          <Button className="hidden lg:block min-w-[7.5rem]">Contact</Button>
         </NavbarItem>
         {/*dropdown menu toggle button */}
         <NavbarMenuToggle
