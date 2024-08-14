@@ -37,16 +37,17 @@ const MyNavbar = () => {
   return (
     <Navbar
       onMenuOpenChange={setIsMenuOpen}
+      shouldHideOnScroll={true}
       isBlurred={false}
       maxWidth="xl"
       height="5rem"
-      className="bg-transparent absolute"
+      className={`absolute ${isMenuOpen ? "bg-[#000314]" : "bg-transparent"}`}
     >
       <NavbarContent>
         <NavbarBrand>
           <Link href="/">
             <Image
-              className="aspect-[50/42] w-full"
+              className="aspect-[50/42] w-10 md:w-full"
               src={"/images/logo.png"}
               width={50}
               height={42}

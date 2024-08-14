@@ -24,14 +24,14 @@ const Hero = () => {
       <HeroBubbledIcon className="h-8 w-8 lg:w-12 lg:h-12 z-10 top-[15%] lg:top-[15%] left-[55%]">
         <Icons.nodejsIcon />
       </HeroBubbledIcon>
-      <HeroBubbledIcon className="h-8 w-8 lg:w-[2.5rem] lg:h-[2.5rem] z-4 top-[39%] lg:top-[35%] right-[23%] md:right-[15%] lg:right-[7%]">
+      <HeroBubbledIcon className="h-8 w-8 lg:w-[2.5rem] lg:h-[2.5rem] z-4 top-[39%] lg:top-[35%] right-[7%] md:right-[15%] lg:right-[7%]">
         <Icons.githubIcon />
       </HeroBubbledIcon>
       <HeroBubbledIcon className="h-8 w-8 lg:w-14 lg:h-14 z-10 top-[63%] lg:top-[78%] right-[5%] lg:right-1/4">
         <Icons.javascriptIcon />
       </HeroBubbledIcon>
 
-      <div className="relative my-24 py-2 z-40 text-center left-[50%] translate-x-[-50%]">
+      <div className="relative my-24 py-2 z-30 text-center left-[50%] translate-x-[-50%]">
         <div className="max-w-[89vw] md:max-w-2xl lg:max-w-3xl mx-auto space-y-6 lg:space-y-8 ">
           <div className="border border-[#FFFFFF1A] inline-flex items-center justify-center py-0.5 px-3 rounded-full shadow-bubble">
             <p className="text-center md:tracking-wider text-[11px] lg:text-sm text-t-900 uppercase">
