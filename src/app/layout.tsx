@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "./provider";
 import { GeistSans } from "geist/font/sans";
+import { NextUIProvider } from "@nextui-org/system";
+import MyNavbar from "@/components/ui/navbar";
 
 export const metadata: Metadata = {
   title: "AB - The Developer",
@@ -22,7 +24,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* <Navbar /> */}
+          <NextUIProvider>
+            <MyNavbar />
+          </NextUIProvider>
           {children}
         </ThemeProvider>
       </body>
