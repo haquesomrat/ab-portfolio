@@ -21,7 +21,7 @@ const Hero = () => {
       <HeroBubbledIcon className="h-8 w-8 lg:w-[4.5rem] lg:h-[4.5rem] z-4 top-[37%] lg:top-[40%]">
         <Icons.figmaIcon />
       </HeroBubbledIcon>
-      <HeroBubbledIcon className="h-8 w-8 lg:w-12 lg:h-12 z-10 top-[15%] lg:top-[15%] left-[55%]">
+      <HeroBubbledIcon className="h-8 w-8 lg:w-12 lg:h-12 z-10 top-[15%] lg:top-[15%] left-[55%] lg:left-[25%]">
         <Icons.nodejsIcon />
       </HeroBubbledIcon>
       <HeroBubbledIcon className="h-8 w-8 lg:w-[2.5rem] lg:h-[2.5rem] z-4 top-[39%] lg:top-[35%] right-[7%] md:right-[15%] lg:right-[7%]">
