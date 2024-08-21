@@ -4,20 +4,25 @@ import { Button } from "@/components/ui/button";
 import { RedSpotlight, Spotlight } from "./Spotlight";
 import { Icons } from "../global/icons";
 import HeroBubbledIcon from "./HeroBubbledIcon";
+import { Highlight } from "../ui/hero-highlight";
+import { TextGenerateEffect } from "../ui/text-generate-effect";
 
 const Hero = () => {
   return (
-    <section className="p-5 lg:p-24 relative">
+    <section className="p-5 xl:py-[84px] relative">
       {/* grid background */}
       <GridBackground />
 
+      {/* blue splotlight */}
       <Spotlight
         className="-top-20 left-0 md:-left-44 md:-top-44"
         fill="#243560"
       />
 
+      {/* red spotlight */}
       <RedSpotlight className="-top-60 right-0 md:-right-32" fill="#EC6272" />
 
+      {/* bubbled icons */}
       <HeroBubbledIcon className="h-8 w-8 lg:w-[4.5rem] lg:h-[4.5rem] z-4 top-[37%] lg:top-[40%]">
         <Icons.figmaIcon />
       </HeroBubbledIcon>
@@ -31,6 +36,7 @@ const Hero = () => {
         <Icons.javascriptIcon />
       </HeroBubbledIcon>
 
+      {/* text container  */}
       <div className="relative my-24 py-2 z-30 text-center left-[50%] translate-x-[-50%]">
         <div className="max-w-[89vw] md:max-w-2xl lg:max-w-3xl mx-auto space-y-6 lg:space-y-8 ">
           <div className="border border-[#FFFFFF1A] inline-flex items-center justify-center py-0.5 px-3 rounded-full shadow-bubble">
@@ -42,19 +48,20 @@ const Hero = () => {
           <div className="space-y-4 lg:space-y-6">
             <h2 className="uppercase tracking-[-0.0375em] text-2xl lg:text-[54px] leading-[1.2] text-center text-blue-100">
               Turning{" "}
-              <span className="font-semibold border-l-[3px] border-[#FFEBA8] bg-gradient-to-r from-[#E5B30A] to-[#E5B30A00]">
+              <Highlight className="font-semibold border-l-[3px] border-[#FFEBA8] bg-gradient-to-r dark:from-[#E5B30A] dark:to-[#E5B30A00]">
                 Ideas
-              </span>{" "}
+              </Highlight>{" "}
               into Reality with{" "}
-              <span className="font-semibold border-l-[3px] border-[#FF96A2] bg-gradient-to-r from-[#F06373] to-[#F0637300]">
+              <Highlight className="font-semibold border-l-[3px] border-[#FF96A2] bg-gradient-to-r dark:from-[#F06373] dark:to-[#F0637300]">
                 Code
-              </span>
+              </Highlight>
             </h2>
-            <p className="text-t-900/90 md:w-[80%] mx-auto">
-              Hi, I&apos;m Amin, a passionate Full-Stack Developer dedicated to
+            <TextGenerateEffect
+              className="text-base lg:text-lg font-normal dark:text-t-900/90 md:w-[90%] mx-auto"
+              words=" Hi, I'm Amin, a passionate Full-Stack Developer dedicated to
               crafting efficient, scalable, and user-friendly web applications.
-              Feel free to reach me if you want to build modern web appearance.
-            </p>
+              Feel free to reach me if you want to build modern web appearance ."
+            ></TextGenerateEffect>
           </div>
           <div className="flex gap-4 justify-center">
             <Button>View my work</Button>

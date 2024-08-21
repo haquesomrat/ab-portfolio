@@ -3,19 +3,17 @@
 import { useEffect } from "react";
 import Splide from "@splidejs/splide";
 import { AutoScroll } from "@splidejs/splide-extension-auto-scroll";
-import "@splidejs/splide/css";
 import Image from "next/image";
 
 const LogoSlider: React.FC = () => {
   useEffect(() => {
-    const companiesSplide = new Splide(".splide", {
+    const companiesSplide = new Splide(".companies__splide.splide", {
       type: "loop",
       arrows: false,
       drag: "free",
+      focus: "center",
       perPage: 6,
-      autoplay: true,
       pagination: false,
-      interval: 2000,
       breakpoints: {
         640: {
           perPage: 2,
@@ -30,6 +28,9 @@ const LogoSlider: React.FC = () => {
           perPage: 6,
         },
       },
+      autoScroll: {
+        speed: -1,
+      },
     });
 
     companiesSplide.mount({ AutoScroll });
@@ -41,7 +42,7 @@ const LogoSlider: React.FC = () => {
 
   return (
     <div>
-      <div className="splide">
+      <div className="companies__splide splide">
         <div className="splide__track">
           <ul className="splide__list">
             <li className="splide__slide flex justify-center items-center">

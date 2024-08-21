@@ -43,7 +43,7 @@ const MyNavbar = () => {
       height="5rem"
       className={`absolute ${isMenuOpen ? "bg-[#000314]" : "bg-transparent"}`}
     >
-      <NavbarContent>
+      <NavbarContent className="xl:p-0">
         <NavbarBrand>
           <Link href="/">
             <Image

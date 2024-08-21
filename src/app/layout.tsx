@@ -4,6 +4,7 @@ import { ThemeProvider } from "./provider";
 import { GeistSans } from "geist/font/sans";
 import { NextUIProvider } from "@nextui-org/system";
 import MyNavbar from "@/components/ui/navbar";
+import "@splidejs/splide/css";
 
 export const metadata: Metadata = {
   title: "AB - The Developer",

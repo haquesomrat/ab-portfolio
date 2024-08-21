@@ -68,4 +68,31 @@
     text-align: left;
     padding: theme("padding.5") theme("padding.5");
   }
+
+  /* service splide carousel */
+  .service__splide.splide {
+    position: static;
+  }
+
+  .service__splide .splide__pagination {
+    right: 0%;
+    left: 0.5rem;
+    bottom: 1.5rem;
+    /* bottom: 55%; */
+    justify-content: left;
+  }
+
+  @media (max-width: 768px) {
+    .service__splide .splide__pagination {
+      bottom: 55%;
+    }
+  }
+
+  .service__splide .splide__pagination__page {
+    opacity: 1;
+  }
+  .service__splide .splide__pagination__page.is-active {
+    background: #ffe17a;
+    transform: scale(1);
+  }
 }
