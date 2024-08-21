@@ -15,7 +15,7 @@ const ServiceCarousel: React.FC = () => {
       waitForTransition: true,
       arrows: false,
       trimSpace: false,
-      interval: 1000,
+      interval: 1500,
       pauseOnHover: true,
       pauseOnFocus: true,
       keyboard: true,
