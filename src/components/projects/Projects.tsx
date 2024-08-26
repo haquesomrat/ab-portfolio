@@ -3,8 +3,8 @@ import WorkCard from "./ProjectCard";
 
 const Projects = () => {
   return (
-    <section className="p-6 lg:mb-24 xl:p-0 text-white">
-      <h2 className="text-4xl font-light text-center uppercase mb-6">
+    <section id="work" className="p-6 lg:mb-24 xl:p-0 text-white">
+      <h2 className="text-2xl lg:text-4xl font-light text-center uppercase mb-6">
         Work i&apos;m <span className="font-semibold">proud</span> of
       </h2>
       <p className="text-sm max-w-[515px] mx-auto text-center text-[#8F9AB2] mb-16">

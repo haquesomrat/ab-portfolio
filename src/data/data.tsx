@@ -27,3 +27,42 @@ export const projects = [
     color: "#8da4de",
   },
 ];
+
+export const feedbacks = [
+  {
+    id: 1,
+    name: "John Doe",
+    description:
+      "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel Elit semper non curabitur eu ornare malesuada enim orci. Proin blandit molestie neque orci pellentesque curabitur.",
+    src: "/images/feedback/feedback-one.png",
+    companyName: "Company Name",
+    color: "#D2BAA8",
+  },
+  {
+    id: 2,
+    name: "John Doe",
+    description:
+      "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel Elit semper non curabitur eu ornare malesuada enim orci. Proin blandit molestie neque orci pellentesque curabitur.",
+    src: "/images/feedback/feedback-two.png",
+    companyName: "Company Name",
+    color: "#A8C0D2",
+  },
+  {
+    id: 3,
+    name: "John Doe",
+    description:
+      "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel Elit semper non curabitur eu ornare malesuada enim orci. Proin blandit molestie neque orci pellentesque curabitur.",
+    src: "/images/feedback/feedback-one.png",
+    companyName: "Company Name",
+    color: "#D2BAA8",
+  },
+  {
+    id: 4,
+    name: "John Doe",
+    description:
+      "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel Elit semper non curabitur eu ornare malesuada enim orci. Proin blandit molestie neque orci pellentesque curabitur.",
+    src: "/images/feedback/feedback-two.png",
+    companyName: "Company Name",
+    color: "#A8C0D2",
+  },
+];

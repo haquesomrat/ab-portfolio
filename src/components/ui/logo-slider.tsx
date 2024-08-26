@@ -29,7 +29,7 @@ const LogoSlider: React.FC = () => {
         },
       },
       autoScroll: {
-        speed: -1,
+        speed: 0.5,
       },
     });
 

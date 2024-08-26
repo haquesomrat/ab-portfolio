@@ -27,19 +27,17 @@ const MyNavbar = () => {
     {
       id: 2,
       name: "About",
-      url: "/about",
+      url: "#about",
       active: pathname?.includes("/about"),
     },
-    { id: 3, name: "Work", url: "/work", active: pathname?.includes("/work") },
-    { id: 4, name: "Blog", url: "/blog", active: pathname?.includes("/blog") },
+    { id: 3, name: "Work", url: "#work", active: pathname?.includes("/work") },
+    { id: 4, name: "Blog", url: "#blog", active: pathname?.includes("/blog") },
   ];
 
   return (
     <Navbar
       onMenuOpenChange={setIsMenuOpen}
-      shouldHideOnScroll={true}
       isBlurred={false}
-      maxWidth="xl"
       height="5rem"
       className={`absolute ${isMenuOpen ? "bg-[#000314]" : "bg-transparent"}`}
     >
@@ -52,12 +50,12 @@ const MyNavbar = () => {
               width={50}
               height={42}
               alt="Logo"
-            ></Image>
+            />
           </Link>
         </NavbarBrand>
       </NavbarContent>
 
-      {/* Desktop menu content  */}
+      {/* Desktop menu content */}
       <NavbarContent
         className="hidden sm:flex gap-[28px] text-white"
         justify="center"
@@ -65,7 +63,7 @@ const MyNavbar = () => {
         {menuItems.map((item) => (
           <NavbarMenuItem
             className={cn(
-              "px-3 py-1 text-sm  tracking-normal leading-relaxed font-bold text-[#8F9AB2E5] hover:text-white duration-300",
+              "px-3 py-1 text-sm tracking-normal leading-relaxed font-bold text-[#8F9AB2E5] hover:text-white duration-300",
               item.active && "bg-[#FFFFFF26] rounded-full text-[#FFFFFFE5]"
             )}
             key={item.id}
@@ -76,23 +74,24 @@ const MyNavbar = () => {
           </NavbarMenuItem>
         ))}
       </NavbarContent>
+
       <NavbarContent justify="end">
         <NavbarItem>
           <Button className="hidden lg:block min-w-[7.5rem]">Contact</Button>
         </NavbarItem>
-        {/*dropdown menu toggle button */}
+        {/* Dropdown menu toggle button */}
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden text-white"
         />
       </NavbarContent>
 
-      {/* mobile menu content  */}
+      {/* Mobile menu content */}
       <NavbarMenu>
         {menuItems.map((item) => (
           <NavbarMenuItem
             className={cn(
-              "px-3 py-1 text-sm  tracking-normal leading-relaxed font-bold",
+              "px-3 py-1 text-sm tracking-normal leading-relaxed font-bold",
               item.active && "bg-[#FFFFFF26] rounded-full"
             )}
             key={item.id}

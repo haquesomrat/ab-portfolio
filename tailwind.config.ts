@@ -91,6 +91,7 @@ const config: Config = {
         shimmer: "shimmer 2s linear infinite",
         spotlight: "spotlight 2s ease .75s 1 forwards",
         spotlightRed: "spotlightRed 2s ease .75s 1 forwards",
+        wave: "wave 2.5s infinite",
       },
       keyframes: {
         shimmer: {
@@ -120,6 +121,13 @@ const config: Config = {
             opacity: "1",
             transform: "translate(50%, 40%) rotate(120deg) scale(1)",
           },
+        },
+        wave: {
+          "0%, 60%, 100%": { transform: "rotate(0deg)" },
+          "10%, 30%, 50%, 70%": { transform: "rotate(14deg)" },
+          "50%, 70%": { transform: "rotate(10deg)" },
+          "20%": { transform: "rotate(-8deg)" },
+          "40%": { transform: "rotate(-4deg)" },
         },
       },
       boxShadow: {
