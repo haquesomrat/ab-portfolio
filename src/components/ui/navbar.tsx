@@ -39,7 +39,7 @@ const MyNavbar = () => {
       onMenuOpenChange={setIsMenuOpen}
       isBlurred={false}
       height="5rem"
-      className={`absolute ${isMenuOpen ? "bg-[#000314]" : "bg-transparent"}`}
+      className={`relative ${isMenuOpen ? "bg-[#000314]" : "bg-transparent"}`}
     >
       <NavbarContent className="xl:p-0">
         <NavbarBrand>

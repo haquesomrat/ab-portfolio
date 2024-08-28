@@ -3,7 +3,7 @@ import Services from "@/components/services/Services";
 import Hero from "@/components/hero/Hero";
 import Projects from "@/components/projects/Projects";
 import Feedbacks from "@/components/feedbacks/Feedbacks";
-import Footer from "@/components/footer/Footer";
+import Expertise from "@/components/expertise/Expertise";
 
 export default function Home() {
   return (
@@ -15,9 +15,9 @@ export default function Home() {
       <Services />
       <div className="max-w-[1240px] w-full">
         <Projects />
+        <Expertise />
       </div>
       <Feedbacks />
-      <Footer />
     </main>
   );
 }
