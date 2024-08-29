@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Splide from "@splidejs/splide";
 import Image from "next/image";
+import FeedbackCarouselArrows from "./feedback-carousel-arrows";
 
 const FeedbackCarousel: React.FC = () => {
   useEffect(() => {
@@ -45,7 +46,7 @@ const FeedbackCarousel: React.FC = () => {
             <div className="bg-[#D2BAA8] flex flex-col lg:flex-row items-center p-6 lg:py-10 lg:px-14 rounded-2xl gap-4 lg:gap-8">
               <div className="lg:w-[40.4%]">
                 <Image
-                  className="w-full h-full rounded-full aspect-[187/240] max-w-[100px] lg:max-w-[187px]"
+                  className="w-full h-full rounded-full aspect-[187/240] max-w-[100px] lg:max-w-[187px] object-cover"
                   src="/images/feedbacks/feedback-one.png"
                   width={187}
                   height={240}
@@ -71,7 +72,7 @@ const FeedbackCarousel: React.FC = () => {
             <div className="bg-[#A8C0D2] flex flex-col lg:flex-row items-center p-6 lg:py-10 lg:px-14 rounded-2xl gap-4 lg:gap-8">
               <div className="lg:w-[40.4%]">
                 <Image
-                  className="w-full h-full rounded-full aspect-[187/240] max-w-[100px] lg:max-w-[187px]"
+                  className="w-full h-full rounded-full aspect-[187/240] max-w-[100px] lg:max-w-[187px] object-cover"
                   src="/images/feedbacks/feedback-two.png"
                   width={187}
                   height={240}
@@ -97,50 +98,7 @@ const FeedbackCarousel: React.FC = () => {
       </div>
 
       {/* arrows */}
-      <div className="splide__arrows splide__arrows--ltr relative w-[132px] p-0 mt-10 mx-auto flex gap-3">
-        <button
-          className="splide__arrow--prev px-5 py-2.5 rounded-full border bg-transparent border-[#FFFFFF1A] rotate-180"
-          type="button"
-          aria-label="Previous slide"
-          aria-controls="splide01-track"
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M17.5 10H2.5M2.5 10L8.75 3.75M2.5 10L8.75 16.25"
-              stroke="#F06373"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-        <button
-          className="splide__arrow--next px-5 py-2.5 rounded-full border bg-transparent border-[#FFFFFF1A]"
-          type="button"
-          aria-label="Next slide"
-          aria-controls="splide01-track"
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M2.5 10H17.5M17.5 10L11.25 3.75M17.5 10L11.25 16.25"
-              stroke="#F06373"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-      </div>
+      <FeedbackCarouselArrows />
     </div>
   );
 };

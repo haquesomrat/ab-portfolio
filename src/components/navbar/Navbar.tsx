@@ -3,22 +3,8 @@
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import { Button } from "../ui/button";
-import SheetMenu from "./SheetMenu";
-
-const navItems = [
-  {
-    name: "Home",
-    link: "/",
-  },
-  {
-    name: "About",
-    link: "/about",
-  },
-  {
-    name: "Wore",
-    link: "/contact",
-  },
-];
+import SheetMenu from "./components/SheetMenu";
+import Menus from "./components/Menus";
 
 const Navbar: React.FC = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -45,20 +31,21 @@ const Navbar: React.FC = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 bg-transparent backdrop-blur-md text-white py-4 px-6 transition-transform duration-300 z-50 ${
+      className={`fixed top-0 left-0 right-0 bg-transparent backdrop-blur-md text-white py-4 md:py-5 px-6 transition-transform duration-300 z-50 ${
         isVisible ? "transform translate-y-0" : "transform -translate-y-full"
       }`}
     >
       <div className="mx-auto max-w-[1240px] flex items-center justify-between">
         <div>
-          <Image src="/images/logo.png" width={60} height={60} alt="logo" />
+          <Image
+            className="aspect-[50/42]"
+            src="/images/logo.png"
+            width={50}
+            height={50}
+            alt="logo"
+          />
         </div>
-        <ul className="hidden md:flex items-center gap-6 ">
-          <li>A</li>
-          <li>B</li>
-          <li>C</li>
-          <li>D</li>
-        </ul>
+        <Menus />
         <div className="hidden md:block">
           <Button>Contact</Button>
         </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { IconsOribital } from "./IconsOribital";
+import { IconsOribital } from "./components/IconsOribital";
 
 const Expertise = () => {
   return (

@@ -1,12 +1,19 @@
 import React from "react";
-import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
+import { LinkPreview } from "@/components/ui/link-preview";
+import moment from "moment";
 
 export function Copyright() {
   return (
     <div className="relative top-0 left-0 text-white flex flex-col-reverse md:flex-row justify-between items-center gap-6 mt-32 lg:mt-60">
       <div>
         <p className="text-sm leading-relaxed">
-          Lorem ipsum dolor sit amet consectetur
+          <LinkPreview
+            className="underline hover:no-underline"
+            url="https://aminbabu-inj.netlify.app/"
+          >
+            www.aminbabu.com{" "}
+          </LinkPreview>
+          &copy; {moment().format("YYYY")} - All Rights Reserved.
         </p>
       </div>
       <div className="flex gap-5">

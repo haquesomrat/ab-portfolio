@@ -1,5 +1,5 @@
-import { projects } from "@/data/data";
-import WorkCard from "./ProjectCard";
+import { projects } from "@/lib/data";
+import WorkCard from "./components/ProjectCard";
 
 const Projects = () => {
   return (
@@ -7,11 +7,11 @@ const Projects = () => {
       <h2 className="text-2xl lg:text-4xl font-light text-center uppercase mb-6">
         Work i&apos;m <span className="font-semibold">proud</span> of
       </h2>
-
       <p className="text-sm max-w-[515px] mx-auto text-center text-[#8F9AB2] mb-16">
         Proin blandit molestie neque orci pellentesque curabitur. Consectetur
         malesuada massa in vel tincidunt nec egestas.
       </p>
+
       <div className="space-y-10">
         {projects.map(({ title, description, src, color }, id) => (
           <WorkCard

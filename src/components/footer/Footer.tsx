@@ -1,6 +1,6 @@
 import React from "react";
 import FooterContent from "./components/FooterContent";
-import GridBackground from "../hero/GridBackground";
+import GridBackground from "../hero/compoents/GridBackground";
 import { Copyright } from "./components/Copyright";
 
 const Footer = () => {

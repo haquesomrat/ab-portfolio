@@ -1,5 +1,5 @@
 import React from "react";
-import ServiceCarousel from "./service-carousel";
+import ServiceCarousel from "./compoents/service-carousel";
 
 const Services = () => {
   return (
