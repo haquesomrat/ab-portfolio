@@ -82,6 +82,10 @@
     justify-content: left;
   }
 
+  /* .service__splide img {
+    object-fit: cover;
+  } */
+
   @media (max-width: 768px) {
     .service__splide .splide__pagination {
       bottom: 55%;
