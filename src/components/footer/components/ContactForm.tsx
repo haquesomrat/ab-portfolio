@@ -1,14 +1,9 @@
 "use client";
 import React from "react";
 import { cn } from "@/lib/utils";
-import {
-  IconBrandGithub,
-  IconBrandGoogle,
-  IconBrandOnlyfans,
-} from "@tabler/icons-react";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 
 export function ContactForm() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -46,7 +41,7 @@ export function ContactForm() {
         </LabelInputContainer>
         <LabelInputContainer className="mb-6">
           <Textarea
-            className="h-24 dark:bg-[#0D1020] dark:shadow-none px-3 py-5 leading-relaxed focus-visible:ring-0 focus-visible:ring-transparent"
+            className="h-32 resize-none flex-wrap dark:bg-[#0D1020] dark:shadow-none px-3 py-3 leading-relaxed focus-visible:ring-0 focus-visible:ring-transparent"
             id="message"
             placeholder="Message"
           />

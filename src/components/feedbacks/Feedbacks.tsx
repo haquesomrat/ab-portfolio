@@ -1,5 +1,5 @@
 import React from "react";
-import FeedbackCarousel from "../ui/feedback-carousel";
+import FeedbackCarousel from "./feedback-carousel";
 
 const Feedbacks = () => {
   return (

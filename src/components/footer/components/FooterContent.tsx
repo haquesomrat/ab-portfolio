@@ -10,10 +10,10 @@ const FooterContent = () => {
             Have a project in mind?
             <br /> Get in <span className="font-semibold">touch</span>
           </h2>
-          <p className="text-[#8F9AB2] text-lg leading-relaxed">
+          <p className="text-[#8F9AB2] text-base lg:text-lg leading-relaxed">
             Let&apos;s do something great!
           </p>
-          <p className="text-[#8F9AB2] text-lg leading-relaxed">
+          <p className="text-[#8F9AB2] text-base lg:text-lg leading-relaxed">
             Don&apos;t like forms? Send me an email.{" "}
             <span className="inline-block text-xl animate-wave">👋</span>
           </p>

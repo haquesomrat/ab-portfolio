@@ -276,8 +276,8 @@ const orbitalIcons = {
           cy="41"
           r="40.75"
           stroke="#1EC8F7"
-          stroke-opacity="0.01"
-          stroke-width="0.5"
+          strokeOpacity="0.01"
+          strokeWidth="0.5"
         />
       </g>
       <rect x="8" y="29" width="66" height="25" fill="url(#pattern0_42_326)" />
@@ -289,9 +289,9 @@ const orbitalIcons = {
           width="187"
           height="187"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feGaussianBlur in="BackgroundImageFix" stdDeviation="26.25" />
           <feComposite
             in2="SourceAlpha"
