@@ -1,17 +1,15 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ThemeProvider } from "./provider";
 import { GeistSans } from "geist/font/sans";
 import "@splidejs/splide/css";
-import Footer from "@/components/footer/Footer";
-import Navbar from "@/components/navbar/Navbar";
+import { ThemeProvider } from "@/provider/theme-provider";
 
 export const metadata: Metadata = {
   title: "AB - The Developer",
   description: "Modern Thinking Developer With Impressive Ideas",
 };
 
-export default function RootLayout({
+export default function HomepageLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -25,9 +23,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Navbar />
           {children}
-          <Footer />
         </ThemeProvider>
       </body>
     </html>
