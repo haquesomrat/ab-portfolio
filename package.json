@@ -43,6 +43,7 @@
     "react-dropzone": "^14.2.3",
     "react-element-to-jsx-string": "^15.0.0",
     "react-hook-form": "^7.53.0",
+    "recharts": "^2.12.7",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8",
