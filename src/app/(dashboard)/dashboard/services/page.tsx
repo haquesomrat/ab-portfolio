@@ -1,6 +1,7 @@
 import AdminPanelLayout from "@/components/dashboard/admin-panel/admin-panel-layout";
 import { ContentLayout } from "@/components/dashboard/admin-panel/content-layout";
 import PlaceholderContent from "@/components/dashboard/admin-panel/placeholder-content";
+import ServicesContainer from "@/components/dashboard/services/ServicesContainer";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -37,7 +38,8 @@ const ServicesPage = () => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <PlaceholderContent />
+        {/* <PlaceholderContent /> */}
+        <ServicesContainer />
       </ContentLayout>
     </AdminPanelLayout>
   );

@@ -62,7 +62,7 @@ export function CollapseMenuButton({
         asChild
       >
         <Button
-          variant={active ? "secondary" : "ghost"}
+          variant={active ? "destructive" : "ghost"}
           className="w-full justify-start h-10"
         >
           <div className="w-full items-center flex justify-between">
@@ -101,7 +101,7 @@ export function CollapseMenuButton({
         {submenus.map(({ href, label, active }, index) => (
           <Button
             key={index}
-            variant={active ? "secondary" : "ghost"}
+            variant={active ? "destructive" : "ghost"}
             className="w-full justify-start h-10 mb-1"
             asChild
           >

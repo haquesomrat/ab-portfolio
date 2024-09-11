@@ -79,11 +79,22 @@ export function getMenuList(pathname: string): Group[] {
           submenus: [],
         },
         {
-          href: "/dashboard/companies",
+          href: "",
           label: "Companies",
-          active: pathname.includes("/companies"),
+          active: pathname.includes("/ab-companies"),
           icon: Building2,
-          submenus: [],
+          submenus: [
+            {
+              href: "/dashboard/companies",
+              label: "All Companies",
+              active: pathname === "/dashboard/companies",
+            },
+            {
+              href: "/dashboard/companies/add-company",
+              label: "Add New Company",
+              active: pathname === "/dashboard/companies/add-company",
+            },
+          ],
         },
         {
           href: "/dashboard/services",
@@ -108,7 +119,7 @@ export function getMenuList(pathname: string): Group[] {
         },
         {
           href: "/dashboard/feedback",
-          label: "Customer Feedback",
+          label: "Client Feedback",
           active: pathname.includes("/feedback"),
           icon: Building2,
           submenus: [],

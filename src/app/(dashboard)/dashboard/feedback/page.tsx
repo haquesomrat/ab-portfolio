@@ -1,6 +1,7 @@
 import AdminPanelLayout from "@/components/dashboard/admin-panel/admin-panel-layout";
 import { ContentLayout } from "@/components/dashboard/admin-panel/content-layout";
 import PlaceholderContent from "@/components/dashboard/admin-panel/placeholder-content";
+import FeedbackContainer from "@/components/dashboard/feedback/FeedbackContainer";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -33,11 +34,12 @@ const FeedbackPage = () => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Customer Feedback</BreadcrumbPage>
+              <BreadcrumbPage>Client Feedback</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <PlaceholderContent />
+        {/* <PlaceholderContent /> */}
+        <FeedbackContainer />
       </ContentLayout>
     </AdminPanelLayout>
   );

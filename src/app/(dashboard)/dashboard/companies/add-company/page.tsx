@@ -2,7 +2,6 @@ import AdminPanelLayout from "@/components/dashboard/admin-panel/admin-panel-lay
 import { ContentLayout } from "@/components/dashboard/admin-panel/content-layout";
 import PlaceholderContent from "@/components/dashboard/admin-panel/placeholder-content";
 import CompaniesContainer from "@/components/dashboard/companies/add-company/CompaniesContainer";
-import CompanyListContainer from "@/components/dashboard/companies/CompanyListContainer";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -14,7 +13,7 @@ import {
 import Link from "next/link";
 import React from "react";
 
-const CompaniesPage = () => {
+const AddCompanyPage = () => {
   return (
     <AdminPanelLayout>
       <ContentLayout title="Companies">
@@ -27,15 +26,23 @@ const CompaniesPage = () => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
+              <BreadcrumbPage>Dashboard</BreadcrumbPage>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
               <BreadcrumbPage>Companies</BreadcrumbPage>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Add Company</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
         {/* <PlaceholderContent /> */}
-        <CompanyListContainer />
+        <CompaniesContainer />
       </ContentLayout>
     </AdminPanelLayout>
   );
 };
 
-export default CompaniesPage;
+export default AddCompanyPage;

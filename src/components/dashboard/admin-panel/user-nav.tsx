@@ -20,8 +20,30 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOut, useSession } from "next-auth/react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function UserNav() {
+  const { data: session, status } = useSession();
+  // console.log(session);
+
+  if (status === "loading") {
+    return (
+      <div className="flex items-center space-x-4">
+        <Skeleton className="h-8 w-8 rounded-full" />
+      </div>
+    );
+  }
+
+  if (status === "unauthenticated") {
+    return <div>User is not authenticated</div>;
+  }
+
+  // Safely access user properties
+  const name = session?.user?.name ?? "Guest";
+  const email = session?.user?.email ?? "Not provided";
+  const image = session?.user?.image ?? "Not provided";
+
   return (
     <DropdownMenu>
       <TooltipProvider disableHoverableContent>
@@ -33,8 +55,8 @@ export function UserNav() {
                 className="relative h-8 w-8 rounded-full"
               >
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="#" alt="Avatar" />
-                  <AvatarFallback className="bg-transparent">JD</AvatarFallback>
+                  <AvatarImage src={image} alt="Avatar" />
+                  <AvatarFallback className="bg-transparent">AB</AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
@@ -46,9 +68,9 @@ export function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">Student Club</p>
+            <p className="text-sm font-medium leading-none">{name}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              studentclub.admin@gmail.com
+              {email}
             </p>
           </div>
         </DropdownMenuLabel>
@@ -68,12 +90,13 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <Link href={"/sign-in"}>
-          <DropdownMenuItem className="hover:cursor-pointer" onClick={() => {}}>
-            <LogOut className="w-4 h-4 mr-3 text-muted-foreground" />
-            Sign out
-          </DropdownMenuItem>
-        </Link>
+        <DropdownMenuItem
+          onClick={() => signOut()}
+          className="hover:cursor-pointer"
+        >
+          <LogOut className="w-4 h-4 mr-3 text-muted-foreground" />
+          Sign out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

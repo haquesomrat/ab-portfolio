@@ -3,6 +3,7 @@ import "./globals.css";
 import { GeistSans } from "geist/font/sans";
 import "@splidejs/splide/css";
 import { ThemeProvider } from "@/provider/theme-provider";
+import AuthProvider from "@/provider/auth-provider";
 
 export const metadata: Metadata = {
   title: "AB - The Developer",
@@ -23,7 +24,7 @@ export default function HomepageLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <AuthProvider>{children}</AuthProvider>
         </ThemeProvider>
       </body>
     </html>
