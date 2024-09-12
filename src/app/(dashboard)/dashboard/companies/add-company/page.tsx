@@ -1,6 +1,5 @@
 import AdminPanelLayout from "@/components/dashboard/admin-panel/admin-panel-layout";
 import { ContentLayout } from "@/components/dashboard/admin-panel/content-layout";
-import PlaceholderContent from "@/components/dashboard/admin-panel/placeholder-content";
 import CompaniesContainer from "@/components/dashboard/companies/add-company/CompaniesContainer";
 import {
   Breadcrumb,
@@ -26,11 +25,15 @@ const AddCompanyPage = () => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Dashboard</BreadcrumbPage>
+              <BreadcrumbLink asChild>
+                <Link href="/dashboard">Dashboard</Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Companies</BreadcrumbPage>
+              <BreadcrumbLink asChild>
+                <Link href="/dashboard/companies">Companies</Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -38,7 +41,6 @@ const AddCompanyPage = () => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        {/* <PlaceholderContent /> */}
         <CompaniesContainer />
       </ContentLayout>
     </AdminPanelLayout>

@@ -21,7 +21,6 @@ const CompaniesContainer = () => {
         <h2 className="text-3xl font-bold tracking-tight">Add Company</h2>
       </div>
       <AddCompaniesForm />
-      <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
     </div>
   );
 };

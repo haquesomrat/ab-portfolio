@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Splide from "@splidejs/splide";
 import { AutoScroll } from "@splidejs/splide-extension-auto-scroll";
 import Image from "next/image";
+import { getAllCompanies } from "@/lib/company-logos";
 
 const LogoSlider: React.FC = () => {
   useEffect(() => {
@@ -40,59 +41,27 @@ const LogoSlider: React.FC = () => {
     };
   }, []);
 
+  const companies = getAllCompanies();
+  console.log(companies);
+
   return (
     <div>
       <div className="companies__splide splide">
         <div className="splide__track">
           <ul className="splide__list">
-            <li className="splide__slide flex justify-center items-center">
-              <Image
-                src={"/images/company-logos/acme.png"}
-                height={32}
-                width={127}
-                alt="company logo"
-              />
-            </li>
-            <li className="splide__slide  flex justify-center items-center">
-              <Image
-                src={"/images/company-logos/amara.png"}
-                height={32}
-                width={121}
-                alt="company logo"
-              />
-            </li>
-            <li className="splide__slide  flex justify-center items-center">
-              <Image
-                src={"/images/company-logos/atica.png"}
-                height={32}
-                width={80}
-                alt="company logo"
-              />
-            </li>
-            <li className="splide__slide  flex justify-center items-center">
-              <Image
-                src={"/images/company-logos/aven.png"}
-                height={32}
-                width={111}
-                alt="company logo"
-              />
-            </li>
-            <li className="splide__slide  flex justify-center items-center">
-              <Image
-                src={"/images/company-logos/asgardia.png"}
-                height={32}
-                width={143}
-                alt="company logo"
-              />
-            </li>
-            <li className="splide__slide  flex justify-center items-center">
-              <Image
-                src={"/images/company-logos/hexlab.png"}
-                height={32}
-                width={136}
-                alt="company logo"
-              />
-            </li>
+            {companies.map((company) => (
+              <li
+                key={company?.id}
+                className="splide__slide flex justify-center items-center"
+              >
+                <Image
+                  src={company?.src}
+                  height={32}
+                  width={127}
+                  alt={company?.name}
+                />
+              </li>
+            ))}
           </ul>
         </div>
       </div>
