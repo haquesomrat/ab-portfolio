@@ -36,11 +36,32 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 export type Companies = {
   id: string;
   companyName: string;
   companyImg: string;
+  _id: string;
+};
+
+const handleDeleteCompany = async (id: String) => {
+  // delete the company data
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/companies/api/delete-company/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+    if (res.ok) {
+      console.log("Upload successful:", await res.json());
+    } else {
+      console.error("Upload failed:", await res.json());
+    }
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
 };
 
 export const columns: ColumnDef<Companies>[] = [
@@ -102,8 +123,6 @@ export const columns: ColumnDef<Companies>[] = [
     header: "Action",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -113,17 +132,19 @@ export const columns: ColumnDef<Companies>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            {/* <DropdownMenuLabel className="text-primary">
-              Actions
-            </DropdownMenuLabel> */}
-            {/* <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+            <Link
+              href={`/dashboard/companies/${row?.original?._id}/update-company`}
             >
-              Copy payment ID
-            </DropdownMenuItem> */}
-            {/* <DropdownMenuSeparator /> */}
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+              <DropdownMenuItem className="cursor-pointer">
+                Edit
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuItem
+              onClick={() => handleDeleteCompany(row?.original?._id)}
+              className="cursor-pointer"
+            >
+              Delete
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

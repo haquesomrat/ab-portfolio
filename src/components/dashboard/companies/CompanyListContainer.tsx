@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { CompanyList } from "./add-company/CompanyList";
+import { CompanyList } from "./CompanyList";
 
 const CompanyListContainer = () => {
   const [companies, setCompanies] = useState([]);

@@ -1,42 +1,73 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { FileUpload } from "@/components/ui/file-upload";
+import Image from "next/image";
+import Loading from "@/components/global/Loading";
 
-export function AddCompaniesForm() {
+interface CompanyUpdateFormProps {
+  id: string;
+}
+interface Company {
+  companyName: string;
+  companyImg: string;
+}
+
+export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
   const [files, setFiles] = useState<File[]>([]);
 
+  const [singleCompany, setSingleCompany] = useState<Company | null>(null);
+
+  // get single company data
+  useEffect(() => {
+    const getSingleCompany = async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/companies/api/${id}`
+      );
+      const data = await res.json();
+      setSingleCompany(data);
+    };
+    getSingleCompany();
+  }, [id]);
+
+  // fallback loading
+  if (!singleCompany) return <Loading />;
+
+  // destructure single company data
+  const { companyName, companyImg } = singleCompany;
+
+  // handling file upload
   const handleFileUpload = (files: File[]) => {
     setFiles(files);
     console.log(files[0]);
   };
 
+  // handle submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const form = e.currentTarget; // Using currentTarget for form
 
-    const companyName = (
+    const newCompanyName = (
       form.elements.namedItem("companyName") as HTMLInputElement
     ).value;
 
     const formData = new FormData();
-    formData.append("companyName", companyName);
-    formData.append("companyImage", files[0]);
+    formData.append("companyName", newCompanyName);
+    if (files.length < 1) {
+      formData.append("companyImage", singleCompany?.companyImg);
+    } else {
+      formData.append("companyImage", files[0]);
+    }
 
-    // Append files to FormData
-    // files.forEach((file, index) => {
-    //   formData.append(`file${index}`, file);
-    // });
-    console.log(formData);
-
+    // update the company data
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/companies/api/add-company`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/companies/api/update-company/${id}`,
         {
-          method: "POST",
+          method: "PATCH",
           body: formData,
         }
       );
@@ -63,6 +94,7 @@ export function AddCompaniesForm() {
               id="company_name"
               name="companyName"
               placeholder="Enter Company Name"
+              defaultValue={companyName}
               type="text"
               required
             />
@@ -73,6 +105,15 @@ export function AddCompaniesForm() {
             <Label className="mb-2" htmlFor="company_logo">
               Company Logo
             </Label>
+            <div className="pb-2 flex gap-4 items-center">
+              <p className="text-sm">Previous Company Image preview</p>
+              <Image
+                src={companyImg}
+                alt={companyName}
+                height={16}
+                width={70}
+              />
+            </div>
             <FileUpload onChange={handleFileUpload} />
           </LabelInputContainer>
         </div>
@@ -81,7 +122,7 @@ export function AddCompaniesForm() {
           className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
           type="submit"
         >
-          Submit &rarr;
+          Update &rarr;
           <BottomGradient />
         </button>
       </form>
