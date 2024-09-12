@@ -39,125 +39,147 @@ import Image from "next/image";
 import Link from "next/link";
 
 export type Companies = {
-  id: string;
+  _id: string;
   companyName: string;
   companyImg: string;
-  _id: string;
 };
 
-const handleDeleteCompany = async (id: String) => {
-  // delete the company data
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/companies/api/delete-company/${id}`,
-      {
-        method: "DELETE",
-      }
-    );
-    if (res.ok) {
-      console.log("Upload successful:", await res.json());
-    } else {
-      console.error("Upload failed:", await res.json());
-    }
-  } catch (error) {
-    console.error("An error occurred:", error);
-  }
-};
+export function CompanyList() {
+  // Explicitly define the state type as an array of Companies
+  const [companies, setCompanies] = React.useState<Companies[]>([]);
 
-export const columns: ColumnDef<Companies>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
+  // Fetch all companies on component mount
+  React.useEffect(() => {
+    const getAllCompanies = async () => {
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/companies/api`
+        );
+        if (res.ok) {
+          const data: Companies[] = await res.json(); // Explicitly define the type of fetched data
+          setCompanies(data);
+        } else {
+          console.error("Failed to fetch companies");
         }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "companyName",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Company Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => (
-      <div className="lowercase">{row.getValue("companyName")}</div>
-    ),
-  },
-  {
-    accessorKey: "companyImg",
-    header: "Company Image",
-    cell: ({ row }) => (
-      <div>
-        <Image
-          src={row.getValue("companyImg")}
-          alt="companny image"
-          height={16}
-          width={68}
-        />
-      </div>
-    ),
-  },
-  {
-    id: "actions",
-    header: "Action",
-    enableHiding: false,
-    cell: ({ row }) => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <Link
-              href={`/dashboard/companies/${row?.original?._id}/update-company`}
-            >
-              <DropdownMenuItem className="cursor-pointer">
-                Edit
-              </DropdownMenuItem>
-            </Link>
-            <DropdownMenuItem
-              onClick={() => handleDeleteCompany(row?.original?._id)}
-              className="cursor-pointer"
-            >
-              Delete
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
+      } catch (error) {
+        console.error("An error occurred while fetching companies:", error);
+      }
+    };
+    getAllCompanies();
+  }, []);
 
-interface CompaniesTableProps {
-  companies: Companies[];
-}
+  // Handle company deletion
+  const handleDeleteCompany = async (id: String) => {
+    // delete the company data
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/companies/api/delete-company/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (res.ok) {
+        setCompanies((prevCompanies) =>
+          prevCompanies.filter((company) => company._id !== id)
+        );
+        console.log("Upload successful:", await res.json());
+      } else {
+        console.error("Upload failed:", await res.json());
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
 
-export function CompanyList({ companies }: CompaniesTableProps) {
   const data: Companies[] = companies;
+
+  const columns: ColumnDef<Companies>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "companyName",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Company Name
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      cell: ({ row }) => (
+        <div className="lowercase">{row.getValue("companyName")}</div>
+      ),
+    },
+    {
+      accessorKey: "companyImg",
+      header: "Company Image",
+      cell: ({ row }) => (
+        <div>
+          <Image
+            src={row.getValue("companyImg")}
+            alt="companny image"
+            height={16}
+            width={68}
+          />
+        </div>
+      ),
+    },
+    {
+      id: "actions",
+      header: "Action",
+      enableHiding: false,
+      cell: ({ row }) => {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <Link
+                href={`/dashboard/companies/${row?.original?._id}/update-company`}
+              >
+                <DropdownMenuItem className="cursor-pointer">
+                  Edit
+                </DropdownMenuItem>
+              </Link>
+              <DropdownMenuItem
+                onClick={() => handleDeleteCompany(row?.original?._id)}
+                className="cursor-pointer"
+              >
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      },
+    },
+  ];
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
