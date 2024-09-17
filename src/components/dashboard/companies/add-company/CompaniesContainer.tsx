@@ -7,7 +7,7 @@ const CompaniesContainer = () => {
   useEffect(() => {
     const getAllCompanies = async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/companies/api`
+        `${process.env.NEXTAUTH_URL}/dashboard/companies/api`
       );
       const data = await res.json();
       setCompanies(data);

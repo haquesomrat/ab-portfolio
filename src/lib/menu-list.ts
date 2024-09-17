@@ -140,9 +140,9 @@ export function getMenuList(pathname: string): Group[] {
           submenus: [],
         },
         {
-          href: "/account",
+          href: "/dashboard/account",
           label: "Account",
-          active: pathname.includes("/account"),
+          active: pathname.includes("/dashboard/account"),
           icon: Settings,
           submenus: [],
         },

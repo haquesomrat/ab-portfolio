@@ -34,7 +34,7 @@ export function AddCompaniesForm() {
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/companies/api/add-company`,
+        `${process.env.NEXTAUTH_URL}/dashboard/companies/api/add-company`,
         {
           method: "POST",
           body: formData,

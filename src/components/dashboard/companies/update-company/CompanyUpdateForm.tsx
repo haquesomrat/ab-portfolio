@@ -24,7 +24,7 @@ export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
   useEffect(() => {
     const getSingleCompany = async () => {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/companies/api/${id}`
+        `${process.env.NEXTAUTH_URL}/dashboard/companies/api/${id}`
       );
       const data = await res.json();
       setSingleCompany(data);
@@ -65,7 +65,7 @@ export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
     // update the company data
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/companies/api/update-company/${id}`,
+        `${process.env.NEXTAUTH_URL}/dashboard/companies/api/update-company/${id}`,
         {
           method: "PATCH",
           body: formData,

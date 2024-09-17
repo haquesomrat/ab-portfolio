@@ -21,16 +21,13 @@ const SignupPage = () => {
 
     try {
       // call the api to create user
-      const resp = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/signup/api`,
-        {
-          method: "POST",
-          body: JSON.stringify(newUser),
-          headers: {
-            "content-type": "application/json",
-          },
-        }
-      );
+      const resp = await fetch(`${process.env.NEXTAUTH_URL}/signup/api`, {
+        method: "POST",
+        body: JSON.stringify(newUser),
+        headers: {
+          "content-type": "application/json",
+        },
+      });
 
       if (resp && resp.ok) {
         // call swal

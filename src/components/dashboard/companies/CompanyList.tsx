@@ -53,7 +53,7 @@ export function CompanyList() {
     const getAllCompanies = async () => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/companies/api`
+          `${process.env.NEXTAUTH_URL}/dashboard/companies/api`
         );
         if (res.ok) {
           const data: Companies[] = await res.json(); // Explicitly define the type of fetched data
@@ -73,7 +73,7 @@ export function CompanyList() {
     // delete the company data
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard/companies/api/delete-company/${id}`,
+        `${process.env.NEXTAUTH_URL}/dashboard/companies/api/delete-company/${id}`,
         {
           method: "DELETE",
         }
