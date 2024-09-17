@@ -5,9 +5,9 @@ import NextAuth, {
 } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import { Db } from "mongodb";
-import { connectDB } from "@/lib/ConnectDB";
+import { connectDB } from "@/lib/ConnectDB"; // Import your existing connectDB
 import { DefaultJWT } from "next-auth/jwt";
+import { Db } from "mongodb";
 
 // Extend the default User type
 interface ExtendedUser extends DefaultUser {
@@ -31,14 +31,10 @@ interface Credentials {
   password: string;
 }
 
-// Extend the global namespace for TypeScript to support global `mongoClient`
-declare global {
-  var mongoClient: Db | void;
-}
-
+// Moved `connectToDatabase` to your ConnectDB file for reuse
 export const connectToDatabase = async (): Promise<Db> => {
   if (!globalThis.mongoClient) {
-    const db = await connectDB();
+    const db = await connectDB(); // Use your existing DB connection function
     if (!db) {
       throw new Error("Failed to connect to the database");
     }
@@ -64,7 +60,7 @@ const options: NextAuthOptions = {
         }
 
         try {
-          const db = await connectToDatabase();
+          const db = await connectToDatabase(); // Use the function correctly here
           const user = await db
             ?.collection("users")
             .findOne({ email: credentials.email });
@@ -114,7 +110,6 @@ const options: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (session.user) {
-        // session.user.role = (token as ExtendedToken).role ?? "user";
         session.user.image = (token as ExtendedToken).image ?? null;
       }
       return session;
