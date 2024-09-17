@@ -20,7 +20,10 @@ export const POST = async (request: Request) => {
     const db = await connectDB();
     if (!db) {
       console.error("Database connection failed.");
-      return null;
+      return NextResponse.json(
+        { message: "Database connection failed" },
+        { status: 500 }
+      );
     }
 
     const userCollection = db.collection("users");
@@ -28,11 +31,9 @@ export const POST = async (request: Request) => {
     // Check if the user already exists
     const exist = await userCollection.findOne({ email: newUser.email });
     if (exist) {
-      return new NextResponse(
-        JSON.stringify({ message: "User Already Exists" }),
-        {
-          status: 304,
-        }
+      return NextResponse.json(
+        { message: "User Already Exists" },
+        { status: 409 }
       );
     }
 
@@ -46,16 +47,16 @@ export const POST = async (request: Request) => {
     });
 
     // Return success response
-    return new NextResponse(
-      JSON.stringify({ message: "User created successfully" }),
-      { status: 200 }
+    return NextResponse.json(
+      { message: "User created successfully" },
+      { status: 201 }
     );
   } catch (error) {
     console.error("Error creating user:", error);
 
     // Return error response
-    return new NextResponse(
-      JSON.stringify({ message: "Something went wrong", error }),
+    return NextResponse.json(
+      { message: "Something went wrong", error },
       { status: 500 }
     );
   }

@@ -4,8 +4,8 @@ import { NextRequest } from "next/server";
 export const middleware = async (request: NextRequest) => {
   const token = request.cookies.get("next-auth.session-token");
   // access api without token
-  const pathanme = request.nextUrl.pathname;
-  if (pathanme.includes("api")) {
+  const pathname = request.nextUrl.pathname;
+  if (pathname.includes("api")) {
     return NextResponse.next();
   }
   // redirecting to login page if no token
