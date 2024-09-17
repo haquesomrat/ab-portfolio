@@ -21,7 +21,7 @@ const SignupPage = () => {
 
     try {
       // call the api to create user
-      const resp = await fetch(`${process.env.NEXTAUTH_URL}/signup/api`, {
+      const resp = await fetch(`/signup/api`, {
         method: "POST",
         body: JSON.stringify(newUser),
         headers: {

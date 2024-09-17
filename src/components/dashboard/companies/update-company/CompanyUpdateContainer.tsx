@@ -9,9 +9,7 @@ const CompanyUpdateContainer = ({ id }: CompanyUpdateContainerProps) => {
   const [companies, setCompanies] = useState([]);
   useEffect(() => {
     const getAllCompanies = async () => {
-      const res = await fetch(
-        `${process.env.NEXTAUTH_URL}/dashboard/companies/api`
-      );
+      const res = await fetch(`/dashboard/companies/api`);
       const data = await res.json();
       setCompanies(data);
     };

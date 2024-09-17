@@ -52,9 +52,7 @@ export function CompanyList() {
   React.useEffect(() => {
     const getAllCompanies = async () => {
       try {
-        const res = await fetch(
-          `${process.env.NEXTAUTH_URL}/dashboard/companies/api`
-        );
+        const res = await fetch(`/dashboard/companies/api`);
         if (res.ok) {
           const data: Companies[] = await res.json(); // Explicitly define the type of fetched data
           setCompanies(data);

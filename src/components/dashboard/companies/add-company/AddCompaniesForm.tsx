@@ -33,13 +33,10 @@ export function AddCompaniesForm() {
     console.log(formData);
 
     try {
-      const res = await fetch(
-        `${process.env.NEXTAUTH_URL}/dashboard/companies/api/add-company`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const res = await fetch(`/dashboard/companies/api/add-company`, {
+        method: "POST",
+        body: formData,
+      });
 
       if (res.ok) {
         console.log("Upload successful:", await res.json());

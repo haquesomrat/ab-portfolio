@@ -23,9 +23,7 @@ export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
   // get single company data
   useEffect(() => {
     const getSingleCompany = async () => {
-      const res = await fetch(
-        `${process.env.NEXTAUTH_URL}/dashboard/companies/api/${id}`
-      );
+      const res = await fetch(`/dashboard/companies/api/${id}`);
       const data = await res.json();
       setSingleCompany(data);
     };
