@@ -1,3 +1,5 @@
+import { Expertises, Services, Projects, Feedbacks } from "@/types/types";
+
 export const projects = [
   {
     id: 1,
@@ -67,7 +69,7 @@ export const feedbacks = [
   },
 ];
 
-export const services = [
+export const fakeServices: Services[] = [
   {
     id: 1,
     icon: (
@@ -766,3 +768,93 @@ export const orbitalIcons = {
     </svg>
   ),
 };
+
+export const dummyProjects: Projects[] = [
+  {
+    id: 1,
+    title: "Project Title 1",
+    description: "This is a description for project 1.",
+    live_link: "https://example.com/project1",
+    preview_image: "https://via.placeholder.com/400x300", // Placeholder image URL
+  },
+  {
+    id: 2,
+    title: "Project Title 2",
+    description: "This is a description for project 2.",
+    live_link: "https://example.com/project2",
+    preview_image: "https://via.placeholder.com/400x300", // Placeholder image URL
+  },
+  {
+    id: 3,
+    title: "Project Title 3",
+    description: "This is a description for project 3.",
+    live_link: "https://example.com/project3",
+    preview_image: "https://via.placeholder.com/400x300", // Placeholder image URL
+  },
+];
+
+export const dummyExpertises: Expertises[] = [
+  {
+    id: 1,
+    name: "Web Development",
+    logo: "https://via.placeholder.com/100x100?text=Web+Dev",
+  },
+  {
+    id: 2,
+    name: "Data Science",
+    logo: "https://via.placeholder.com/100x100?text=Data+Science",
+  },
+  {
+    id: 3,
+    name: "Graphic Design",
+    logo: "https://via.placeholder.com/100x100?text=Graphic+Design",
+  },
+  {
+    id: 4,
+    name: "Marketing",
+    logo: "https://via.placeholder.com/100x100?text=Marketing",
+  },
+];
+
+export const dummyFeedbacks: Feedbacks[] = [
+  {
+    id: 1,
+    name: "John Doe",
+    image: "https://via.placeholder.com/100x100?text=John+Doe",
+    company: "Tech Solutions Inc.",
+    feedback:
+      "This company exceeded my expectations with their innovative solutions and top-notch customer service.",
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    image: "https://via.placeholder.com/100x100?text=Jane+Smith",
+    company: "Creative Studios",
+    feedback:
+      "Their attention to detail and creative approach helped bring our project to life in ways we couldn’t have imagined.",
+  },
+  {
+    id: 3,
+    name: "Samuel Green",
+    image: "https://via.placeholder.com/100x100?text=Samuel+Green",
+    company: "Data Insights",
+    feedback:
+      "Working with them was an absolute pleasure, and their insights helped us improve our data strategy tremendously.",
+  },
+  {
+    id: 4,
+    name: "Lisa Brown",
+    image: "https://via.placeholder.com/100x100?text=Lisa+Brown",
+    company: "Marketing Pros",
+    feedback:
+      "Their team delivered exactly what we needed in terms of digital marketing, boosting our online presence significantly.",
+  },
+  {
+    id: 5,
+    name: "Michael Scott",
+    image: "https://via.placeholder.com/100x100?text=Michael+Scott",
+    company: "Dunder Mifflin",
+    feedback:
+      "Their paper is of the highest quality, and the customer service is second to none.",
+  },
+];

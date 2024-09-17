@@ -1,6 +1,6 @@
 import AdminPanelLayout from "@/components/dashboard/admin-panel/admin-panel-layout";
 import { ContentLayout } from "@/components/dashboard/admin-panel/content-layout";
-import ServicesContainer from "@/components/dashboard/services/ServicesContainer";
+import AddServiceContainer from "@/components/dashboard/services/add-service/AddServiceContainer";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,16 +10,12 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import Link from "next/link";
+import React from "react";
 
-export const metadata = {
-  title: "The Developer's Dashboard",
-  description: "Modern Thinking Developer With Impressive Ideas",
-};
-
-const ServicesPage = () => {
+const AddServicePage = () => {
   return (
     <AdminPanelLayout>
-      <ContentLayout title="Dashboard">
+      <ContentLayout title="Add Service">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -29,18 +25,26 @@ const ServicesPage = () => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Dashboard</BreadcrumbPage>
+              <BreadcrumbLink asChild>
+                <Link href="/dashboard">Dashboard</Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Services</BreadcrumbPage>
+              <BreadcrumbLink asChild>
+                <Link href="/dashboard/services">Services</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Add Service</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <ServicesContainer />
+        <AddServiceContainer />
       </ContentLayout>
     </AdminPanelLayout>
   );
 };
 
-export default ServicesPage;
+export default AddServicePage;

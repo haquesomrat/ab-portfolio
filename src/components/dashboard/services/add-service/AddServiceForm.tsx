@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { FileUpload } from "@/components/ui/file-upload";
 
-export function FeedbackForm() {
+export function AddServicesForm() {
   const [files, setFiles] = useState<File[]>([]);
   const handleFileUpload = (files: File[]) => {
     setFiles(files);
@@ -16,69 +16,52 @@ export function FeedbackForm() {
 
     const form = e.target as HTMLFormElement;
 
-    const clientName = (
-      form.elements.namedItem("clientName") as HTMLInputElement
+    const serviceName = (
+      form.elements.namedItem("serviceName") as HTMLInputElement
     ).value;
-    const clientCompanyName = (
-      form.elements.namedItem("clientCompanyName") as HTMLInputElement
-    ).value;
-    const clientFeedback = (
-      form.elements.namedItem("clientFeedback") as HTMLInputElement
+    const serviceDetails = (
+      form.elements.namedItem("serviceDetails") as HTMLInputElement
     ).value;
 
-    console.log(clientName, clientCompanyName, clientFeedback, files);
+    console.log(serviceName, serviceDetails, files);
   };
   return (
     <div className="w-full mx-auto rounded-none md:rounded-2xl shadow-input bg-white dark:bg-transparent">
       <form className="my-8" onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
-            <Label className="mb-2" htmlFor="client_name">
-              Client Name
-            </Label>
-            <Input
-              id="client_name"
-              name="clientName"
-              placeholder="Enter client name"
-              type="text"
-              required
-            />
-          </LabelInputContainer>
-        </div>
-        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
-          <LabelInputContainer>
-            <Label className="mb-2" htmlFor="client_company_name">
-              Client Company&apos; Name
-            </Label>
-            <Input
-              id="client_company_name"
-              name="clientCompanyName"
-              placeholder="Enter client's company name"
-              type="text"
-              required
-            />
-          </LabelInputContainer>
-        </div>
-        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
-          <LabelInputContainer>
-            <Label className="mb-2" htmlFor="client_feedback">
-              Client&apos; Feedback
-            </Label>
-            <Input
-              id="client_feedback"
-              name="clientFeedback"
-              placeholder="Enter client's feedback"
-              type="text"
-              required
-            />
-          </LabelInputContainer>
-        </div>
-        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
-          <LabelInputContainer>
             <Label className="mb-2" htmlFor="firstname">
-              Clilent&apos;s Photo
+              Service Icon
             </Label>
             <FileUpload onChange={handleFileUpload} />
+          </LabelInputContainer>
+        </div>
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <LabelInputContainer>
+            <Label className="mb-2" htmlFor="services_name">
+              Service Name
+            </Label>
+            <Input
+              id="services_name"
+              name="serviceName"
+              placeholder="Enter service name"
+              type="text"
+              required
+            />
+          </LabelInputContainer>
+        </div>
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <LabelInputContainer>
+            <Label className="mb-2" htmlFor="services_details">
+              Service Details
+            </Label>
+            <Input
+              id="services_details"
+              name="serviceDetails"
+              placeholder="Enter service details"
+              type="text"
+              required
+            />
           </LabelInputContainer>
         </div>
 

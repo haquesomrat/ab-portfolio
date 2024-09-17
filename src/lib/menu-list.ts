@@ -59,7 +59,7 @@ export function getMenuList(pathname: string): Group[] {
         {
           href: "",
           label: "Companies",
-          active: pathname.includes("/ab-companies"),
+          active: pathname === "/companies",
           icon: Building2,
           submenus: [
             {
@@ -77,7 +77,7 @@ export function getMenuList(pathname: string): Group[] {
         {
           href: "/dashboard/services",
           label: "Services",
-          active: pathname.includes("/services"),
+          active: pathname === "/services",
           icon: CloudCog,
           submenus: [
             {
@@ -87,7 +87,7 @@ export function getMenuList(pathname: string): Group[] {
             },
             {
               href: "/dashboard/services/add-service",
-              label: "Add New Services",
+              label: "Add Service",
               active: pathname === "/dashboard/services/add-service",
             },
           ],
@@ -95,37 +95,92 @@ export function getMenuList(pathname: string): Group[] {
         {
           href: "/dashboard/projects",
           label: "Projects",
-          active: pathname.includes("/projects"),
+          active: pathname === "/projects",
           icon: FolderCode,
-          submenus: [],
+          submenus: [
+            {
+              href: "/dashboard/projects",
+              label: "All Projects",
+              active: pathname === "/dashboard/projects",
+            },
+            {
+              href: "/dashboard/services/add-project",
+              label: "Add Project",
+              active: pathname === "/dashboard/projects/add-project",
+            },
+          ],
         },
         {
           href: "/dashboard/expertise",
           label: "My Expertise",
-          active: pathname.includes("/expertise"),
+          active: pathname === "/expertise",
           icon: SquareTerminal,
-          submenus: [],
+          submenus: [
+            {
+              href: "/dashboard/expertise",
+              label: "Expertises",
+              active: pathname === "/dashboard/expertise",
+            },
+            {
+              href: "/dashboard/services/add-expertise",
+              label: "Add Expertise",
+              active: pathname === "/dashboard/expertise/add-expertise",
+            },
+          ],
         },
         {
           href: "/dashboard/feedback",
           label: "Client Feedback",
-          active: pathname.includes("/feedback"),
+          active: pathname === "/feedback",
           icon: MessageCircleCode,
-          submenus: [],
+          submenus: [
+            {
+              href: "/dashboard/feedback",
+              label: "Feedback",
+              active: pathname === "/dashboard/feedback",
+            },
+            {
+              href: "/dashboard/services/add-feedback",
+              label: "Add Feedback",
+              active: pathname === "/dashboard/feedback/add-feedback",
+            },
+          ],
         },
         {
           href: "/dashboard/newsletter",
           label: "Newsletter",
-          active: pathname.includes("/newsletter"),
+          active: pathname === "/newsletter",
           icon: Handshake,
-          submenus: [],
+          submenus: [
+            {
+              href: "/dashboard/newsletter",
+              label: "Newsletter",
+              active: pathname === "/dashboard/newsletter",
+            },
+            {
+              href: "/dashboard/services/add-newsletter",
+              label: "Add Newsletter",
+              active: pathname === "/dashboard/newsletter/add-newsletter",
+            },
+          ],
         },
         {
           href: "/dashboard/footer",
           label: "Footer",
-          active: pathname.includes("/footer"),
+          active: pathname === "/footer",
           icon: Anchor,
-          submenus: [],
+          submenus: [
+            {
+              href: "/dashboard/footer",
+              label: "Footer",
+              active: pathname === "/dashboard/footer",
+            },
+            {
+              href: "/dashboard/services/add-footer",
+              label: "Add Footer",
+              active: pathname === "/dashboard/footer/add-footer",
+            },
+          ],
         },
       ],
     },
