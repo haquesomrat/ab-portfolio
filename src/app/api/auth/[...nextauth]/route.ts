@@ -33,8 +33,7 @@ interface Credentials {
 
 // Extend the global namespace for TypeScript to support global `mongoClient`
 declare global {
-  // eslint-disable-next-line no-var
-  var mongoClient: Db | null;
+  var mongoClient: Db | void;
 }
 
 export const connectToDatabase = async (): Promise<Db> => {

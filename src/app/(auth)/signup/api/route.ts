@@ -1,3 +1,4 @@
+import { connectToDatabase } from "@/app/api/auth/[...nextauth]/route";
 import { connectDB } from "@/lib/ConnectDB";
 import bcrypt from "bcrypt";
 import { NextResponse } from "next/server";
@@ -17,7 +18,7 @@ export const POST = async (request: Request) => {
 
     console.log(newUser);
     // Connect to the database
-    const db = await connectDB();
+    const db = await connectToDatabase();
     if (!db) {
       console.error("Database connection failed.");
       return NextResponse.json(
