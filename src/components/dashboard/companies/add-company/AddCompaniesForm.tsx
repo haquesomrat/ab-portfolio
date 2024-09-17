@@ -1,22 +1,26 @@
-"use client";
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { FileUpload } from "@/components/ui/file-upload";
+import { useDropzone, Accept } from "react-dropzone";
+import Image from "next/image";
+import { MessageCircleX } from "lucide-react";
 
 export function AddCompaniesForm() {
   const [files, setFiles] = useState<File[]>([]);
 
-  const handleFileUpload = (files: File[]) => {
-    setFiles(files);
-    console.log(files[0]);
+  const handleDrop = (acceptedFiles: File[]) => {
+    setFiles(acceptedFiles);
+  };
+
+  const handleDelete = () => {
+    setFiles([]); // Clear the files array
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const form = e.currentTarget; // Using currentTarget for form
+    const form = e.currentTarget;
 
     const companyName = (
       form.elements.namedItem("companyName") as HTMLInputElement
@@ -24,12 +28,10 @@ export function AddCompaniesForm() {
 
     const formData = new FormData();
     formData.append("companyName", companyName);
-    formData.append("companyImage", files[0]);
+    if (files.length > 0) {
+      formData.append("companyImage", files[0]);
+    }
 
-    // Append files to FormData
-    // files.forEach((file, index) => {
-    //   formData.append(`file${index}`, file);
-    // });
     console.log(formData);
 
     try {
@@ -47,6 +49,16 @@ export function AddCompaniesForm() {
       console.error("An error occurred:", error);
     }
   };
+
+  const dropzoneOptions = {
+    onDrop: handleDrop,
+    multiple: false, // Set to true if you want to allow multiple files
+    accept: {
+      "image/*": [], // Restrict file types to images
+    } as Accept,
+  };
+
+  const { getRootProps, getInputProps } = useDropzone(dropzoneOptions);
 
   return (
     <div className="w-full mx-auto rounded-none md:rounded-2xl shadow-input bg-white dark:bg-transparent">
@@ -70,7 +82,37 @@ export function AddCompaniesForm() {
             <Label className="mb-2" htmlFor="company_logo">
               Company Logo
             </Label>
-            <FileUpload onChange={handleFileUpload} />
+            <div className="border-2 border-dashed border-gray-400 pb-4 rounded-md ">
+              <div
+                {...getRootProps({ className: "dropzone" })}
+                className="p-4 pb-0 h-20 rounded-md flex justify-center items-center "
+              >
+                <input {...getInputProps()} />
+                <p className="text-center">
+                  Drag n drop an image here, or click to select one
+                </p>
+              </div>
+              <div>
+                {files.length > 0 && (
+                  <div className="mt-4 relative w-fit mx-auto">
+                    <Image
+                      height={200}
+                      width={500}
+                      src={URL.createObjectURL(files[0])}
+                      alt="Preview"
+                      className="w-32 h-16 object-contain aspect-video"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleDelete}
+                      className="mt-2 p-1 bg-black/50 hover:bg-black duration-300 text-xs rounded-md absolute -top-3 -right-3"
+                    >
+                      &#x274c;
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
           </LabelInputContainer>
         </div>
 

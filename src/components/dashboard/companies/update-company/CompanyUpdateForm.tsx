@@ -1,9 +1,9 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { Accept, useDropzone } from "react-dropzone";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { FileUpload } from "@/components/ui/file-upload";
 import Image from "next/image";
 import Loading from "@/components/global/Loading";
 
@@ -17,7 +17,6 @@ interface Company {
 
 export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
   const [files, setFiles] = useState<File[]>([]);
-
   const [singleCompany, setSingleCompany] = useState<Company | null>(null);
 
   // get single company data
@@ -30,17 +29,32 @@ export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
     getSingleCompany();
   }, [id]);
 
+  // handling file upload with Dropzone
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      setFiles([...files, ...acceptedFiles]);
+    },
+    [files]
+  );
+
+  // remove file
+  const removeFile = (file: File) => {
+    setFiles(files.filter((f) => f !== file));
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: {
+      "image/*": [], // Restrict file types to images
+    } as Accept,
+    multiple: false,
+  });
+
   // fallback loading
   if (!singleCompany) return <Loading />;
 
   // destructure single company data
   const { companyName, companyImg } = singleCompany;
-
-  // handling file upload
-  const handleFileUpload = (files: File[]) => {
-    setFiles(files);
-    console.log(files[0]);
-  };
 
   // handle submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -62,13 +76,10 @@ export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
 
     // update the company data
     try {
-      const res = await fetch(
-        `${process.env.NEXTAUTH_URL}/dashboard/companies/api/update-company/${id}`,
-        {
-          method: "PATCH",
-          body: formData,
-        }
-      );
+      const res = await fetch(`/dashboard/companies/api/update-company/${id}`, {
+        method: "PATCH",
+        body: formData,
+      });
 
       if (res.ok) {
         console.log("Upload successful:", await res.json());
@@ -98,21 +109,54 @@ export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
             />
           </LabelInputContainer>
         </div>
+
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
             <Label className="mb-2" htmlFor="company_logo">
               Company Logo
             </Label>
-            <div className="pb-2 flex gap-4 items-center">
-              <p className="text-sm">Previous Company Image preview</p>
-              <Image
-                src={companyImg}
-                alt={companyName}
-                height={16}
-                width={70}
-              />
+            <div className="border-2 border-dashed border-gray-400 p-4 pt-0 rounded-md">
+              <div
+                {...getRootProps({ className: "dropzone" })}
+                className="p-4 pb-0 h-20 rounded-md flex justify-center items-center "
+              >
+                <input {...getInputProps()} />
+                <p className="text-center">
+                  Drag n drop an image here, or click to select one
+                </p>
+              </div>
+              <div>
+                {files.length > 0 ? (
+                  <div className="mt-4 relative w-fit mx-auto">
+                    <Image
+                      height={200}
+                      width={500}
+                      src={URL.createObjectURL(files[0])}
+                      alt="Preview"
+                      className="w-32 h-16 object-contain aspect-video"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeFile(files[0])}
+                      className="mt-2 p-1 bg-black/50 hover:bg-black duration-300 text-xs rounded-md absolute -top-3 -right-3"
+                    >
+                      &#x274c;
+                    </button>
+                  </div>
+                ) : (
+                  <div className="mt-4 relative w-fit mx-auto">
+                    <Image
+                      height={200}
+                      width={500}
+                      src={companyImg}
+                      alt="Preview"
+                      className="w-32 h-16 object-contain aspect-video"
+                    />
+                    <p className="text-center">Previous Logo</p>
+                  </div>
+                )}
+              </div>
             </div>
-            <FileUpload onChange={handleFileUpload} />
           </LabelInputContainer>
         </div>
 

@@ -1,5 +1,5 @@
 import { projects } from "@/lib/data";
-import WorkCard from "./components/ProjectCard";
+import ProjectCard from "./components/ProjectCard";
 
 const Projects = () => {
   return (
@@ -14,7 +14,7 @@ const Projects = () => {
 
       <div className="space-y-10">
         {projects.map(({ title, description, src, color }, id) => (
-          <WorkCard
+          <ProjectCard
             key={id}
             title={title}
             description={description}
