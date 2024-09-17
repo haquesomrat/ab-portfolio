@@ -1,11 +1,11 @@
-import { connectToDatabase } from "@/app/api/auth/[...nextauth]/route";
+import { connectDB } from "@/lib/ConnectDB";
 import { NextResponse } from "next/server";
 
 // GET API :: get all company data from database
 export async function GET() {
   try {
     // connect to database
-    const db = await connectToDatabase();
+    const db = await connectDB();
 
     // get the company collection form database
     const companyCollection = await db

@@ -1,4 +1,4 @@
-import { connectToDatabase } from "@/app/api/auth/[...nextauth]/route";
+import { connectDB } from "@/lib/ConnectDB";
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
@@ -7,7 +7,7 @@ export const PATCH = async (
   req: Request,
   { params }: { params: { id: string } }
 ) => {
-  const db = await connectToDatabase();
+  const db = await connectDB();
   const updateDoc = await req.formData();
   const companyImage = updateDoc.get("companyImage") as File | null;
   const companyName = updateDoc.get("companyName") as String | null;
@@ -48,6 +48,9 @@ export const PATCH = async (
       companyImg: imageUrl || null,
     };
 
+    if (!db) {
+      throw new Error("Failed to connect to the database");
+    }
     // Update the company in the database
     const result = await db.collection("companies").updateOne(
       { _id: new ObjectId(params.id) },

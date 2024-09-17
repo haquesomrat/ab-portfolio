@@ -1,4 +1,4 @@
-import { connectToDatabase } from "@/app/api/auth/[...nextauth]/route";
+import { connectDB } from "@/lib/ConnectDB";
 import { NextResponse } from "next/server";
 
 // POST API: Handle file upload
@@ -33,7 +33,7 @@ export const POST = async (req: Request): Promise<NextResponse> => {
     const data = await response.json();
 
     // connect to database
-    const db = await connectToDatabase();
+    const db = await connectDB();
 
     if (data.success) {
       if (!db) {

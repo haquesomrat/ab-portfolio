@@ -1,13 +1,10 @@
-import NextAuth, {
-  DefaultSession,
-  DefaultUser,
-  NextAuthOptions,
-} from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
-import { connectDB } from "@/lib/ConnectDB"; // Import your existing connectDB
-import { DefaultJWT } from "next-auth/jwt";
 import { Db } from "mongodb";
+import { connectDB } from "@/lib/ConnectDB";
+import { DefaultJWT } from "next-auth/jwt";
+import { DefaultSession, DefaultUser } from "next-auth";
 
 // Extend the default User type
 interface ExtendedUser extends DefaultUser {
@@ -31,10 +28,16 @@ interface Credentials {
   password: string;
 }
 
-// Moved `connectToDatabase` to your ConnectDB file for reuse
-export const connectToDatabase = async (): Promise<Db> => {
+// Extend the global namespace for TypeScript to support global `mongoClient`
+declare global {
+  // eslint-disable-next-line no-var
+  var mongoClient: Db | void;
+}
+
+// Helper function to connect to the database
+const connectToDatabase = async (): Promise<Db> => {
   if (!globalThis.mongoClient) {
-    const db = await connectDB(); // Use your existing DB connection function
+    const db = await connectDB();
     if (!db) {
       throw new Error("Failed to connect to the database");
     }
@@ -43,6 +46,7 @@ export const connectToDatabase = async (): Promise<Db> => {
   return globalThis.mongoClient;
 };
 
+// NextAuth options
 const options: NextAuthOptions = {
   session: {
     strategy: "jwt",
@@ -60,7 +64,7 @@ const options: NextAuthOptions = {
         }
 
         try {
-          const db = await connectToDatabase(); // Use the function correctly here
+          const db = await connectToDatabase();
           const user = await db
             ?.collection("users")
             .findOne({ email: credentials.email });
@@ -120,6 +124,7 @@ const options: NextAuthOptions = {
   },
 };
 
+// Route handlers: Only export GET and POST handlers
 const handler = NextAuth(options);
 
 export { handler as GET, handler as POST };

@@ -1,4 +1,4 @@
-import { connectToDatabase } from "@/app/api/auth/[...nextauth]/route";
+import { connectDB } from "@/lib/ConnectDB";
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 
@@ -8,7 +8,10 @@ export const GET = async (
   { params }: { params: { id: string } }
 ) => {
   try {
-    const db = await connectToDatabase();
+    const db = await connectDB();
+    if (!db) {
+      throw new Error("Failed to connect to the database");
+    }
     const companyCollection = db.collection("companies");
 
     // Ensure the ID is valid before querying

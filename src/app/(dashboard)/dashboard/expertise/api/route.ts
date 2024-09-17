@@ -1,11 +1,11 @@
-import { connectToDatabase } from "@/app/api/auth/[...nextauth]/route";
+import { connectDB } from "@/lib/ConnectDB";
 import { NextResponse } from "next/server";
 
 // post single company data to database
 export async function POST(request: Request) {
   try {
     // connect to database
-    const db = await connectToDatabase();
+    const db = await connectDB();
     // Parse the request body
     const newCompany = await request.json();
 
