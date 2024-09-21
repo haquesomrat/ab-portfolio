@@ -8,11 +8,15 @@ export const PATCH = async (
   { params }: { params: { id: string } }
 ) => {
   const db = await connectDB();
+
+  if (!db) {
+    throw new Error("Failed to connect to the database");
+  }
   const updateDoc = await req.formData();
   const companyImage = updateDoc.get("companyImage") as File | null;
   const companyName = updateDoc.get("companyName") as String | null;
 
-  console.log(typeof companyImage);
+  // console.log(typeof companyImage);
 
   try {
     let imageUrl: string | null = null;
@@ -48,9 +52,6 @@ export const PATCH = async (
       companyImg: imageUrl || null,
     };
 
-    if (!db) {
-      throw new Error("Failed to connect to the database");
-    }
     // Update the company in the database
     const result = await db.collection("companies").updateOne(
       { _id: new ObjectId(params.id) },

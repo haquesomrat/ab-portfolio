@@ -1,4 +1,3 @@
-import React from "react";
 import { ServiceTable } from "./ServicesTable";
 
 const ServicesContainer = () => {

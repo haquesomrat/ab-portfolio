@@ -4,10 +4,10 @@ export interface ParamsType {
 }
 
 export interface Services {
-  id: number;
-  icon: React.ReactNode;
-  title: string;
-  description: string;
+  _id: string;
+  logo: string;
+  name: string;
+  details: string;
 }
 
 export interface Projects {

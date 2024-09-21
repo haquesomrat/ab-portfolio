@@ -37,54 +37,52 @@ import {
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { fakeServices } from "@/lib/data";
 import { Services } from "@/types/types";
 
 export function ServiceTable() {
-  // Explicitly define the state type as an array of Companies
-  const [services, setServices] = React.useState<Services[]>(fakeServices);
+  // Fetch all services on component mount
+  const [services, setServices] = React.useState<Services[]>([]);
 
-  console.log(services);
+  // get all services
+  React.useEffect(() => {
+    const getAllServices = async () => {
+      try {
+        const res = await fetch("/dashboard/services/api");
+        if (res.ok) {
+          const data: Services[] = await res.json();
+          setServices(data);
+        } else {
+          console.error("Failed to fetch services");
+        }
+      } catch (error) {
+        console.error("An error occurred while fetching services:", error);
+      }
+    };
+    getAllServices();
+  }, [setServices]);
 
-  // Fetch all companies on component mount
-  //   React.useEffect(() => {
-  //     const getAllServices = async () => {
-  //       try {
-  //         const res = await fetch(`/dashboard/companies/api`);
-  //         if (res.ok) {
-  //           const data: Services[] = await res.json(); // Explicitly define the type of fetched data
-  //           setServices(data);
-  //         } else {
-  //           console.error("Failed to fetch companies");
-  //         }
-  //       } catch (error) {
-  //         console.error("An error occurred while fetching companies:", error);
-  //       }
-  //     };
-  //     getAllServices();
-  //   }, []);
+  // console.log(services);
 
   // Handle company deletion
-  //   const handleDeleteService = async (id: String) => {
-  //     try {
-  //       const res = await fetch(
-  //         `${process.env.NEXTAUTH_URL}/dashboard/companies/api/delete-company/${id}`,
-  //         {
-  //           method: "DELETE",
-  //         }
-  //       );
-  //       if (res.ok) {
-  //         setServices((prevServices) =>
-  //           prevServices.filter((service) => service.id !== id)
-  //         );
-  //         console.log("Upload successful:", await res.json());
-  //       } else {
-  //         console.error("Upload failed:", await res.json());
-  //       }
-  //     } catch (error) {
-  //       console.error("An error occurred:", error);
-  //     }
-  //   };
+  const handleDeleteService = async (id: String) => {
+    console.log(id);
+
+    try {
+      const res = await fetch(`/dashboard/services/api/delete-service/${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setServices((prevServices) =>
+          prevServices.filter((service) => service._id !== id)
+        );
+        console.log("Upload successful:", await res.json());
+      } else {
+        console.error("Upload failed:", await res.json());
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
 
   const data: Services[] = services;
 
@@ -112,7 +110,7 @@ export function ServiceTable() {
       enableHiding: false,
     },
     {
-      accessorKey: "title",
+      accessorKey: "name",
       header: ({ column }) => {
         return (
           <Button
@@ -125,24 +123,40 @@ export function ServiceTable() {
         );
       },
       cell: ({ row }) => (
-        <div className="lowercase">{row.getValue("title")}</div>
+        <div className="lowercase">{row.getValue("name")}</div>
       ),
     },
     {
-      accessorKey: "icon",
+      accessorKey: "logo",
       header: "Service Icon",
-      cell: ({ row }) => <div>{row.getValue("icon")}</div>,
+      cell: ({ row }: { row: { getValue: (key: string) => string } }) => {
+        const logo: string = row.getValue("logo");
+        return (
+          <div>
+            {logo.startsWith("<svg") ? (
+              <div dangerouslySetInnerHTML={{ __html: logo }} />
+            ) : (
+              <Image
+                height={200}
+                width={200}
+                src={logo}
+                alt="Service Icon"
+                className="w-24 h-24"
+              />
+            )}
+          </div>
+        );
+      },
     },
     {
-      accessorKey: "description",
+      accessorKey: "details",
       header: "Service Description",
       cell: ({ row }) => (
         <div>
-          <p className="line-clamp-2">{row.getValue("description")}</p>
+          <p className="line-clamp-2">{row.getValue("details")}</p>
         </div>
       ),
     },
-
     {
       id: "actions",
       header: "Action",
@@ -158,14 +172,14 @@ export function ServiceTable() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <Link
-                href={`/dashboard/companies/${row?.original?.id}/update-company`}
+                href={`/dashboard/services/${row?.original?._id}/update-service`}
               >
                 <DropdownMenuItem className="cursor-pointer">
                   Edit
                 </DropdownMenuItem>
               </Link>
               <DropdownMenuItem
-                // onClick={() => handleDeleteService(row?.original?.id)}
+                onClick={() => handleDeleteService(row?.original?._id)}
                 className="cursor-pointer"
               >
                 Delete
@@ -209,11 +223,9 @@ export function ServiceTable() {
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter company names..."
-          value={
-            (table.getColumn("companyName")?.getFilterValue() as string) ?? ""
-          }
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("companyName")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

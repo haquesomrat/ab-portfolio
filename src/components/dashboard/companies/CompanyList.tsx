@@ -70,12 +70,9 @@ export function CompanyList() {
   const handleDeleteCompany = async (id: String) => {
     // delete the company data
     try {
-      const res = await fetch(
-        `${process.env.NEXTAUTH_URL}/dashboard/companies/api/delete-company/${id}`,
-        {
-          method: "DELETE",
-        }
-      );
+      const res = await fetch(`/dashboard/companies/api/delete-company/${id}`, {
+        method: "DELETE",
+      });
       if (res.ok) {
         setCompanies((prevCompanies) =>
           prevCompanies.filter((company) => company._id !== id)

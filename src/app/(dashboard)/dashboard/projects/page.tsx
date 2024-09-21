@@ -20,7 +20,7 @@ export const metadata = {
 const ProjectsPage = () => {
   return (
     <AdminPanelLayout>
-      <ContentLayout title="Dashboard">
+      <ContentLayout title="Projects">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -38,7 +38,6 @@ const ProjectsPage = () => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        {/* <PlaceholderContent /> */}
         <ProjectsContainer />
       </ContentLayout>
     </AdminPanelLayout>

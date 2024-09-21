@@ -4,7 +4,6 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useDropzone, Accept } from "react-dropzone";
 import Image from "next/image";
-import { MessageCircleX } from "lucide-react";
 
 export function AddCompaniesForm() {
   const [files, setFiles] = useState<File[]>([]);
@@ -14,7 +13,7 @@ export function AddCompaniesForm() {
   };
 
   const handleDelete = () => {
-    setFiles([]); // Clear the files array
+    setFiles([]);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -32,7 +31,7 @@ export function AddCompaniesForm() {
       formData.append("companyImage", files[0]);
     }
 
-    console.log(formData);
+    // console.log(formData, companyName, files);
 
     try {
       const res = await fetch(`/dashboard/companies/api/add-company`, {
@@ -52,9 +51,9 @@ export function AddCompaniesForm() {
 
   const dropzoneOptions = {
     onDrop: handleDrop,
-    multiple: false, // Set to true if you want to allow multiple files
+    multiple: false,
     accept: {
-      "image/*": [], // Restrict file types to images
+      "image/*": [],
     } as Accept,
   };
 
@@ -82,10 +81,10 @@ export function AddCompaniesForm() {
             <Label className="mb-2" htmlFor="company_logo">
               Company Logo
             </Label>
-            <div className="border-2 border-dashed border-gray-400 pb-4 rounded-md ">
+            <div className=" rounded-md ">
               <div
                 {...getRootProps({ className: "dropzone" })}
-                className="p-4 pb-0 h-20 rounded-md flex justify-center items-center "
+                className="border-2 border-dashed border-gray-400 h-20 rounded-md flex justify-center items-center "
               >
                 <input {...getInputProps()} />
                 <p className="text-center">
@@ -94,13 +93,13 @@ export function AddCompaniesForm() {
               </div>
               <div>
                 {files.length > 0 && (
-                  <div className="mt-4 relative w-fit mx-auto">
+                  <div className="mt-4 relative w-fit">
                     <Image
-                      height={200}
-                      width={500}
+                      height={300}
+                      width={600}
                       src={URL.createObjectURL(files[0])}
                       alt="Preview"
-                      className="w-32 h-16 object-contain aspect-video"
+                      className="w-32 h-20 object-contain aspect-video rounded-md"
                     />
                     <button
                       type="button"

@@ -19,7 +19,7 @@ export const metadata = {
 const ServicesPage = () => {
   return (
     <AdminPanelLayout>
-      <ContentLayout title="Dashboard">
+      <ContentLayout title="Services">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -28,9 +28,9 @@ const ServicesPage = () => {
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Dashboard</BreadcrumbPage>
-            </BreadcrumbItem>
+            <BreadcrumbLink asChild>
+              <Link href="/">Dashboard</Link>
+            </BreadcrumbLink>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbPage>Services</BreadcrumbPage>

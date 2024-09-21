@@ -69,7 +69,7 @@ export function getMenuList(pathname: string): Group[] {
             },
             {
               href: "/dashboard/companies/add-company",
-              label: "Add New Company",
+              label: "Add Company",
               active: pathname === "/dashboard/companies/add-company",
             },
           ],
@@ -104,7 +104,7 @@ export function getMenuList(pathname: string): Group[] {
               active: pathname === "/dashboard/projects",
             },
             {
-              href: "/dashboard/services/add-project",
+              href: "/dashboard/projects/add-project",
               label: "Add Project",
               active: pathname === "/dashboard/projects/add-project",
             },
@@ -122,7 +122,7 @@ export function getMenuList(pathname: string): Group[] {
               active: pathname === "/dashboard/expertise",
             },
             {
-              href: "/dashboard/services/add-expertise",
+              href: "/dashboard/expertise/add-expertise",
               label: "Add Expertise",
               active: pathname === "/dashboard/expertise/add-expertise",
             },
@@ -140,7 +140,7 @@ export function getMenuList(pathname: string): Group[] {
               active: pathname === "/dashboard/feedback",
             },
             {
-              href: "/dashboard/services/add-feedback",
+              href: "/dashboard/feedback/add-feedback",
               label: "Add Feedback",
               active: pathname === "/dashboard/feedback/add-feedback",
             },

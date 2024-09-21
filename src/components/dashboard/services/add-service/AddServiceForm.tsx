@@ -3,37 +3,70 @@ import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { FileUpload } from "@/components/ui/file-upload";
+import { useDropzone } from "react-dropzone";
+import Image from "next/image";
+import LabelInputContainer from "@/components/global/LabelInputContainer";
+import BottomGradient from "@/components/global/BottomGardient";
 
 export function AddServicesForm() {
-  const [files, setFiles] = useState<File[]>([]);
-  const handleFileUpload = (files: File[]) => {
-    setFiles(files);
-    console.log(files);
+  const [file, setFile] = useState<File[]>([]);
+
+  const handleFileUpload = (acceptedFiles: File[]) => {
+    setFile(acceptedFiles);
   };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+  const removeFile = () => {
+    setFile([]);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const form = e.target as HTMLFormElement;
 
-    const serviceName = (
-      form.elements.namedItem("serviceName") as HTMLInputElement
-    ).value;
-    const serviceDetails = (
+    const name = (form.elements.namedItem("serviceName") as HTMLInputElement)
+      .value;
+    const details = (
       form.elements.namedItem("serviceDetails") as HTMLInputElement
     ).value;
 
-    console.log(serviceName, serviceDetails, files);
+    const formData = new FormData();
+
+    formData.append("name", name);
+    formData.append("details", details);
+    if (file.length > 0) {
+      formData.append("logo", file[0]);
+    }
+
+    try {
+      const res = await fetch("/dashboard/services/api/add-service", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.ok) {
+        console.log("Upload successful:", await res.json());
+      } else {
+        console.error("Upload failed:", await res.json());
+      }
+    } catch (error) {
+      console.error("An error occured", error);
+    }
   };
+
   return (
     <div className="w-full mx-auto rounded-none md:rounded-2xl shadow-input bg-white dark:bg-transparent">
       <form className="my-8" onSubmit={handleSubmit}>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
-            <Label className="mb-2" htmlFor="firstname">
+            <Label className="mb-2" htmlFor="serviceIcon">
               Service Icon
             </Label>
-            <FileUpload onChange={handleFileUpload} />
+            <DropzoneComponent
+              file={file[0]}
+              onDrop={handleFileUpload}
+              onRemove={removeFile}
+            />
           </LabelInputContainer>
         </div>
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
@@ -77,25 +110,56 @@ export function AddServicesForm() {
   );
 }
 
-const BottomGradient = () => {
-  return (
-    <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-    </>
-  );
-};
-
-const LabelInputContainer = ({
-  children,
-  className,
+const DropzoneComponent = ({
+  file,
+  onDrop,
+  onRemove,
 }: {
-  children: React.ReactNode;
-  className?: string;
+  file: File | null;
+  onDrop: (acceptedFiles: File[]) => void;
+  onRemove: () => void;
 }) => {
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop: (acceptedFiles) => {
+      onDrop(acceptedFiles.slice(0, 1));
+    },
+    accept: {
+      "image/*": [],
+      "image/svg+xml": [],
+    },
+    multiple: false,
+  });
+
   return (
-    <div className={cn("flex flex-col space-y-2 w-full", className)}>
-      {children}
+    <div className="space-y-4">
+      <div
+        {...getRootProps({
+          className:
+            "border border-dashed border-gray-400 p-4 rounded-md cursor-pointer focus:outline-none",
+        })}
+      >
+        <input {...getInputProps()} />
+        <p>Drag & drop or click to upload an image (JPEG, PNG, SVG, etc.)</p>
+      </div>
+
+      {file && (
+        <div className="relative inline-flex group">
+          <Image
+            width={300}
+            height={300}
+            src={URL.createObjectURL(file)}
+            alt={file.name}
+            className="w-24 h-24 object-cover rounded-md"
+          />
+          <button
+            type="button"
+            onClick={onRemove}
+            className="mt-2 p-1 bg-black/50 hover:bg-black duration-300 text-xs rounded-md absolute -top-3 -right-3"
+          >
+            &#x274c;
+          </button>
+        </div>
+      )}
     </div>
   );
 };

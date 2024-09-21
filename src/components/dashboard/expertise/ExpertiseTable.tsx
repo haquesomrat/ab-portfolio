@@ -156,7 +156,7 @@ export function ExpertiseTable() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <Link
-                href={`/dashboard/projects/${row?.original?.id}/update-project`}
+                href={`/dashboard/expertise/${row?.original?.id}/update-expertise`}
               >
                 <DropdownMenuItem className="cursor-pointer">
                   Edit

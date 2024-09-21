@@ -164,7 +164,7 @@ export function FeedbackTable() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <Link
-                href={`/dashboard/projects/${row?.original?.id}/update-project`}
+                href={`/dashboard/feedback/${row?.original?.id}/update-feedback`}
               >
                 <DropdownMenuItem className="cursor-pointer">
                   Edit

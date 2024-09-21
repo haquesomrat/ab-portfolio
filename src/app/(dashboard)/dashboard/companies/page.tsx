@@ -33,17 +33,10 @@ const CompaniesPage = () => {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link href="/dashboard/companies">Companies</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>All Companies</BreadcrumbPage>
+              <BreadcrumbPage>Companies</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        {/* <PlaceholderContent /> */}
         <CompanyListContainer />
       </ContentLayout>
     </AdminPanelLayout>

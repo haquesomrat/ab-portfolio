@@ -30,12 +30,9 @@ export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
   }, [id]);
 
   // handling file upload with Dropzone
-  const onDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      setFiles([...files, ...acceptedFiles]);
-    },
-    [files]
-  );
+  const onDrop = useCallback((acceptedFiles: File[]) => {
+    setFiles([...acceptedFiles]);
+  }, []);
 
   // remove file
   const removeFile = (file: File) => {
@@ -115,10 +112,10 @@ export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
             <Label className="mb-2" htmlFor="company_logo">
               Company Logo
             </Label>
-            <div className="border-2 border-dashed border-gray-400 p-4 pt-0 rounded-md">
+            <div className="rounded-md">
               <div
                 {...getRootProps({ className: "dropzone" })}
-                className="p-4 pb-0 h-20 rounded-md flex justify-center items-center "
+                className="border-2 border-dashed border-gray-400 p-4 h-20 rounded-md flex justify-center items-center "
               >
                 <input {...getInputProps()} />
                 <p className="text-center">
@@ -127,7 +124,7 @@ export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
               </div>
               <div>
                 {files.length > 0 ? (
-                  <div className="mt-4 relative w-fit mx-auto">
+                  <div className="mt-4 relative w-fit">
                     <Image
                       height={200}
                       width={500}
@@ -144,7 +141,7 @@ export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
                     </button>
                   </div>
                 ) : (
-                  <div className="mt-4 relative w-fit mx-auto">
+                  <div className="mt-4 relative w-fit">
                     <Image
                       height={200}
                       width={500}
@@ -152,7 +149,6 @@ export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
                       alt="Preview"
                       className="w-32 h-16 object-contain aspect-video"
                     />
-                    <p className="text-center">Previous Logo</p>
                   </div>
                 )}
               </div>

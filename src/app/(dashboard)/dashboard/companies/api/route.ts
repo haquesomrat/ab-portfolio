@@ -7,12 +7,6 @@ export async function GET() {
     // connect to database
     const db = await connectDB();
 
-    // get the company collection form database
-    const companyCollection = await db
-      ?.collection("companies")
-      .find()
-      .toArray();
-
     // Ensure that the database connection exists
     if (!db) {
       return NextResponse.json(
@@ -20,6 +14,13 @@ export async function GET() {
         { status: 500 }
       );
     }
+
+    // get the company collection form database
+    const companyCollection = await db
+      ?.collection("companies")
+      .find()
+      .toArray();
+
     return NextResponse.json(companyCollection);
   } catch (error) {
     console.error("Error getting all company:", error);
