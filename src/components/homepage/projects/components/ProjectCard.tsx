@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import React from "react";
 
@@ -42,7 +43,8 @@ const ProjectCard = ({
         </a>
       </div>
       <div
-        className={`flex-1 bg-[${color}] px-5 md:w-2/3 h-auto flex items-center justify-center overflow-hidden rounded-3xl`}
+        style={{ backgroundColor: color }}
+        className={`flex-1 px-5 md:w-2/3 h-auto flex items-center justify-center overflow-hidden rounded-3xl`}
       >
         <Image
           className="-mb-6 pt-8 md:pt-14"

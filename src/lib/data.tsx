@@ -71,8 +71,8 @@ export const feedbacks = [
 
 export const fakeServices: Services[] = [
   {
-    id: 1,
-    icon: (
+    id: "1",
+    logo: (
       <svg
         width="48"
         height="48"
@@ -90,13 +90,13 @@ export const fakeServices: Services[] = [
         />
       </svg>
     ),
-    title: "Custom Website Development",
-    description:
+    name: "Custom Website Development",
+    details:
       "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel tincidunt nec egestas. Elit semper non curabitur eu ornare malesuada enim orci.",
   },
   {
-    id: 2,
-    icon: (
+    id: "2",
+    logo: (
       <svg
         width="48"
         height="48"
@@ -138,13 +138,13 @@ export const fakeServices: Services[] = [
         />
       </svg>
     ),
-    title: "Web Application Development",
-    description:
+    name: "Web Application Development",
+    details:
       "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel tincidunt nec egestas. Elit semper non curabitur eu ornare malesuada enim orci.",
   },
   {
-    id: 3,
-    icon: (
+    id: "3",
+    logo: (
       <svg
         width="48"
         height="48"
@@ -174,13 +174,13 @@ export const fakeServices: Services[] = [
         />
       </svg>
     ),
-    title: "Full stack Development",
-    description:
+    name: "Full stack Development",
+    details:
       "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel tincidunt nec egestas. Elit semper non curabitur eu ornare malesuada enim orci.",
   },
   {
-    id: 4,
-    icon: (
+    id: "4",
+    logo: (
       <svg
         width="48"
         height="48"
@@ -198,13 +198,13 @@ export const fakeServices: Services[] = [
         />
       </svg>
     ),
-    title: "Custom Website Development",
-    description:
+    name: "Custom Website Development",
+    details:
       "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel tincidunt nec egestas. Elit semper non curabitur eu ornare malesuada enim orci.",
   },
   {
-    id: 5,
-    icon: (
+    id: "5",
+    logo: (
       <svg
         width="48"
         height="48"
@@ -246,13 +246,13 @@ export const fakeServices: Services[] = [
         />
       </svg>
     ),
-    title: "Web Application Development",
-    description:
+    name: "Web Application Development",
+    details:
       "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel tincidunt nec egestas. Elit semper non curabitur eu ornare malesuada enim orci.",
   },
   {
-    id: 6,
-    icon: (
+    id: "6",
+    logo: (
       <svg
         width="48"
         height="48"
@@ -282,13 +282,13 @@ export const fakeServices: Services[] = [
         />
       </svg>
     ),
-    title: "Full stack Development",
-    description:
+    name: "Full stack Development",
+    details:
       "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel tincidunt nec egestas. Elit semper non curabitur eu ornare malesuada enim orci.",
   },
   {
-    id: 7,
-    icon: (
+    id: "7",
+    logo: (
       <svg
         width="48"
         height="48"
@@ -306,13 +306,13 @@ export const fakeServices: Services[] = [
         />
       </svg>
     ),
-    title: "Custom Website Development",
-    description:
+    name: "Custom Website Development",
+    details:
       "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel tincidunt nec egestas. Elit semper non curabitur eu ornare malesuada enim orci.",
   },
   {
-    id: 8,
-    icon: (
+    id: "8",
+    logo: (
       <svg
         width="48"
         height="48"
@@ -354,13 +354,13 @@ export const fakeServices: Services[] = [
         />
       </svg>
     ),
-    title: "Web Application Development",
-    description:
+    name: "Web Application Development",
+    details:
       "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel tincidunt nec egestas. Elit semper non curabitur eu ornare malesuada enim orci.",
   },
   {
-    id: 9,
-    icon: (
+    id: "9",
+    logo: (
       <svg
         width="48"
         height="48"
@@ -390,8 +390,8 @@ export const fakeServices: Services[] = [
         />
       </svg>
     ),
-    title: "Full stack Development",
-    description:
+    name: "Full stack Development",
+    details:
       "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel tincidunt nec egestas. Elit semper non curabitur eu ornare malesuada enim orci.",
   },
 ];
@@ -775,21 +775,24 @@ export const dummyProjects: Projects[] = [
     title: "Project Title 1",
     description: "This is a description for project 1.",
     live_link: "https://example.com/project1",
-    preview_image: "https://via.placeholder.com/400x300", // Placeholder image URL
+    preview_image: "https://via.placeholder.com/400x300",
+    color: "#FF5733",
   },
   {
     id: 2,
     title: "Project Title 2",
     description: "This is a description for project 2.",
     live_link: "https://example.com/project2",
-    preview_image: "https://via.placeholder.com/400x300", // Placeholder image URL
+    preview_image: "https://via.placeholder.com/400x300",
+    color: "#33FF57",
   },
   {
     id: 3,
     title: "Project Title 3",
     description: "This is a description for project 3.",
     live_link: "https://example.com/project3",
-    preview_image: "https://via.placeholder.com/400x300", // Placeholder image URL
+    preview_image: "https://via.placeholder.com/400x300",
+    color: "#3357FF",
   },
 ];
 

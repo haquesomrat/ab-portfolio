@@ -1,13 +1,16 @@
 "use client";
 import React, { useState } from "react";
-import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useDropzone, Accept } from "react-dropzone";
 import Image from "next/image";
+import { Textarea } from "@/components/ui/textarea";
+import LabelInputContainer from "@/components/global/LabelInputContainer";
+import BottomGradient from "@/components/global/BottomGardient";
 
 export function AddProjectForm() {
   const [files, setFiles] = useState<File[]>([]);
+  const [selectedColor, setSelectedColor] = useState("#8da4de");
 
   const handleDrop = (acceptedFiles: File[]) => {
     setFiles(acceptedFiles);
@@ -22,20 +25,26 @@ export function AddProjectForm() {
 
     const form = e.currentTarget;
 
-    const companyName = (
-      form.elements.namedItem("companyName") as HTMLInputElement
+    const title = (form.elements.namedItem("title") as HTMLInputElement).value;
+    const description = (
+      form.elements.namedItem("description") as HTMLInputElement
     ).value;
+    const link = (form.elements.namedItem("live_link") as HTMLInputElement)
+      .value;
 
     const formData = new FormData();
-    formData.append("companyName", companyName);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("live_link", link);
+    formData.append("color", selectedColor);
     if (files.length > 0) {
-      formData.append("companyImage", files[0]);
+      formData.append("preview_image", files[0]);
     }
 
-    console.log(formData);
+    console.log({ title, description, link, files, selectedColor });
 
     try {
-      const res = await fetch(`/dashboard/companies/api/add-company`, {
+      const res = await fetch(`/dashboard/projects/api/add-project`, {
         method: "POST",
         body: formData,
       });
@@ -63,24 +72,74 @@ export function AddProjectForm() {
   return (
     <div className="w-full mx-auto rounded-none md:rounded-2xl shadow-input bg-white dark:bg-transparent">
       <form className="my-8" onSubmit={handleSubmit}>
+        {/* Project Title */}
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
-            <Label className="mb-2" htmlFor="company_name">
-              Company Name
+            <Label className="mb-2" htmlFor="title">
+              Project Title
             </Label>
             <Input
-              id="company_name"
-              name="companyName"
-              placeholder="Enter Company Name"
+              id="title"
+              name="title"
+              placeholder="Enter Project Title"
               type="text"
               required
             />
           </LabelInputContainer>
         </div>
+        {/* Project Description */}
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <LabelInputContainer>
+            <Label className="mb-2" htmlFor="description">
+              Project Description
+            </Label>
+            <Textarea
+              className="h-28"
+              id="description"
+              name="description"
+              placeholder="Enter Project Description"
+              // type="text"
+              required
+            />
+          </LabelInputContainer>
+        </div>
+        {/* Project Live Link */}
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <LabelInputContainer>
+            <Label className="mb-2" htmlFor="live_link">
+              Project Live Link
+            </Label>
+            <Input
+              id="live_link"
+              name="live_link"
+              placeholder="Enter Project Live Link"
+              type="text"
+              required
+            />
+          </LabelInputContainer>
+        </div>
+        {/* Project Background */}
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <LabelInputContainer>
+            <Label className="mb-2" htmlFor="project_color">
+              Project Background Color
+            </Label>
+            <input
+              type="color"
+              id="project_color"
+              name="project_color"
+              value={selectedColor}
+              onChange={(e) => setSelectedColor(e.target.value)}
+              className="rounded-md h-20 w-20"
+            />
+            <p>{selectedColor}</p>
+          </LabelInputContainer>
+        </div>
+        {/* Project Image  */}
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
             <Label className="mb-2" htmlFor="company_logo">
-              Company Logo
+              Project Image
             </Label>
             <div className=" rounded-md ">
               <div
@@ -96,11 +155,11 @@ export function AddProjectForm() {
                 {files.length > 0 && (
                   <div className="mt-4 relative w-fit">
                     <Image
-                      height={300}
-                      width={600}
+                      height={400}
+                      width={400}
                       src={URL.createObjectURL(files[0])}
                       alt="Preview"
-                      className="w-32 h-20 object-contain aspect-video rounded-md"
+                      className="w-40 h-24 object-cover aspect-video rounded-md"
                     />
                     <button
                       type="button"
@@ -127,26 +186,3 @@ export function AddProjectForm() {
     </div>
   );
 }
-
-const BottomGradient = () => {
-  return (
-    <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-    </>
-  );
-};
-
-const LabelInputContainer = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return (
-    <div className={cn("flex flex-col space-y-2 w-full", className)}>
-      {children}
-    </div>
-  );
-};

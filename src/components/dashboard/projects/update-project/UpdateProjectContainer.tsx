@@ -2,7 +2,11 @@
 import React, { useEffect, useState } from "react";
 import { UpdateProjectForm } from "./UpdateProjectForm";
 
-const UpdateProjectsContainer = () => {
+interface CompanyUpdateFormProps {
+  id: string;
+}
+
+const UpdateProjectsContainer = ({ id }: CompanyUpdateFormProps) => {
   //   const [companies, setCompanies] = useState([]);
   //   useEffect(() => {
   //     const getAllCompanies = async () => {
@@ -18,7 +22,7 @@ const UpdateProjectsContainer = () => {
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Update Project</h2>
       </div>
-      <UpdateProjectForm />
+      <UpdateProjectForm id={id} />
     </div>
   );
 };

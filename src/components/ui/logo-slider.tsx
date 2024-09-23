@@ -42,7 +42,7 @@ const LogoSlider: React.FC = () => {
   }, []);
 
   const companies = getAllCompanies();
-  console.log(companies);
+  // console.log(companies);
 
   return (
     <div>

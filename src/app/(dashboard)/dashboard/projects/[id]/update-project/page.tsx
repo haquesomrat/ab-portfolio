@@ -1,8 +1,5 @@
 import AdminPanelLayout from "@/components/dashboard/admin-panel/admin-panel-layout";
 import { ContentLayout } from "@/components/dashboard/admin-panel/content-layout";
-import CompaniesContainer from "@/components/dashboard/companies/add-company/CompaniesContainer";
-import AddProjectsContainer from "@/components/dashboard/projects/add-project/AddProjectContainer";
-import ProjectsContainer from "@/components/dashboard/projects/ProjectsContainer";
 import UpdateProjectsContainer from "@/components/dashboard/projects/update-project/UpdateProjectContainer";
 import {
   Breadcrumb,
@@ -15,7 +12,13 @@ import {
 import Link from "next/link";
 import React from "react";
 
-const UpdateProjectPage = () => {
+interface UpdateProjectPageProps {
+  params: {
+    id: string;
+  };
+}
+
+const UpdateProjectPage = ({ params }: UpdateProjectPageProps) => {
   return (
     <AdminPanelLayout>
       <ContentLayout title="Update Project">
@@ -44,7 +47,7 @@ const UpdateProjectPage = () => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <UpdateProjectsContainer />
+        <UpdateProjectsContainer id={params?.id} />
       </ContentLayout>
     </AdminPanelLayout>
   );

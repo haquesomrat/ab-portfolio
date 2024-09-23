@@ -24,7 +24,6 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/lib/data.tsx",
-    "./node_modules/@nextui-org/theme/dist/components/navbar.js",
   ],
   theme: {
     extend: {

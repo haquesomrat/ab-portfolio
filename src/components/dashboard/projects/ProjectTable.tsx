@@ -43,46 +43,44 @@ import { Projects } from "@/types/types";
 export function ProjectTable() {
   // Explicitly define the state type as an array of Companies
   const [projects, setProjects] = React.useState<Projects[]>(dummyProjects);
+  console.log(projects);
 
   // Fetch all companies on component mount
-  // React.useEffect(() => {
-  //   const getAllCompanies = async () => {
-  //     try {
-  //       const res = await fetch(`/dashboard/companies/api`);
-  //       if (res.ok) {
-  //         const data: Projects[] = await res.json(); // Explicitly define the type of fetched data
-  //         setCompanies(data);
-  //       } else {
-  //         console.error("Failed to fetch companies");
-  //       }
-  //     } catch (error) {
-  //       console.error("An error occurred while fetching companies:", error);
-  //     }
-  //   };
-  //   getAllCompanies();
-  // }, []);
+  React.useEffect(() => {
+    const getAllProjects = async () => {
+      try {
+        const res = await fetch(`/dashboard/projects/api`);
+        if (res.ok) {
+          const data: Projects[] = await res.json();
+          setProjects(data);
+        } else {
+          console.error("Failed to fetch projects");
+        }
+      } catch (error) {
+        console.error("An error occurred while fetching projects:", error);
+      }
+    };
+    getAllProjects();
+  }, []);
 
-  // Handle company deletion
-  // const handleDeleteCompany = async (id: String) => {
-  //   try {
-  //     const res = await fetch(
-  //       `${process.env.NEXTAUTH_URL}/dashboard/companies/api/delete-company/${id}`,
-  //       {
-  //         method: "DELETE",
-  //       }
-  //     );
-  //     if (res.ok) {
-  //       setCompanies((prevCompanies) =>
-  //         prevCompanies.filter((company) => company._id !== id)
-  //       );
-  //       console.log("Upload successful:", await res.json());
-  //     } else {
-  //       console.error("Upload failed:", await res.json());
-  //     }
-  //   } catch (error) {
-  //     console.error("An error occurred:", error);
-  //   }
-  // };
+  // Handle project deletion
+  const handleDeleteProject = async (id: String) => {
+    try {
+      const res = await fetch(`/dashboard/projects/api/delete-project/${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setProjects((prevProject) =>
+          prevProject.filter((project) => project._id !== id)
+        );
+        console.log("Upload successful:", await res.json());
+      } else {
+        console.error("Upload failed:", await res.json());
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
 
   const data: Projects[] = projects;
 
@@ -150,6 +148,18 @@ export function ProjectTable() {
       ),
     },
     {
+      accessorKey: "color",
+      header: "Background",
+      cell: ({ row }) => (
+        <div
+          className="p-2 rounded text-center font-semibold"
+          style={{ backgroundColor: row.getValue("color") }}
+        >
+          <Link href={row.getValue("color")}>{row.getValue("color")}</Link>
+        </div>
+      ),
+    },
+    {
       accessorKey: "live_link",
       header: "Live link",
       cell: ({ row }) => (
@@ -175,14 +185,14 @@ export function ProjectTable() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <Link
-                href={`/dashboard/projects/${row?.original?.id}/update-project`}
+                href={`/dashboard/projects/${row?.original?._id}/update-project`}
               >
                 <DropdownMenuItem className="cursor-pointer">
                   Edit
                 </DropdownMenuItem>
               </Link>
               <DropdownMenuItem
-                // onClick={() => handleDeleteCompany(row?.original?._id)}
+                onClick={() => handleDeleteProject(row?.original?._id)}
                 className="cursor-pointer"
               >
                 Delete

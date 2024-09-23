@@ -4,18 +4,19 @@ export interface ParamsType {
 }
 
 export interface Services {
-  _id: string;
+  _id: string | JSX.Element;
   logo: string;
   name: string;
   details: string;
 }
 
 export interface Projects {
-  id: number;
+  _id: string;
   title: string;
   description: string;
   live_link: string;
   preview_image: string;
+  color: string;
 }
 
 export interface Expertises {
