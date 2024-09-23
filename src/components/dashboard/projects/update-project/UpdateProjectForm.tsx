@@ -1,6 +1,5 @@
 "use client";
 import React, { useCallback, useEffect, useState } from "react"; // Correctly import useCallback from React
-import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useDropzone, Accept } from "react-dropzone"; // Ensure this is correctly imported

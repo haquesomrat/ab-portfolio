@@ -45,46 +45,45 @@ export function FeedbackTable() {
   const [feedbacks, setFeedbacks] = React.useState<Feedbacks[]>(dummyFeedbacks);
 
   // Fetch all companies on component mount
-  // React.useEffect(() => {
-  //   const getAllCompanies = async () => {
-  //     try {
-  //       const res = await fetch(`/dashboard/companies/api`);
-  //       if (res.ok) {
-  //         const data: Projects[] = await res.json(); // Explicitly define the type of fetched data
-  //         setCompanies(data);
-  //       } else {
-  //         console.error("Failed to fetch companies");
-  //       }
-  //     } catch (error) {
-  //       console.error("An error occurred while fetching companies:", error);
-  //     }
-  //   };
-  //   getAllCompanies();
-  // }, []);
+  React.useEffect(() => {
+    const getAllFeedbacks = async () => {
+      try {
+        const res = await fetch(`/dashboard/feedback/api`);
+        if (res.ok) {
+          const data: Feedbacks[] = await res.json(); // Explicitly define the type of fetched data
+          setFeedbacks(data);
+        } else {
+          console.error("Failed to fetch feedbacks");
+        }
+      } catch (error) {
+        console.error("An error occurred while fetching feedbacks:", error);
+      }
+    };
+    getAllFeedbacks();
+  }, []);
 
-  // Handle company deletion
-  // const handleDeleteCompany = async (id: String) => {
-  //   try {
-  //     const res = await fetch(
-  //       `${process.env.NEXTAUTH_URL}/dashboard/companies/api/delete-company/${id}`,
-  //       {
-  //         method: "DELETE",
-  //       }
-  //     );
-  //     if (res.ok) {
-  //       setCompanies((prevCompanies) =>
-  //         prevCompanies.filter((company) => company._id !== id)
-  //       );
-  //       console.log("Upload successful:", await res.json());
-  //     } else {
-  //       console.error("Upload failed:", await res.json());
-  //     }
-  //   } catch (error) {
-  //     console.error("An error occurred:", error);
-  //   }
-  // };
+  // Handle feedback deletion
+  const handleDeleteFeedback = async (id: String) => {
+    try {
+      const res = await fetch(`/dashboard/feedback/api/delete-feedback/${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setFeedbacks((prevFeedback) =>
+          prevFeedback.filter((feedback) => feedback._id !== id)
+        );
+        console.log("Upload successful:", await res.json());
+      } else {
+        console.error("Upload failed:", await res.json());
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
 
   const data: Feedbacks[] = feedbacks;
+
+  // console.log(feedbacks);
 
   const columns: ColumnDef<Feedbacks>[] = [
     {
@@ -133,9 +132,9 @@ export function FeedbackTable() {
         <div>
           <Image
             src={row.getValue("image")}
-            alt="companny image"
-            height={16}
-            width={68}
+            alt="feedback image"
+            height={40}
+            width={40}
           />
         </div>
       ),
@@ -146,6 +145,27 @@ export function FeedbackTable() {
       cell: ({ row }) => (
         <div>
           <p>{row.getValue("feedback")}</p>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "company",
+      header: "Company",
+      cell: ({ row }) => (
+        <div>
+          <p>{row.getValue("company")}</p>
+        </div>
+      ),
+    },
+    {
+      accessorKey: "color",
+      header: "Background",
+      cell: ({ row }) => (
+        <div
+          className="p-2 rounded text-center font-semibold"
+          style={{ backgroundColor: row.getValue("color") }}
+        >
+          <Link href={row.getValue("color")}>{row.getValue("color")}</Link>
         </div>
       ),
     },
@@ -164,14 +184,14 @@ export function FeedbackTable() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <Link
-                href={`/dashboard/feedback/${row?.original?.id}/update-feedback`}
+                href={`/dashboard/feedback/${row?.original?._id}/update-feedback`}
               >
                 <DropdownMenuItem className="cursor-pointer">
                   Edit
                 </DropdownMenuItem>
               </Link>
               <DropdownMenuItem
-                // onClick={() => handleDeleteCompany(row?.original?._id)}
+                onClick={() => handleDeleteFeedback(row?.original?._id)}
                 className="cursor-pointer"
               >
                 Delete
@@ -215,11 +235,9 @@ export function FeedbackTable() {
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter company names..."
-          value={
-            (table.getColumn("companyName")?.getFilterValue() as string) ?? ""
-          }
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("companyName")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

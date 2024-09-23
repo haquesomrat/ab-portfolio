@@ -30,45 +30,6 @@ export const projects = [
   },
 ];
 
-export const feedbacks = [
-  {
-    id: 1,
-    name: "John Doe",
-    description:
-      "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel Elit semper non curabitur eu ornare malesuada enim orci. Proin blandit molestie neque orci pellentesque curabitur.",
-    src: "/images/feedback/feedback-one.png",
-    companyName: "Company Name",
-    color: "#D2BAA8",
-  },
-  {
-    id: 2,
-    name: "John Doe",
-    description:
-      "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel Elit semper non curabitur eu ornare malesuada enim orci. Proin blandit molestie neque orci pellentesque curabitur.",
-    src: "/images/feedback/feedback-two.png",
-    companyName: "Company Name",
-    color: "#A8C0D2",
-  },
-  {
-    id: 3,
-    name: "John Doe",
-    description:
-      "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel Elit semper non curabitur eu ornare malesuada enim orci. Proin blandit molestie neque orci pellentesque curabitur.",
-    src: "/images/feedback/feedback-one.png",
-    companyName: "Company Name",
-    color: "#D2BAA8",
-  },
-  {
-    id: 4,
-    name: "John Doe",
-    description:
-      "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel Elit semper non curabitur eu ornare malesuada enim orci. Proin blandit molestie neque orci pellentesque curabitur.",
-    src: "/images/feedback/feedback-two.png",
-    companyName: "Company Name",
-    color: "#A8C0D2",
-  },
-];
-
 export const fakeServices: Services[] = [
   {
     id: "1",
@@ -771,7 +732,7 @@ export const orbitalIcons = {
 
 export const dummyProjects: Projects[] = [
   {
-    id: 1,
+    _id: "1",
     title: "Project Title 1",
     description: "This is a description for project 1.",
     live_link: "https://example.com/project1",
@@ -779,7 +740,7 @@ export const dummyProjects: Projects[] = [
     color: "#FF5733",
   },
   {
-    id: 2,
+    _id: "2",
     title: "Project Title 2",
     description: "This is a description for project 2.",
     live_link: "https://example.com/project2",
@@ -787,7 +748,7 @@ export const dummyProjects: Projects[] = [
     color: "#33FF57",
   },
   {
-    id: 3,
+    _id: "3",
     title: "Project Title 3",
     description: "This is a description for project 3.",
     live_link: "https://example.com/project3",
@@ -819,45 +780,89 @@ export const dummyExpertises: Expertises[] = [
   },
 ];
 
-export const dummyFeedbacks: Feedbacks[] = [
+export const feedbacks = [
   {
     id: 1,
+    name: "John Doe",
+    description:
+      "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel Elit semper non curabitur eu ornare malesuada enim orci. Proin blandit molestie neque orci pellentesque curabitur.",
+    src: "/images/feedback/feedback-one.png",
+    companyName: "Company Name",
+    color: "#D2BAA8",
+  },
+  {
+    id: 2,
+    name: "John Doe",
+    description:
+      "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel Elit semper non curabitur eu ornare malesuada enim orci. Proin blandit molestie neque orci pellentesque curabitur.",
+    src: "/images/feedback/feedback-two.png",
+    companyName: "Company Name",
+    color: "#A8C0D2",
+  },
+  {
+    id: 3,
+    name: "John Doe",
+    description:
+      "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel Elit semper non curabitur eu ornare malesuada enim orci. Proin blandit molestie neque orci pellentesque curabitur.",
+    src: "/images/feedback/feedback-one.png",
+    companyName: "Company Name",
+    color: "#D2BAA8",
+  },
+  {
+    id: 4,
+    name: "John Doe",
+    description:
+      "Proin blandit molestie neque orci pellentesque curabitur. Consectetur malesuada massa in vel Elit semper non curabitur eu ornare malesuada enim orci. Proin blandit molestie neque orci pellentesque curabitur.",
+    src: "/images/feedback/feedback-two.png",
+    companyName: "Company Name",
+    color: "#A8C0D2",
+  },
+];
+
+export const dummyFeedbacks: Feedbacks[] = [
+  {
+    _id: "1",
     name: "John Doe",
     image: "https://via.placeholder.com/100x100?text=John+Doe",
     company: "Tech Solutions Inc.",
     feedback:
       "This company exceeded my expectations with their innovative solutions and top-notch customer service.",
+    color: "#A8C0D2",
   },
   {
-    id: 2,
+    _id: "2",
     name: "Jane Smith",
     image: "https://via.placeholder.com/100x100?text=Jane+Smith",
     company: "Creative Studios",
     feedback:
       "Their attention to detail and creative approach helped bring our project to life in ways we couldn’t have imagined.",
+    color: "#D2BAA8",
   },
   {
-    id: 3,
+    _id: "3",
     name: "Samuel Green",
     image: "https://via.placeholder.com/100x100?text=Samuel+Green",
     company: "Data Insights",
     feedback:
       "Working with them was an absolute pleasure, and their insights helped us improve our data strategy tremendously.",
+    color: "#A8C0D2",
   },
   {
-    id: 4,
+    _id: "4",
     name: "Lisa Brown",
     image: "https://via.placeholder.com/100x100?text=Lisa+Brown",
     company: "Marketing Pros",
     feedback:
       "Their team delivered exactly what we needed in terms of digital marketing, boosting our online presence significantly.",
+    color: "#D2BAA8",
   },
   {
-    id: 5,
+    _id: "5",
     name: "Michael Scott",
     image: "https://via.placeholder.com/100x100?text=Michael+Scott",
     company: "Dunder Mifflin",
     feedback:
       "Their paper is of the highest quality, and the customer service is second to none.",
+    color: "#A8C0D2",
   },
 ];

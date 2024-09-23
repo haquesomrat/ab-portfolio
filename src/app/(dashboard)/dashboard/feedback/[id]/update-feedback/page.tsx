@@ -16,7 +16,13 @@ export const metadata = {
   description: "Modern Thinking Developer With Impressive Ideas",
 };
 
-const UpdateFeedbackPage = () => {
+interface UpdateCompanyPageProps {
+  params: {
+    id: string;
+  };
+}
+
+const UpdateFeedbackPage = ({ params }: UpdateCompanyPageProps) => {
   return (
     <AdminPanelLayout>
       <ContentLayout title="Update Feedback">
@@ -41,7 +47,7 @@ const UpdateFeedbackPage = () => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <UpdateFeedbackContainer />
+        <UpdateFeedbackContainer id={params?.id} />
       </ContentLayout>
     </AdminPanelLayout>
   );

@@ -23,10 +23,11 @@ export function IconsOribital() {
 
       {/* icons::azure */}
       <OrbitingCircles
-        className="size-[30px] border-none bg-transparent shadow-bubble h-8 w-8 lg:w-20 lg:h-20"
-        duration={60}
-        delay={50}
-        radius={isSmallScreen ? 80 : 200}
+        // className="size-[30px] border-none bg-transparent shadow-bubble h-8 w-8 lg:w-20 lg:h-20"
+        className="border-none bg-transparent shadow-bubble h-8 w-8 lg:w-20 lg:h-20"
+        duration={60} //duration
+        delay={50} //delay
+        radius={isSmallScreen ? 80 : 200} //orbit size
       >
         <orbitalIcons.azure />
       </OrbitingCircles>

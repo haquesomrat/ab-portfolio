@@ -26,9 +26,10 @@ export interface Expertises {
 }
 
 export interface Feedbacks {
-  id: number;
+  _id: string;
   name: string;
   image: string;
   company: string;
   feedback: string;
+  color: string;
 }
