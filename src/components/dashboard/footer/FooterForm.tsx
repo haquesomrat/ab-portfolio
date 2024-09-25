@@ -73,6 +73,42 @@ export function SocialMediaForm() {
     }
   };
 
+  // Handle delete logo with API call
+  const handleDelete = async (platform: Platform) => {
+    try {
+      const res = await fetch(`/dashboard/footer/api`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: platform }),
+      });
+
+      if (res.ok) {
+        console.log(`Deleted logo for ${platform}`);
+        console.log(`Deleted logo for ${platform}:`, await res.json());
+        // Remove the logo locally
+        setSocials((prev) => ({
+          ...prev,
+          [platform]: {
+            ...prev[platform],
+            logo: null, // Remove the logo from the state after successful deletion
+          },
+        }));
+      } else {
+        console.error(
+          `Failed to delete logo for ${platform}:`,
+          await res.json()
+        );
+      }
+    } catch (error) {
+      console.error(
+        `An error occurred while deleting logo for ${platform}:`,
+        error
+      );
+    }
+  };
+
   // get all socials
   useEffect(() => {
     const getSocial = async () => {
@@ -106,7 +142,7 @@ export function SocialMediaForm() {
     getSocial();
   }, [setSocials]);
 
-  console.log(socials);
+  //   console.log(socials);
 
   return (
     <div className="space-y-6 pt-6">
@@ -119,6 +155,7 @@ export function SocialMediaForm() {
             onFileUpload={handleFileUpload}
             onInputChange={handleInputChange}
             onSubmit={handleSubmit}
+            onDelete={handleDelete}
           />
         </div>
       ))}
