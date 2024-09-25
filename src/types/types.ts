@@ -4,7 +4,7 @@ export interface ParamsType {
 }
 
 export interface Services {
-  _id: string | JSX.Element;
+  _id: string;
   logo: string;
   name: string;
   details: string;
@@ -32,4 +32,45 @@ export interface Feedbacks {
   company: string;
   feedback: string;
   color: string;
+}
+
+export interface Hero {
+  _id: string;
+  motto: string;
+  headline: string;
+  intro: string;
+  logo: string;
+}
+
+export interface Newsletter {
+  _id: string;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
+
+export type SocialMedia = {
+  logo: File | string | null;
+  link: string;
+};
+
+// Define the type for the socials state
+export type SocialMediaState = {
+  facebook: { logo: File | string | null; link: string };
+  github: { logo: File | string | null; link: string };
+  linkedin: { logo: File | string | null; link: string };
+  medium: { logo: File | string | null; link: string };
+  twitter: { logo: File | string | null; link: string };
+  dailydev: { logo: File | string | null; link: string };
+};
+
+// Define the keys of SocialMediaState as a union of the platform names
+export type Platform = keyof SocialMediaState;
+
+export interface SingleSocial {
+  _id: string;
+  name: string;
+  link: string;
+  logo: string;
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { HeroForm } from "./HeroForm";
+import { HeroTable } from "./HeroTable";
 
 const HeroContainer = () => {
   return (
@@ -7,8 +7,7 @@ const HeroContainer = () => {
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Hero</h2>
       </div>
-      <HeroForm />
-      <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
+      <HeroTable />
     </div>
   );
 };

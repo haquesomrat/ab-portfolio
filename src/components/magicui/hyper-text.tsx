@@ -67,7 +67,10 @@ export default function HyperText({
 
   return (
     <div
-      className="overflow-hidden py-2 flex cursor-default scale-100"
+      className={cn(
+        "overflow-hidden py-2 flex cursor-default scale-100",
+        className
+      )}
       onMouseEnter={triggerAnimation}
     >
       <AnimatePresence mode="wait">

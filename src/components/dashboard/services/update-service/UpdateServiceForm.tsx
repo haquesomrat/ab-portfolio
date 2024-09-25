@@ -86,6 +86,7 @@ export function UpdateServicesForm({ id }: serviceUpdateProps) {
   return (
     <div className="w-full mx-auto rounded-none md:rounded-2xl shadow-input bg-white dark:bg-transparent">
       <form className="my-8" onSubmit={handleSubmit}>
+        {/* Service Icon */}
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
             <Label className="mb-2" htmlFor="serviceIcon">
@@ -99,6 +100,7 @@ export function UpdateServicesForm({ id }: serviceUpdateProps) {
             />
           </LabelInputContainer>
         </div>
+        {/* Service Name */}
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
             <Label className="mb-2" htmlFor="services_name">
@@ -114,6 +116,7 @@ export function UpdateServicesForm({ id }: serviceUpdateProps) {
             />
           </LabelInputContainer>
         </div>
+        {/* Service details */}
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
             <Label className="mb-2" htmlFor="services_details">

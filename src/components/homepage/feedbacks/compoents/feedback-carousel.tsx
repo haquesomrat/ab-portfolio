@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import Splide from "@splidejs/splide";
 import Image from "next/image";
 import FeedbackCarouselArrows from "./feedback-carousel-arrows";
+import { Meteors } from "@/components/ui/meteors";
+import FeedbackCarouselCard from "./feedback-carousel-card";
 
 const FeedbackCarousel: React.FC = () => {
   useEffect(() => {
@@ -94,6 +96,12 @@ const FeedbackCarousel: React.FC = () => {
               </div>
             </div>
           </li>
+          {/* <li className="splide__slide">
+            <FeedbackCarouselCard />
+          </li>
+          <li className="splide__slide">
+            <FeedbackCarouselCard />
+          </li> */}
         </ul>
       </div>
 

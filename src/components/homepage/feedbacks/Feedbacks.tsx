@@ -1,6 +1,7 @@
 import React from "react";
 import FeedbackCarousel from "./compoents/feedback-carousel";
 import Container from "../../global/Container";
+import { Meteors } from "@/components/ui/meteors";
 
 const Feedbacks = () => {
   return (

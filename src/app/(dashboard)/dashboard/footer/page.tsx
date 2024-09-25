@@ -1,6 +1,7 @@
 import AdminPanelLayout from "@/components/dashboard/admin-panel/admin-panel-layout";
 import { ContentLayout } from "@/components/dashboard/admin-panel/content-layout";
 import PlaceholderContent from "@/components/dashboard/admin-panel/placeholder-content";
+import FooterContainer from "@/components/dashboard/footer/FooterContainer";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -37,7 +38,7 @@ const FooterPage = () => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <PlaceholderContent />
+        <FooterContainer />
       </ContentLayout>
     </AdminPanelLayout>
   );

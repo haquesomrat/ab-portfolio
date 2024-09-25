@@ -1,18 +1,25 @@
 import React from "react";
 import { LinkPreview } from "@/components/ui/link-preview";
 import moment from "moment";
+import Link from "next/link";
 
 export function Copyright() {
   return (
     <div className="relative top-0 left-0 text-white flex flex-col-reverse md:flex-row justify-between items-center gap-6 mt-32 lg:mt-60">
       <div>
-        <div className="text-sm leading-relaxed text-center">
-          <LinkPreview
+        <div className="text-sm leading-relaxed text-center uppercase">
+          {/* <LinkPreview
             className="underline hover:no-underline z-20"
-            url="https://aminbabu-inj.netlify.app/"
+            url="https://aminbabu-inj.netlify.app"
           >
             www.aminbabu.com{" "}
-          </LinkPreview>
+          </LinkPreview> */}
+          <Link
+            className="text-primary"
+            href={"https://aminbabu-inj.netlify.app"}
+          >
+            www.aminbabu.com{" "}
+          </Link>
           &copy; {moment().format("YYYY")} - All Rights Reserved.
         </div>
       </div>
