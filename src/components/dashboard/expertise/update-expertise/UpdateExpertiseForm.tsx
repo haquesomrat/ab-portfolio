@@ -69,6 +69,7 @@ export function UpdateExpertiseForm({ id }: CompanyUpdateContainerProps) {
     formData.append("delay", delay);
     formData.append("radiusSmall", radiusSmall);
     formData.append("radiusLarge", radiusLarge);
+
     // Handle the logo file upload
     if (file.length > 0) {
       formData.append("logo", file[0]);

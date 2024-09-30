@@ -61,7 +61,7 @@ export function UpdateServicesForm({ id }: serviceUpdateProps) {
     // Handle the logo file upload
     if (file.length > 0) {
       formData.append("logo", file[0]);
-    } else {
+    } else if (typeof logo === "string") {
       formData.append("logo", logo);
       // If no new file, append the old logo
     }
@@ -96,7 +96,7 @@ export function UpdateServicesForm({ id }: serviceUpdateProps) {
               files={file}
               onDrop={handleFileUpload}
               onRemove={removeFile}
-              existingLogo={logo} // pass the existing logo
+              existingLogo={typeof logo === "string" ? logo : undefined} // pass the existing logo
             />
           </LabelInputContainer>
         </div>
