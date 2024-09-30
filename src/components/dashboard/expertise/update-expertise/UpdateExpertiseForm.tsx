@@ -72,9 +72,8 @@ export function UpdateExpertiseForm({ id }: CompanyUpdateContainerProps) {
     // Handle the logo file upload
     if (file.length > 0) {
       formData.append("logo", file[0]);
-    } else {
+    } else if (typeof icon === "string") {
       formData.append("logo", icon);
-      // If no new file, append the old logo
     }
 
     // console.log(name, duration, delay, radiusSmall, radiusLarge, file[0], icon);
@@ -125,7 +124,7 @@ export function UpdateExpertiseForm({ id }: CompanyUpdateContainerProps) {
             </Label>
             <DropzoneComponent
               file={file[0]}
-              defaultFile={icon || undefined}
+              defaultFile={typeof icon === "string" ? icon : undefined}
               onDrop={handleFileUpload}
               onRemove={removeFile}
             />
