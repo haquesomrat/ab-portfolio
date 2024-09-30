@@ -3,9 +3,15 @@ export interface ParamsType {
   id?: string;
 }
 
+export interface Companies {
+  _id: string;
+  companyName: string;
+  companyImg: string;
+}
+
 export interface Services {
   _id: string;
-  logo: string;
+  logo: JSX.Element | string;
   name: string;
   details: string;
 }
@@ -20,9 +26,13 @@ export interface Projects {
 }
 
 export interface Expertises {
-  id: number;
+  _id: string;
   name: string;
-  logo: string;
+  icon: JSX.Element | string;
+  duration: string;
+  delay: string;
+  radiusSmall: string;
+  radiusLarge: string;
 }
 
 export interface Feedbacks {

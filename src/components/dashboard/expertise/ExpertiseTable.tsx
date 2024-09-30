@@ -35,55 +35,53 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import Link from "next/link";
-import { dummyExpertises, dummyProjects } from "@/lib/data";
-import { Expertises, Projects } from "@/types/types";
+import { fakeOrbitalIconsData } from "@/lib/data";
+import { Expertises } from "@/types/types";
 
 export function ExpertiseTable() {
   // Explicitly define the state type as an array of Companies
-  const [expertises, setExpertises] =
-    React.useState<Expertises[]>(dummyExpertises);
+  const [expertises, setExpertises] = React.useState<Expertises[]>([]); //fakeOrbitalsData
 
   // Fetch all companies on component mount
-  // React.useEffect(() => {
-  //   const getAllCompanies = async () => {
-  //     try {
-  //       const res = await fetch(`/dashboard/companies/api`);
-  //       if (res.ok) {
-  //         const data: Projects[] = await res.json(); // Explicitly define the type of fetched data
-  //         setCompanies(data);
-  //       } else {
-  //         console.error("Failed to fetch companies");
-  //       }
-  //     } catch (error) {
-  //       console.error("An error occurred while fetching companies:", error);
-  //     }
-  //   };
-  //   getAllCompanies();
-  // }, []);
+  React.useEffect(() => {
+    const getAllExpertises = async () => {
+      try {
+        const res = await fetch(`/dashboard/expertise/api`);
+        if (res.ok) {
+          const data: Expertises[] = await res.json();
+          setExpertises(data);
+        } else {
+          console.error("Failed to fetch expertises");
+        }
+      } catch (error) {
+        console.error("An error occurred while fetching expertises:", error);
+      }
+    };
+    getAllExpertises();
+  }, []);
 
   // Handle company deletion
-  // const handleDeleteCompany = async (id: String) => {
-  //   try {
-  //     const res = await fetch(
-  //       `${process.env.NEXTAUTH_URL}/dashboard/companies/api/delete-company/${id}`,
-  //       {
-  //         method: "DELETE",
-  //       }
-  //     );
-  //     if (res.ok) {
-  //       setCompanies((prevCompanies) =>
-  //         prevCompanies.filter((company) => company._id !== id)
-  //       );
-  //       console.log("Upload successful:", await res.json());
-  //     } else {
-  //       console.error("Upload failed:", await res.json());
-  //     }
-  //   } catch (error) {
-  //     console.error("An error occurred:", error);
-  //   }
-  // };
+  const handleDeleteCompany = async (id: String) => {
+    try {
+      const res = await fetch(
+        `/dashboard/expertise/api/delete-expertise/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (res.ok) {
+        setExpertises((prevExpertise) =>
+          prevExpertise.filter((expertise) => expertise._id !== id)
+        );
+        console.log("Upload successful:", await res.json());
+      } else {
+        console.error("Upload failed:", await res.json());
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
 
   const data: Expertises[] = expertises;
 
@@ -128,17 +126,51 @@ export function ExpertiseTable() {
       ),
     },
     {
-      accessorKey: "logo",
+      accessorKey: "icon",
       header: "Logo",
+      cell: ({ row }: { row: { getValue: (key: string) => string } }) => {
+        const icon: string = row.getValue("icon");
+        return (
+          <div>
+            <div dangerouslySetInnerHTML={{ __html: icon }} />
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "duration",
+      header: ({ column }) => {
+        return <div>Duration</div>;
+      },
       cell: ({ row }) => (
-        <div>
-          <Image
-            src={row.getValue("logo")}
-            alt="companny image"
-            height={16}
-            width={68}
-          />
-        </div>
+        <div className="lowercase">{row.getValue("duration")}</div>
+      ),
+    },
+    {
+      accessorKey: "delay",
+      header: ({ column }) => {
+        return <div>Delay</div>;
+      },
+      cell: ({ row }) => (
+        <div className="lowercase">{row.getValue("delay")}</div>
+      ),
+    },
+    {
+      accessorKey: "radiusSmall",
+      header: ({ column }) => {
+        return <div>Orbit size(Mobile)</div>;
+      },
+      cell: ({ row }) => (
+        <div className="lowercase">{row.getValue("radiusSmall")}</div>
+      ),
+    },
+    {
+      accessorKey: "radiusLarge",
+      header: ({ column }) => {
+        return <div>Orbit size(Desktop)</div>;
+      },
+      cell: ({ row }) => (
+        <div className="lowercase">{row.getValue("radiusLarge")}</div>
       ),
     },
     {
@@ -156,14 +188,14 @@ export function ExpertiseTable() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <Link
-                href={`/dashboard/expertise/${row?.original?.id}/update-expertise`}
+                href={`/dashboard/expertise/${row?.original?._id}/update-expertise`}
               >
                 <DropdownMenuItem className="cursor-pointer">
                   Edit
                 </DropdownMenuItem>
               </Link>
               <DropdownMenuItem
-                // onClick={() => handleDeleteCompany(row?.original?._id)}
+                onClick={() => handleDeleteCompany(row?.original?._id)}
                 className="cursor-pointer"
               >
                 Delete
@@ -206,12 +238,10 @@ export function ExpertiseTable() {
     <div className="w-full py-4">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter company names..."
-          value={
-            (table.getColumn("companyName")?.getFilterValue() as string) ?? ""
-          }
+          placeholder="Filter expertise names..."
+          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("companyName")?.setFilterValue(event.target.value)
+            table.getColumn("name")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

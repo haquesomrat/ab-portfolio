@@ -37,12 +37,14 @@ import {
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { dummyFeedbacks, dummyProjects } from "@/lib/data";
-import { Feedbacks, Projects } from "@/types/types";
+import { dummyFeedbacks } from "@/lib/data";
+import { Feedbacks } from "@/types/types";
 
 export function FeedbackTable() {
   // Explicitly define the state type as an array of Companies
   const [feedbacks, setFeedbacks] = React.useState<Feedbacks[]>(dummyFeedbacks);
+
+  console.log(feedbacks);
 
   // Fetch all companies on component mount
   React.useEffect(() => {

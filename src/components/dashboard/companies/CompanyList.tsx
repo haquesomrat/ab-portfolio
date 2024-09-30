@@ -21,8 +21,6 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -37,24 +35,20 @@ import {
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-
-export type Companies = {
-  _id: string;
-  companyName: string;
-  companyImg: string;
-};
+import { dummyCompaniesData } from "@/lib/data";
+import { Companies } from "@/types/types";
 
 export function CompanyList() {
-  // Explicitly define the state type as an array of Companies
-  const [companies, setCompanies] = React.useState<Companies[]>([]);
+  const [companies, setCompanies] =
+    React.useState<Companies[]>(dummyCompaniesData);
 
   // Fetch all companies on component mount
   React.useEffect(() => {
     const getAllCompanies = async () => {
       try {
         const res = await fetch(`/dashboard/companies/api`);
-        if (res.ok) {
-          const data: Companies[] = await res.json(); // Explicitly define the type of fetched data
+        if (res?.ok) {
+          const data: Companies[] = await res.json();
           setCompanies(data);
         } else {
           console.error("Failed to fetch companies");
@@ -67,7 +61,7 @@ export function CompanyList() {
   }, []);
 
   // Handle company deletion
-  const handleDeleteCompany = async (id: String) => {
+  const handleDeleteCompany = async (id: string) => {
     // delete the company data
     try {
       const res = await fetch(`/dashboard/companies/api/delete-company/${id}`, {
@@ -117,7 +111,9 @@ export function CompanyList() {
         return (
           <Button
             variant="ghost"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            onClick={() =>
+              column.toggleSorting(column?.getIsSorted() === "asc")
+            }
           >
             Company Name
             <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -134,7 +130,7 @@ export function CompanyList() {
       cell: ({ row }) => (
         <div>
           <Image
-            src={row.getValue("companyImg")}
+            src={row?.getValue("companyImg")}
             alt="companny image"
             height={16}
             width={68}
@@ -236,7 +232,7 @@ export function CompanyList() {
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.id}
+                    {column?.id}
                   </DropdownMenuCheckboxItem>
                 );
               })}
@@ -250,7 +246,7 @@ export function CompanyList() {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header?.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -265,16 +261,16 @@ export function CompanyList() {
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows?.map((row) => (
                 <TableRow
-                  key={row.id}
+                  key={row?.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell?.id}>
                       {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell?.column?.columnDef?.cell,
+                        cell?.getContext()
                       )}
                     </TableCell>
                   ))}

@@ -1,44 +1,27 @@
 import { connectDB } from "@/lib/ConnectDB";
 import { NextResponse } from "next/server";
 
-// post single company data to database
-export async function POST(request: Request) {
+// GET API
+export const GET = async () => {
   try {
-    // connect to database
+    // Connect to the database
     const db = await connectDB();
-    // Parse the request body
-    const newCompany = await request.json();
-
-    console.log(newCompany);
-
-    // Ensure that the database connection exists
     if (!db) {
       return NextResponse.json(
-        { error: "Database connection failed" },
+        { error: "Failed to connect to the database." },
         { status: 500 }
       );
     }
-
-    // Insert the new company into the "companies" collection
-    const res = await db?.collection("companies").insertOne(newCompany);
-
-    // Check if the insert was successful
-    if (res.acknowledged) {
-      return NextResponse.json({
-        message: "New company added successfully",
-        companyId: res.insertedId,
-      });
-    } else {
-      return NextResponse.json(
-        { error: "Failed to insert company" },
-        { status: 500 }
-      );
-    }
+    const expertiseCollection = await db
+      .collection("expertises")
+      .find()
+      .toArray();
+    return NextResponse.json(expertiseCollection);
   } catch (error) {
-    console.error("Error adding company:", error);
+    console.error("Error getting all expertises:", error);
     return NextResponse.json(
-      { error: "Something went wrong while adding the company" },
+      { error: "Something went wrong while getting the expertises" },
       { status: 500 }
     );
   }
-}
+};

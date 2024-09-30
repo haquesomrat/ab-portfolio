@@ -1,44 +1,92 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useDropzone, Accept } from "react-dropzone";
+import { useDropzone } from "react-dropzone";
 import Image from "next/image";
+import LabelInputContainer from "@/components/global/LabelInputContainer";
+import BottomGradient from "@/components/global/BottomGardient";
+import { Expertises } from "@/types/types";
+import Loading from "@/components/global/Loading";
 
-export function UpdateExpertiseForm() {
-  const [files, setFiles] = useState<File[]>([]);
+interface CompanyUpdateContainerProps {
+  id: string;
+}
 
-  const handleDrop = (acceptedFiles: File[]) => {
-    setFiles(acceptedFiles);
+export function UpdateExpertiseForm({ id }: CompanyUpdateContainerProps) {
+  const [file, setFile] = useState<File[]>([]);
+  const [singleExpertise, setSingleExpertise] = useState<Expertises | null>(
+    null
+  );
+
+  // get single expertise data
+  useEffect(() => {
+    const getSingleExpertise = async () => {
+      const res = await fetch(`/dashboard/expertise/api/${id}`);
+      const data = await res.json();
+      setSingleExpertise(data);
+    };
+    getSingleExpertise();
+  }, [id]);
+
+  const handleFileUpload = (acceptedFiles: File[]) => {
+    setFile(acceptedFiles);
   };
 
-  const handleDelete = () => {
-    setFiles([]); // Clear the files array
+  const removeFile = () => {
+    setFile([]);
   };
+
+  // fallback loading
+  if (!singleExpertise) return <Loading />;
+
+  // destructure single service
+  const { name, duration, delay, radiusSmall, radiusLarge, icon } =
+    singleExpertise;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const form = e.currentTarget;
+    const form = e.target as HTMLFormElement;
 
-    const companyName = (
-      form.elements.namedItem("companyName") as HTMLInputElement
+    const name = (form.elements.namedItem("serviceName") as HTMLInputElement)
+      .value;
+    const duration = (form.elements.namedItem("duration") as HTMLInputElement)
+      .value;
+    const delay = (form.elements.namedItem("delay") as HTMLInputElement).value;
+    const radiusSmall = (
+      form.elements.namedItem("smallRadius") as HTMLInputElement
+    ).value;
+    const radiusLarge = (
+      form.elements.namedItem("largeRadius") as HTMLInputElement
     ).value;
 
     const formData = new FormData();
-    formData.append("companyName", companyName);
-    if (files.length > 0) {
-      formData.append("companyImage", files[0]);
+
+    formData.append("name", name);
+    formData.append("duration", duration);
+    formData.append("delay", delay);
+    formData.append("radiusSmall", radiusSmall);
+    formData.append("radiusLarge", radiusLarge);
+    // Handle the logo file upload
+    if (file.length > 0) {
+      formData.append("logo", file[0]);
+    } else {
+      formData.append("logo", icon);
+      // If no new file, append the old logo
     }
 
-    console.log(formData);
+    // console.log(name, duration, delay, radiusSmall, radiusLarge, file[0], icon);
 
     try {
-      const res = await fetch(`/dashboard/companies/api/add-company`, {
-        method: "POST",
-        body: formData,
-      });
+      const res = await fetch(
+        `/dashboard/expertise/api/update-expertise/${id}`,
+        {
+          method: "PATCH",
+          body: formData,
+        }
+      );
 
       if (res.ok) {
         console.log("Upload successful:", await res.json());
@@ -46,73 +94,105 @@ export function UpdateExpertiseForm() {
         console.error("Upload failed:", await res.json());
       }
     } catch (error) {
-      console.error("An error occurred:", error);
+      console.error("An error occured", error);
     }
   };
-
-  const dropzoneOptions = {
-    onDrop: handleDrop,
-    multiple: false, // Set to true if you want to allow multiple files
-    accept: {
-      "image/*": [], // Restrict file types to images
-    } as Accept,
-  };
-
-  const { getRootProps, getInputProps } = useDropzone(dropzoneOptions);
 
   return (
     <div className="w-full mx-auto rounded-none md:rounded-2xl shadow-input bg-white dark:bg-transparent">
       <form className="my-8" onSubmit={handleSubmit}>
+        {/* Name */}
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
-            <Label className="mb-2" htmlFor="company_name">
-              Company Name
+            <Label className="mb-2" htmlFor="services_name">
+              Name
             </Label>
             <Input
-              id="company_name"
-              name="companyName"
-              placeholder="Enter Company Name"
+              id="services_name"
+              name="serviceName"
+              defaultValue={name}
+              placeholder="Enter expertise name"
               type="text"
               required
             />
           </LabelInputContainer>
         </div>
+        {/* Icon */}
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
-            <Label className="mb-2" htmlFor="company_logo">
-              Company Logo
+            <Label className="mb-2" htmlFor="serviceIcon">
+              Icon
             </Label>
-            <div className=" rounded-md ">
-              <div
-                {...getRootProps({ className: "dropzone" })}
-                className="border-2 border-dashed border-gray-400 h-20 rounded-md flex justify-center items-center "
-              >
-                <input {...getInputProps()} />
-                <p className="text-center">
-                  Drag n drop an image here, or click to select one
-                </p>
-              </div>
-              <div>
-                {files.length > 0 && (
-                  <div className="mt-4 relative w-fit">
-                    <Image
-                      height={300}
-                      width={600}
-                      src={URL.createObjectURL(files[0])}
-                      alt="Preview"
-                      className="w-32 h-20 object-contain aspect-video rounded-md"
-                    />
-                    <button
-                      type="button"
-                      onClick={handleDelete}
-                      className="mt-2 p-1 bg-black/50 hover:bg-black duration-300 text-xs rounded-md absolute -top-3 -right-3"
-                    >
-                      &#x274c;
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
+            <DropzoneComponent
+              file={file[0]}
+              defaultFile={icon || undefined}
+              onDrop={handleFileUpload}
+              onRemove={removeFile}
+            />
+          </LabelInputContainer>
+        </div>
+        {/* Duration */}
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <LabelInputContainer>
+            <Label className="mb-2" htmlFor="duration">
+              Duration
+            </Label>
+            <Input
+              id="duration"
+              name="duration"
+              defaultValue={duration}
+              placeholder="Enter duration"
+              type="text"
+              required
+            />
+          </LabelInputContainer>
+        </div>
+        {/* Delay */}
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <LabelInputContainer>
+            <Label className="mb-2" htmlFor="Delay">
+              Delay
+            </Label>
+            <Input
+              id="Delay"
+              name="delay"
+              defaultValue={delay}
+              placeholder="Enter delay"
+              type="text"
+              required
+            />
+          </LabelInputContainer>
+        </div>
+        {/* Small Device Radius */}
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <LabelInputContainer>
+            <Label className="mb-2" htmlFor="small_device_raduis">
+              Small device radius
+            </Label>
+            <Input
+              id="small_device_raduis"
+              name="smallRadius"
+              defaultValue={radiusSmall}
+              placeholder="Enter small device radius"
+              type="text"
+              required
+            />
+          </LabelInputContainer>
+        </div>
+        {/* Large Device Radius */}
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <LabelInputContainer>
+            <Label className="mb-2" htmlFor="large_device_radius">
+              Large device radius
+            </Label>
+            <Input
+              id="large_device_radius"
+              name="largeRadius"
+              defaultValue={radiusLarge}
+              placeholder="Enter large device radius"
+              type="text"
+              required
+            />
           </LabelInputContainer>
         </div>
 
@@ -128,25 +208,70 @@ export function UpdateExpertiseForm() {
   );
 }
 
-const BottomGradient = () => {
-  return (
-    <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-    </>
-  );
-};
-
-const LabelInputContainer = ({
-  children,
-  className,
+const DropzoneComponent = ({
+  file,
+  defaultFile,
+  onDrop,
+  onRemove,
 }: {
-  children: React.ReactNode;
-  className?: string;
+  file: File | null;
+  defaultFile?: string;
+  onDrop: (acceptedFiles: File[]) => void;
+  onRemove: () => void;
 }) => {
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop: (acceptedFiles) => {
+      onDrop(acceptedFiles.slice(0, 1));
+    },
+    accept: {
+      "image/svg+xml": [],
+    },
+    multiple: false,
+  });
+
   return (
-    <div className={cn("flex flex-col space-y-2 w-full", className)}>
-      {children}
+    <div className="space-y-4">
+      <div
+        {...getRootProps({
+          className:
+            "border border-dashed border-gray-400 p-4 rounded-md cursor-pointer focus:outline-none",
+        })}
+      >
+        <input {...getInputProps()} />
+        <p>Drag & drop or click to upload an image (SVG)</p>
+      </div>
+
+      {file && (
+        <div className="relative inline-flex group">
+          <Image
+            width={300}
+            height={300}
+            src={URL.createObjectURL(file)}
+            alt={file.name}
+            className="w-24 h-24 object-contain rounded-md"
+          />
+          <button
+            type="button"
+            onClick={onRemove}
+            className="mt-2 p-1 bg-black/50 hover:bg-black duration-300 text-xs rounded-md absolute -top-3 -right-3"
+          >
+            &#x274c;
+          </button>
+        </div>
+      )}
+
+      {!file && defaultFile && (
+        <div className="relative inline-flex group">
+          <div dangerouslySetInnerHTML={{ __html: defaultFile }} />
+          {/* <button
+            type="button"
+            onClick={onRemove}
+            className="mt-2 p-1 bg-black/50 hover:bg-black duration-300 text-xs rounded-md absolute -top-3 -right-3"
+          >
+            &#x274c;
+          </button> */}
+        </div>
+      )}
     </div>
   );
 };

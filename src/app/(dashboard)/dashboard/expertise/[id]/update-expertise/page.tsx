@@ -12,7 +12,13 @@ import {
 import Link from "next/link";
 import React from "react";
 
-const UpdateExpertisePage = () => {
+interface UpdateCompanyPageProps {
+  params: {
+    id: string;
+  };
+}
+
+const UpdateExpertisePage = ({ params }: UpdateCompanyPageProps) => {
   return (
     <AdminPanelLayout>
       <ContentLayout title="Update Expertise">
@@ -41,7 +47,7 @@ const UpdateExpertisePage = () => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <UpdateExpertiseContainer />
+        <UpdateExpertiseContainer id={params?.id} />
       </ContentLayout>
     </AdminPanelLayout>
   );

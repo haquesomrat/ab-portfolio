@@ -17,7 +17,7 @@ interface UpdateCompanyPageProps {
   };
 }
 
-const UpdateServicepage = ({ params }: UpdateCompanyPageProps) => {
+const UpdateServicePage = ({ params }: UpdateCompanyPageProps) => {
   return (
     <AdminPanelLayout>
       <ContentLayout title="Companies">
@@ -48,4 +48,4 @@ const UpdateServicepage = ({ params }: UpdateCompanyPageProps) => {
   );
 };
 
-export default UpdateServicepage;
+export default UpdateServicePage;
