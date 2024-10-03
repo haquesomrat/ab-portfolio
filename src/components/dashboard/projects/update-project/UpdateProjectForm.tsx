@@ -9,6 +9,10 @@ import { Projects } from "@/types/types";
 import Loading from "@/components/global/Loading";
 import BottomGradient from "@/components/global/BottomGardient";
 import LabelInputContainer from "@/components/global/LabelInputContainer";
+import { getSingleProject } from "../../../../../actions/projects/get-single-project";
+import { updateProject } from "../../../../../actions/projects/update-project";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface CompanyUpdateFormProps {
   id: string;
@@ -17,17 +21,19 @@ interface CompanyUpdateFormProps {
 export function UpdateProjectForm({ id }: CompanyUpdateFormProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [singleProject, setSingleProject] = useState<Projects | null>(null);
-  const [selectedColor, setSelectedColor] = useState("#8da4de");
+  const [selectedColor, setSelectedColor] = useState(singleProject?.color);
+  const [refetch, setRefetch] = React.useState<boolean>(false);
+  const router = useRouter();
 
   // Fetch single project data
   useEffect(() => {
-    const getSingleProject = async () => {
-      const res = await fetch(`/dashboard/projects/api/${id}`);
-      const data = await res.json();
+    const getAProject = async () => {
+      const res = await getSingleProject(id);
+      const data = await res?.json();
       setSingleProject(data);
     };
-    getSingleProject();
-  }, [id]);
+    getAProject();
+  }, [id, refetch]);
 
   // Handling file upload with Dropzone
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -41,52 +47,70 @@ export function UpdateProjectForm({ id }: CompanyUpdateFormProps) {
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop: onDrop,
-    multiple: false, // Set to true if you want to allow multiple files
+    multiple: false,
     accept: {
-      "image/*": [], // Restrict file types to images
+      "image/*": [],
     } as Accept,
   });
 
   // Fallback loading
   if (!singleProject) return <Loading />;
 
+  const { title, description, color, live_link, preview_image } = singleProject;
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const form = e.currentTarget;
 
-    const title = (form.elements.namedItem("title") as HTMLInputElement).value;
-    const description = (
+    const newTitle = (form.elements.namedItem("title") as HTMLInputElement)
+      .value;
+    const newDescription = (
       form.elements.namedItem("description") as HTMLInputElement
     ).value;
-    const link = (form.elements.namedItem("live_link") as HTMLInputElement)
+    const newLink = (form.elements.namedItem("live_link") as HTMLInputElement)
       .value;
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("live_link", link);
-    formData.append("color", selectedColor);
-    if (files.length > 0) {
-      formData.append("preview_image", files[0]);
-    }
-
-    console.log({ title, description, link, files, selectedColor });
-
-    // call update project api
-    try {
-      const res = await fetch(`/dashboard/projects/api/update-project/${id}`, {
-        method: "PATCH",
-        body: formData,
-      });
-
-      if (res.ok) {
-        console.log("Upload successful:", await res.json());
-      } else {
-        console.error("Upload failed:", await res.json());
+    if (
+      title != newTitle ||
+      description != newDescription ||
+      live_link != newLink ||
+      selectedColor !== undefined ||
+      files.length > 0
+    ) {
+      // update project
+      try {
+        const response = await updateProject(id, {
+          title: newTitle,
+          description: newDescription,
+          live_link: newLink,
+          color: selectedColor === undefined ? color : selectedColor,
+          preview_image:
+            files.length > 0
+              ? files[0]
+              : typeof preview_image === "string"
+              ? preview_image
+              : "",
+        });
+        const updateMessage = await response?.data?.message;
+        if (response?.status === 200) {
+          toast.success(updateMessage, {
+            position: "top-center",
+          });
+          setRefetch(!refetch);
+          router.push("/dashboard/projects");
+        } else {
+          toast.error(updateMessage, {
+            position: "top-center",
+          });
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
       }
-    } catch (error) {
-      console.error("An error occurred:", error);
+    } else {
+      toast.error("No file changes", {
+        position: "top-center",
+      });
     }
   };
 
@@ -102,7 +126,7 @@ export function UpdateProjectForm({ id }: CompanyUpdateFormProps) {
             <Input
               id="title"
               name="title"
-              defaultValue={singleProject?.title}
+              defaultValue={title}
               placeholder="Enter Project Title"
               type="text"
               required
@@ -119,7 +143,7 @@ export function UpdateProjectForm({ id }: CompanyUpdateFormProps) {
               className="h-28"
               id="description"
               name="description"
-              defaultValue={singleProject?.description}
+              defaultValue={description}
               placeholder="Enter Project Description"
               required
             />
@@ -134,7 +158,7 @@ export function UpdateProjectForm({ id }: CompanyUpdateFormProps) {
             <Input
               id="live_link"
               name="live_link"
-              defaultValue={singleProject?.live_link}
+              defaultValue={live_link}
               placeholder="Enter Project Live Link"
               type="text"
               required
@@ -151,7 +175,7 @@ export function UpdateProjectForm({ id }: CompanyUpdateFormProps) {
               type="color"
               id="project_color"
               name="project_color"
-              defaultValue={singleProject?.color}
+              defaultValue={color}
               value={selectedColor}
               onChange={(e) => setSelectedColor(e.target.value)}
               className="rounded-md h-20 w-20"
@@ -198,8 +222,7 @@ export function UpdateProjectForm({ id }: CompanyUpdateFormProps) {
                     <Image
                       height={200}
                       width={500}
-                      src={singleProject?.preview_image}
-                      // src={"https://i.ibb.co.com/dGXwX8w/3f480cac7dfc.png"}
+                      src={preview_image}
                       alt="Preview"
                       className="w-32 h-16 object-contain aspect-video"
                     />

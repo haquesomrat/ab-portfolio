@@ -4,6 +4,7 @@ import { GeistSans } from "geist/font/sans";
 import "@splidejs/splide/css";
 import { ThemeProvider } from "@/provider/theme-provider";
 import AuthProvider from "@/provider/auth-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "AB - The Developer",
@@ -25,6 +26,7 @@ export default function HomepageLayout({
           disableTransitionOnChange
         >
           <AuthProvider>{children}</AuthProvider>
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

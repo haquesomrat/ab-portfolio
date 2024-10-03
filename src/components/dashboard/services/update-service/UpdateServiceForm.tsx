@@ -9,6 +9,10 @@ import { Services } from "@/types/types";
 import Loading from "@/components/global/Loading";
 import LabelInputContainer from "@/components/global/LabelInputContainer";
 import BottomGradient from "@/components/global/BottomGardient";
+import { getSingleService } from "../../../../../actions/services/get-single-service";
+import { toast } from "sonner";
+import { updateService } from "../../../../../actions/services/update-service";
+import { useRouter } from "next/navigation";
 
 interface serviceUpdateProps {
   id: string;
@@ -17,21 +21,32 @@ interface serviceUpdateProps {
 export function UpdateServicesForm({ id }: serviceUpdateProps) {
   const [file, setFile] = useState<File[]>([]);
   const [singleService, setSingleService] = useState<Services | null>(null);
+  const [refetch, setRefetch] = React.useState<boolean>(false);
+  const router = useRouter();
 
   // get single service data
   useEffect(() => {
-    const getSingleService = async () => {
-      const res = await fetch(`/dashboard/services/api/${id}`);
-      const data = await res.json();
-      setSingleService(data);
+    const getService = async () => {
+      try {
+        const response = await getSingleService(id);
+        if (response?.ok) {
+          const data = await response.json();
+          setSingleService(data);
+        } else {
+          console.error("Failed to fetch service");
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
     };
-    getSingleService();
-  }, [id]);
+    getService();
+  }, [id, refetch]);
 
+  // handling file upload with Dropzone
   const handleFileUpload = (acceptedFiles: File[]) => {
     setFile(acceptedFiles);
   };
-
+  // remove file
   const removeFile = (fileName: string) => {
     setFile(file.filter((f) => f.name !== fileName));
   };
@@ -47,39 +62,41 @@ export function UpdateServicesForm({ id }: serviceUpdateProps) {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
 
-    const name = (form.elements.namedItem("serviceName") as HTMLInputElement)
+    const newName = (form.elements.namedItem("serviceName") as HTMLInputElement)
       .value;
-    const details = (
+    const newDetails = (
       form.elements.namedItem("serviceDetails") as HTMLInputElement
     ).value;
 
-    const formData = new FormData();
-
-    formData.append("name", name);
-    formData.append("details", details);
-
-    // Handle the logo file upload
-    if (file.length > 0) {
-      formData.append("logo", file[0]);
-    } else if (typeof logo === "string") {
-      formData.append("logo", logo);
-      // If no new file, append the old logo
-    }
-
-    // update the service data
-    try {
-      const res = await fetch(`/dashboard/services/api/update-service/${id}`, {
-        method: "PATCH",
-        body: formData,
-      });
-
-      if (res.ok) {
-        console.log("Upload successful:", await res.json());
-      } else {
-        console.error("Upload failed:", await res.json());
+    // check the new input
+    if (name != newName || details != newDetails || file.length > 0) {
+      // update the service data
+      try {
+        const response = await updateService(id, {
+          name: newName,
+          details: newDetails,
+          logo:
+            file.length > 0 ? file[0] : typeof logo === "string" ? logo : "",
+        });
+        const updateMessage = await response?.data?.message;
+        if (response?.status === 200) {
+          toast.success(updateMessage, {
+            position: "top-center",
+          });
+          setRefetch(!refetch);
+          router.push("/dashboard/services");
+        } else {
+          toast.error(updateMessage, {
+            position: "top-center",
+          });
+        }
+      } catch (error) {
+        console.error("An error occurred", error);
       }
-    } catch (error) {
-      console.error("An error occurred", error);
+    } else {
+      toast.error("No file changes", {
+        position: "top-center",
+      });
     }
   };
 
@@ -211,13 +228,6 @@ const DropzoneComponent = ({
                     className="w-24 h-24 object-cover rounded-md"
                   />
                 )}
-                <button
-                  type="button"
-                  onClick={() => onRemove("existingLogo")}
-                  className="mt-2 p-1 bg-black/50 hover:bg-black duration-300 text-xs rounded-md absolute -top-3 -right-3"
-                >
-                  &#x274c;
-                </button>
               </div>
             )}
       </div>

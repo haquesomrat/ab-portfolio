@@ -1,12 +1,13 @@
 "use client";
 import React, { useState } from "react";
-import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 import LabelInputContainer from "@/components/global/LabelInputContainer";
 import BottomGradient from "@/components/global/BottomGardient";
+import { addService } from "../../../../../actions/services/add-service";
+import { toast } from "sonner";
 
 export function AddServicesForm() {
   const [file, setFile] = useState<File[]>([]);
@@ -30,33 +31,38 @@ export function AddServicesForm() {
       form.elements.namedItem("serviceDetails") as HTMLInputElement
     ).value;
 
-    const formData = new FormData();
+    // if (file.length > 0) {
+    //   formData.append("logo", file[0]);
+    // }
 
-    formData.append("name", name);
-    formData.append("details", details);
+    // post service
     if (file.length > 0) {
-      formData.append("logo", file[0]);
-    }
-
-    try {
-      const res = await fetch("/dashboard/services/api/add-service", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (res.ok) {
-        console.log("Upload successful:", await res.json());
-      } else {
-        console.error("Upload failed:", await res.json());
+      try {
+        const response = await addService({ name, details, logo: file[0] });
+        const data = await response?.json();
+        if (response?.ok) {
+          form.reset();
+          setFile([]);
+          toast.success(data?.message, {
+            position: "top-center",
+          });
+        } else {
+          console.error("Upload failed:", await response?.json());
+        }
+      } catch (error) {
+        console.error("An error occured", error);
       }
-    } catch (error) {
-      console.error("An error occured", error);
+    } else {
+      toast.error("Please provide all data", {
+        position: "top-center",
+      });
     }
   };
 
   return (
     <div className="w-full mx-auto rounded-none md:rounded-2xl shadow-input bg-white dark:bg-transparent">
       <form className="my-8" onSubmit={handleSubmit}>
+        {/* service icon */}
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
             <Label className="mb-2" htmlFor="serviceIcon">
@@ -69,6 +75,7 @@ export function AddServicesForm() {
             />
           </LabelInputContainer>
         </div>
+        {/* service name */}
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
             <Label className="mb-2" htmlFor="services_name">
@@ -83,6 +90,7 @@ export function AddServicesForm() {
             />
           </LabelInputContainer>
         </div>
+        {/* service details */}
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
             <Label className="mb-2" htmlFor="services_details">

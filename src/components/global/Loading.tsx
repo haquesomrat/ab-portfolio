@@ -12,7 +12,7 @@ const Loading = () => {
   let [loading, setLoading] = useState(true);
   let [color, setColor] = useState("#ef6172");
   return (
-    <div className="w-full h-screen flex items-center justify-center">
+    <div className="w-full h-[calc(100vh-260px)] flex items-center justify-center">
       <SyncLoader
         color={color}
         loading={loading}

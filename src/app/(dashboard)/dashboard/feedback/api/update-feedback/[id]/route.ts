@@ -14,7 +14,7 @@ export const PATCH = async (
   }
   const updateDoc = await req.formData();
   const name = updateDoc.get("name") as String | null;
-  const image = updateDoc.get("image") as File | null;
+  const image = updateDoc.get("image") as File | string;
   const company = updateDoc.get("company") as String | null;
   const feedback = updateDoc.get("feedback") as String | null;
   const color = updateDoc.get("color") as String | null;
@@ -47,9 +47,11 @@ export const PATCH = async (
       } else {
         throw new Error("Image upload failed");
       }
+    } else {
+      imageUrl = image;
     }
 
-    // Prepare the new project data
+    // Prepare the updated feedback data
     const newFeedback = {
       name,
       company,

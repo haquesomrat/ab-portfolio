@@ -1,12 +1,13 @@
 "use client";
 import React, { useState } from "react";
-import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 import LabelInputContainer from "@/components/global/LabelInputContainer";
 import BottomGradient from "@/components/global/BottomGardient";
+import { addExpertise } from "../../../../../actions/expertise/add-expertise";
+import { toast } from "sonner";
 
 export function AddExpertiseForm() {
   const [file, setFile] = useState<File[]>([]);
@@ -36,32 +37,34 @@ export function AddExpertiseForm() {
       form.elements.namedItem("largeRadius") as HTMLInputElement
     ).value;
 
-    const formData = new FormData();
-
-    formData.append("name", name);
-    formData.append("duration", duration);
-    formData.append("delay", delay);
-    formData.append("radiusSmall", radiusSmall);
-    formData.append("radiusLarge", radiusLarge);
     if (file.length > 0) {
-      formData.append("logo", file[0]);
-    }
-
-    console.log(name, duration, delay, radiusSmall, radiusLarge, file[0]);
-
-    try {
-      const res = await fetch("/dashboard/expertise/api/add-expertise", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (res.ok) {
-        console.log("Upload successful:", await res.json());
-      } else {
-        console.error("Upload failed:", await res.json());
+      // post expertise
+      try {
+        const response = await addExpertise({
+          name,
+          duration,
+          delay,
+          radiusLarge,
+          radiusSmall,
+          logo: file[0],
+        });
+        const data = await response?.json();
+        if (response?.ok) {
+          form.reset();
+          setFile([]);
+          toast.success(data?.message, {
+            position: "top-center",
+          });
+        } else {
+          console.error("Upload failed:", await response?.json());
+        }
+      } catch (error) {
+        console.error("An error occured", error);
       }
-    } catch (error) {
-      console.error("An error occured", error);
+    } else {
+      toast.error("Please provide all data", {
+        position: "top-center",
+      });
     }
   };
 

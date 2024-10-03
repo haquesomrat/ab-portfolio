@@ -386,7 +386,7 @@ export const fakeOrbitalIconsData: Expertises[] = [
   // first orbit::1
   // azure
   {
-    id: "1",
+    _id: "1",
     name: "azure",
     icon: (
       <svg
@@ -420,14 +420,14 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: "60",
-    delay: "50",
-    radiusSmall: "80",
-    radiusLarge: "200",
+    duration: 60,
+    delay: 50,
+    radiusSmall: 80,
+    radiusLarge: 200,
   },
   // vue js
   {
-    id: "2",
+    _id: "2",
     name: "vue.js",
     icon: (
       <svg
@@ -461,15 +461,15 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: "60",
-    delay: "30",
-    radiusSmall: "80",
-    radiusLarge: "200",
+    duration: 60,
+    delay: 30,
+    radiusSmall: 80,
+    radiusLarge: 200,
   },
   // second orbit::2
   // python
   {
-    id: "3",
+    _id: "3",
     name: "python",
     icon: (
       <svg
@@ -503,14 +503,14 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: "60",
-    delay: "60",
-    radiusSmall: "130",
-    radiusLarge: "300",
+    duration: 60,
+    delay: 60,
+    radiusSmall: 130,
+    radiusLarge: 300,
   },
   // golang
   {
-    id: "4",
+    _id: "4",
     name: "golang",
     icon: (
       <svg
@@ -544,15 +544,15 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: "60",
-    delay: "20",
-    radiusSmall: "130",
-    radiusLarge: "300",
+    duration: 60,
+    delay: 20,
+    radiusSmall: 130,
+    radiusLarge: 300,
   },
   // third orbit::3
   // figma
   {
-    id: "5",
+    _id: "5",
     name: "figma",
     icon: (
       <svg
@@ -586,14 +586,14 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: "60",
-    delay: "30",
-    radiusSmall: "180",
-    radiusLarge: "400",
+    duration: 60,
+    delay: 30,
+    radiusSmall: 180,
+    radiusLarge: 400,
   },
   // flutter
   {
-    id: "6",
+    _id: "6",
     name: "flutter",
     icon: (
       <svg
@@ -624,14 +624,14 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: "60",
-    delay: "40",
-    radiusSmall: "180",
-    radiusLarge: "400",
+    duration: 60,
+    delay: 40,
+    radiusSmall: 180,
+    radiusLarge: 400,
   },
   // react
   {
-    id: "7",
+    _id: "7",
     name: "react.js",
     icon: (
       <svg
@@ -665,15 +665,15 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: "60",
-    delay: "50",
-    radiusSmall: "180",
-    radiusLarge: "400",
+    duration: 60,
+    delay: 50,
+    radiusSmall: 180,
+    radiusLarge: 400,
   },
   // forth orbit::4
   // java
   {
-    id: "8",
+    _id: "8",
     name: "java",
     icon: (
       <svg
@@ -707,14 +707,14 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: "60",
-    delay: "60",
-    radiusSmall: "230",
-    radiusLarge: "500",
+    duration: 60,
+    delay: 60,
+    radiusSmall: 230,
+    radiusLarge: 500,
   },
   // dot net
   {
-    id: "9",
+    _id: "9",
     name: "dot net",
     icon: (
       <svg
@@ -745,10 +745,10 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: "60",
-    delay: "20",
-    radiusSmall: "230",
-    radiusLarge: "500",
+    duration: 60,
+    delay: 20,
+    radiusSmall: 230,
+    radiusLarge: 500,
   },
 ];
 
@@ -776,29 +776,6 @@ export const dummyProjects: Projects[] = [
     live_link: "https://example.com/project3",
     preview_image: "https://via.placeholder.com/400x300",
     color: "#3357FF",
-  },
-];
-
-export const dummyExpertises: Expertises[] = [
-  {
-    id: 1,
-    name: "Web Development",
-    logo: "https://via.placeholder.com/100x100?text=Web+Dev",
-  },
-  {
-    id: 2,
-    name: "Data Science",
-    logo: "https://via.placeholder.com/100x100?text=Data+Science",
-  },
-  {
-    id: 3,
-    name: "Graphic Design",
-    logo: "https://via.placeholder.com/100x100?text=Graphic+Design",
-  },
-  {
-    id: 4,
-    name: "Marketing",
-    logo: "https://via.placeholder.com/100x100?text=Marketing",
   },
 ];
 

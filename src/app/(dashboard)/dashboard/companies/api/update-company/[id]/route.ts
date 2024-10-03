@@ -13,14 +13,13 @@ export const PATCH = async (
     throw new Error("Failed to connect to the database");
   }
   const updateDoc = await req.formData();
-  const companyImage = updateDoc.get("companyImage") as File | null;
+  const companyImage = updateDoc.get("companyImage") as File | string;
   const companyName = updateDoc.get("companyName") as String | null;
 
-  // console.log(typeof companyImage);
-
   try {
-    let imageUrl: string | null = null;
+    let imageUrl: string | File = companyImage;
 
+    // handle image file with imageBB
     if (companyImage && typeof companyImage === "object") {
       const arrayBuffer = await companyImage.arrayBuffer();
       const base64String = Buffer.from(arrayBuffer).toString("base64");
@@ -46,8 +45,8 @@ export const PATCH = async (
       }
     }
 
-    // Prepare the new company data
-    const newCompany = {
+    // Prepare the updated company data
+    const updatedCompany = {
       companyName,
       companyImg: imageUrl || null,
     };
@@ -55,14 +54,14 @@ export const PATCH = async (
     // Update the company in the database
     const result = await db.collection("companies").updateOne(
       { _id: new ObjectId(params.id) },
-      { $set: newCompany },
+      { $set: updatedCompany },
       { upsert: false } // Ensures no new document is created if the ID doesn't exist
     );
 
     return NextResponse.json({
       message: "Company updated successfully",
       result,
-      newCompany,
+      updatedCompany,
     });
   } catch (error) {
     console.log(error);

@@ -47,10 +47,12 @@ export const PATCH = async (
       } else {
         throw new Error("Image upload failed");
       }
+    } else {
+      imageUrl = preview_image;
     }
 
-    // Prepare the new project data
-    const newProject = {
+    // Prepare the update project data
+    const updatedProject = {
       title,
       description,
       color,
@@ -61,14 +63,14 @@ export const PATCH = async (
     // Update the company in the database
     const result = await db.collection("projects").updateOne(
       { _id: new ObjectId(params.id) },
-      { $set: newProject },
+      { $set: updatedProject },
       { upsert: false } // Ensures no new document is created if the ID doesn't exist
     );
 
     return NextResponse.json({
       message: "Project updated successfully",
       result,
-      newProject,
+      updatedProject,
     });
   } catch (error) {
     console.log(error);

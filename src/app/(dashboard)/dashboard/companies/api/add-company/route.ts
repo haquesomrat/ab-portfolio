@@ -7,12 +7,18 @@ export const POST = async (req: Request): Promise<NextResponse> => {
   const companyImage = formData.get("companyImage") as File | null;
   const companyName = formData.get("companyName") as String | null;
 
-  console.log(companyImage, companyName);
+  // console.log(companyImage, companyName);
 
   if (!companyImage) {
     return NextResponse.json({ error: "No files received." }, { status: 400 });
   }
 
+  if (companyImage.type === "image/svg+xml") {
+    return NextResponse.json(
+      { error: "SVG files are not supported as company image." },
+      { status: 400 }
+    );
+  }
   try {
     const arrayBuffer = await companyImage.arrayBuffer();
     const base64String = Buffer.from(arrayBuffer).toString("base64");

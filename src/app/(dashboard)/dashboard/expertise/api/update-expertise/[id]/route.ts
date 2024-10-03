@@ -18,20 +18,20 @@ export const PATCH = async (
   const delay = updateDoc.get("delay") as string | null;
   const radiusSmall = updateDoc.get("radiusSmall") as string | null;
   const radiusLarge = updateDoc.get("radiusLarge") as string | null;
-  const logo = updateDoc.get("logo") as File | null;
+  const logo = updateDoc.get("logo") as File | string;
 
   try {
     let logoUrl: string | null = null;
 
     // Handle SVG uploads
-    if (logo) {
+    if (logo && typeof logo === "object") {
       logoUrl = await logo.text();
     } else {
       logoUrl = logo;
     }
 
-    // Prepare the new company data
-    const newExpertise = {
+    // Prepare the updated expertise data
+    const updatedExpertise = {
       name,
       duration,
       delay,
@@ -43,14 +43,14 @@ export const PATCH = async (
     // Update the company in the database
     const result = await db.collection("expertises").updateOne(
       { _id: new ObjectId(params.id) },
-      { $set: newExpertise },
+      { $set: updatedExpertise },
       { upsert: false } // Ensures no new document is created if the ID doesn't exist
     );
 
     return NextResponse.json({
       message: "Expertise updated successfully",
       result,
-      newExpertise,
+      updatedExpertise,
     });
   } catch (error) {
     console.log(error);

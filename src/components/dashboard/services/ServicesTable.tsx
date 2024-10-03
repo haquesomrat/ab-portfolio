@@ -21,8 +21,6 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -38,6 +36,9 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { Services } from "@/types/types";
+import { getAllServices } from "../../../../actions/services/get-all-services";
+import { deleteService } from "../../../../actions/services/delete-service";
+import { toast } from "sonner";
 
 export function ServiceTable() {
   // Fetch all services on component mount
@@ -45,11 +46,11 @@ export function ServiceTable() {
 
   // get all services
   React.useEffect(() => {
-    const getAllServices = async () => {
+    const getServices = async () => {
       try {
-        const res = await fetch("/dashboard/services/api");
-        if (res.ok) {
-          const data: Services[] = await res.json();
+        const response = await getAllServices();
+        if (response?.ok) {
+          const data: Services[] = await response.json();
           setServices(data);
         } else {
           console.error("Failed to fetch services");
@@ -58,26 +59,31 @@ export function ServiceTable() {
         console.error("An error occurred while fetching services:", error);
       }
     };
-    getAllServices();
+    getServices();
   }, [setServices]);
 
-  // console.log(services);
-
   // Handle company deletion
-  const handleDeleteService = async (id: String) => {
-    console.log(id);
-
+  const handleDeleteService = async (id: string) => {
     try {
-      const res = await fetch(`/dashboard/services/api/delete-service/${id}`, {
-        method: "DELETE",
-      });
-      if (res.ok) {
+      const response = await deleteService(id);
+      const data = await response?.json();
+      const selectedService = services.filter((service) => service._id === id);
+      const deletedServiceName = selectedService[0]?.name;
+      if (response?.ok) {
+        // Show success toast with the response message
+        toast.success(`${deletedServiceName} is deleted successfully`, {
+          position: "top-center",
+        });
+
+        // Update the companies state by filtering out the updated company
         setServices((prevServices) =>
           prevServices.filter((service) => service._id !== id)
         );
-        console.log("Upload successful:", await res.json());
       } else {
-        console.error("Upload failed:", await res.json());
+        // Handle unsuccessful response
+        toast.error(data?.message, {
+          position: "top-center",
+        });
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -222,7 +228,7 @@ export function ServiceTable() {
     <div className="w-full py-4">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter company names..."
+          placeholder="Filter service names..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)

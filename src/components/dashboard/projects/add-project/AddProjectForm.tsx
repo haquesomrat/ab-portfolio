@@ -7,6 +7,8 @@ import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
 import LabelInputContainer from "@/components/global/LabelInputContainer";
 import BottomGradient from "@/components/global/BottomGardient";
+import { addProject } from "../../../../../actions/projects/add-project";
+import { toast } from "sonner";
 
 export function AddProjectForm() {
   const [files, setFiles] = useState<File[]>([]);
@@ -32,33 +34,36 @@ export function AddProjectForm() {
     const link = (form.elements.namedItem("live_link") as HTMLInputElement)
       .value;
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("live_link", link);
-    formData.append("color", selectedColor);
     if (files.length > 0) {
-      formData.append("preview_image", files[0]);
-    }
-
-    console.log({ title, description, link, files, selectedColor });
-
-    try {
-      const res = await fetch(`/dashboard/projects/api/add-project`, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (res.ok) {
-        console.log("Upload successful:", await res.json());
-      } else {
-        console.error("Upload failed:", await res.json());
+      // add project
+      try {
+        const response = await addProject({
+          title,
+          description,
+          live_link: link,
+          color: selectedColor,
+          preview_image: files[0],
+        });
+        const data = await response?.json();
+        if (response?.ok) {
+          form.reset();
+          setFiles([]);
+          setSelectedColor("#8da4de");
+          toast.success(data?.message, {
+            position: "top-center",
+          });
+        } else {
+          console.error("Upload failed:", await response?.json());
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
       }
-    } catch (error) {
-      console.error("An error occurred:", error);
+    } else {
+      toast.error("Please provide all data", {
+        position: "top-center",
+      });
     }
   };
-
   const dropzoneOptions = {
     onDrop: handleDrop,
     multiple: false, // Set to true if you want to allow multiple files

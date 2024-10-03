@@ -21,8 +21,6 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -36,8 +34,10 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { fakeOrbitalIconsData } from "@/lib/data";
 import { Expertises } from "@/types/types";
+import { getAllExpertises } from "../../../../actions/expertise/get-all-expertises";
+import { deleteExpertise } from "../../../../actions/expertise/delete-expertise";
+import { toast } from "sonner";
 
 export function ExpertiseTable() {
   // Explicitly define the state type as an array of Companies
@@ -45,11 +45,11 @@ export function ExpertiseTable() {
 
   // Fetch all companies on component mount
   React.useEffect(() => {
-    const getAllExpertises = async () => {
+    const getExpertises = async () => {
       try {
-        const res = await fetch(`/dashboard/expertise/api`);
-        if (res.ok) {
-          const data: Expertises[] = await res.json();
+        const response = await getAllExpertises();
+        if (response?.ok) {
+          const data: Expertises[] = await response.json();
           setExpertises(data);
         } else {
           console.error("Failed to fetch expertises");
@@ -58,25 +58,32 @@ export function ExpertiseTable() {
         console.error("An error occurred while fetching expertises:", error);
       }
     };
-    getAllExpertises();
+    getExpertises();
   }, []);
 
   // Handle company deletion
-  const handleDeleteCompany = async (id: String) => {
+  const handleDeleteCompany = async (id: string) => {
     try {
-      const res = await fetch(
-        `/dashboard/expertise/api/delete-expertise/${id}`,
-        {
-          method: "DELETE",
-        }
+      const response = await deleteExpertise(id);
+      const data = await response?.json();
+      const selectedExpertise = expertises.filter(
+        (expertise) => expertise._id === id
       );
-      if (res.ok) {
+      const deletedExpertiseName = selectedExpertise[0]?.name;
+      if (response?.ok) {
+        // Show success toast with the response message
+        toast.success(`${deletedExpertiseName} is deleted successfully`, {
+          position: "top-center",
+        });
+
+        // Update the companies state by filtering out the updated project
         setExpertises((prevExpertise) =>
           prevExpertise.filter((expertise) => expertise._id !== id)
         );
-        console.log("Upload successful:", await res.json());
       } else {
-        console.error("Upload failed:", await res.json());
+        toast.success(data?.message, {
+          position: "top-center",
+        });
       }
     } catch (error) {
       console.error("An error occurred:", error);

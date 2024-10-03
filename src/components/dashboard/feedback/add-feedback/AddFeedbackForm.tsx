@@ -6,6 +6,10 @@ import { Input } from "@/components/ui/input";
 import { useDropzone, Accept } from "react-dropzone";
 import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
+import { addFeedback } from "../../../../../actions/feedback/add-feedback";
+import { toast } from "sonner";
+import BottomGradient from "@/components/global/BottomGardient";
+import LabelInputContainer from "@/components/global/LabelInputContainer";
 
 export function AddFeedbackForm() {
   const [files, setFiles] = useState<File[]>([]);
@@ -21,7 +25,6 @@ export function AddFeedbackForm() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const form = e.currentTarget;
 
     const name = (form.elements.namedItem("name") as HTMLInputElement).value;
@@ -32,31 +35,36 @@ export function AddFeedbackForm() {
     const color = (
       form.elements.namedItem("feedback_color") as HTMLInputElement
     ).value;
-
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("company", company);
-    formData.append("feedback", feedback);
-    formData.append("color", color);
     if (files.length > 0) {
-      formData.append("image", files[0]);
-    }
-
-    console.log({ name, company, feedback, color, files });
-
-    try {
-      const res = await fetch(`/dashboard/feedback/api/add-feedback`, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (res.ok) {
-        console.log("Upload successful:", await res.json());
-      } else {
-        console.error("Upload failed:", await res.json());
+      // post feedback
+      try {
+        const response = await addFeedback({
+          name,
+          company,
+          feedback,
+          color,
+          image: files[0],
+        });
+        const data = await response?.json();
+        if (response?.ok) {
+          toast.success(data?.message, {
+            position: "top-center",
+          });
+          form.reset();
+          setFiles([]);
+          setSelectedColor("#A8C0D2");
+        } else {
+          toast.error(data?.message, {
+            position: "top-center",
+          });
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
       }
-    } catch (error) {
-      console.error("An error occurred:", error);
+    } else {
+      toast.error("Please provide all data", {
+        position: "top-center",
+      });
     }
   };
 
@@ -186,26 +194,3 @@ export function AddFeedbackForm() {
     </div>
   );
 }
-
-const BottomGradient = () => {
-  return (
-    <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-    </>
-  );
-};
-
-const LabelInputContainer = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return (
-    <div className={cn("flex flex-col space-y-2 w-full", className)}>
-      {children}
-    </div>
-  );
-};

@@ -35,20 +35,21 @@ import {
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { dummyCompaniesData } from "@/lib/data";
 import { Companies } from "@/types/types";
+import { getAllCompanies } from "../../../../actions/companies/get-all-companies";
+import { deleteCompany } from "../../../../actions/companies/delete-company";
+import { toast } from "sonner";
 
 export function CompanyList() {
-  const [companies, setCompanies] =
-    React.useState<Companies[]>(dummyCompaniesData);
+  const [companies, setCompanies] = React.useState<Companies[]>([]);
 
   // Fetch all companies on component mount
   React.useEffect(() => {
-    const getAllCompanies = async () => {
+    const getCompanies = async () => {
       try {
-        const res = await fetch(`/dashboard/companies/api`);
-        if (res?.ok) {
-          const data: Companies[] = await res.json();
+        const response = await getAllCompanies();
+        if (response?.ok) {
+          const data: Companies[] = await response.json();
           setCompanies(data);
         } else {
           console.error("Failed to fetch companies");
@@ -57,23 +58,31 @@ export function CompanyList() {
         console.error("An error occurred while fetching companies:", error);
       }
     };
-    getAllCompanies();
+    getCompanies();
   }, []);
 
   // Handle company deletion
   const handleDeleteCompany = async (id: string) => {
-    // delete the company data
     try {
-      const res = await fetch(`/dashboard/companies/api/delete-company/${id}`, {
-        method: "DELETE",
-      });
-      if (res.ok) {
+      const response = await deleteCompany(id);
+      const data = await response?.json();
+      const selectedCompany = companies.filter((company) => company._id === id);
+      const deletedCompanyName = selectedCompany[0]?.companyName;
+      if (response?.ok) {
+        // Show success toast with the response message
+        toast.success(`${deletedCompanyName} is deleted successfully`, {
+          position: "top-center",
+        });
+
+        // Update the companies state by filtering out the updated company
         setCompanies((prevCompanies) =>
           prevCompanies.filter((company) => company._id !== id)
         );
-        console.log("Upload successful:", await res.json());
       } else {
-        console.error("Upload failed:", await res.json());
+        // Handle unsuccessful response
+        toast.error(data?.message, {
+          position: "top-center",
+        });
       }
     } catch (error) {
       console.error("An error occurred:", error);

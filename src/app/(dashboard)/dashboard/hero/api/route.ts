@@ -10,12 +10,13 @@ export const POST = async (req: Request): Promise<NextResponse> => {
     const headline = formData.get("headline") as String | null;
     const intro = formData.get("intro") as String | null;
 
+    console.log(logo);
+
     // Validate input data
     if (!logo || !motto || !headline || !intro) {
       return NextResponse.json(
         {
-          error:
-            "Please provide all the required fields (name, details, and logo).",
+          error: "Please provide all the required fields",
         },
         { status: 400 }
       );

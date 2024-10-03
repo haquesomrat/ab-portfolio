@@ -21,8 +21,6 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -37,22 +35,22 @@ import {
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { dummyFeedbacks } from "@/lib/data";
 import { Feedbacks } from "@/types/types";
+import { getAllFeedbacks } from "../../../../actions/feedback/get-all-feedbacks";
+import { deleteFeedback } from "../../../../actions/feedback/delete-feedback";
+import { toast } from "sonner";
 
 export function FeedbackTable() {
   // Explicitly define the state type as an array of Companies
-  const [feedbacks, setFeedbacks] = React.useState<Feedbacks[]>(dummyFeedbacks);
-
-  console.log(feedbacks);
+  const [feedbacks, setFeedbacks] = React.useState<Feedbacks[]>([]); //dummyFeedbacks
 
   // Fetch all companies on component mount
   React.useEffect(() => {
-    const getAllFeedbacks = async () => {
+    const getFeedbacks = async () => {
       try {
-        const res = await fetch(`/dashboard/feedback/api`);
-        if (res.ok) {
-          const data: Feedbacks[] = await res.json(); // Explicitly define the type of fetched data
+        const response = await getAllFeedbacks();
+        if (response?.ok) {
+          const data: Feedbacks[] = await response.json(); // Explicitly define the type of fetched data
           setFeedbacks(data);
         } else {
           console.error("Failed to fetch feedbacks");
@@ -61,22 +59,32 @@ export function FeedbackTable() {
         console.error("An error occurred while fetching feedbacks:", error);
       }
     };
-    getAllFeedbacks();
+    getFeedbacks();
   }, []);
 
   // Handle feedback deletion
-  const handleDeleteFeedback = async (id: String) => {
+  const handleDeleteFeedback = async (id: string) => {
     try {
-      const res = await fetch(`/dashboard/feedback/api/delete-feedback/${id}`, {
-        method: "DELETE",
-      });
-      if (res.ok) {
+      const response = await deleteFeedback(id);
+      const data = await response?.json();
+      const selectedFeedback = feedbacks.filter(
+        (feedback) => feedback._id === id
+      );
+      const deletedFeedbackName = selectedFeedback[0]?.name;
+      if (response?.ok) {
+        // Show success toast with the response message
+        toast.success(`${deletedFeedbackName} is deleted successfully`, {
+          position: "top-center",
+        });
+
+        // Update the companies state by filtering out the updated feedback
         setFeedbacks((prevFeedback) =>
           prevFeedback.filter((feedback) => feedback._id !== id)
         );
-        console.log("Upload successful:", await res.json());
       } else {
-        console.error("Upload failed:", await res.json());
+        toast.success(data?.message, {
+          position: "top-center",
+        });
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -84,8 +92,6 @@ export function FeedbackTable() {
   };
 
   const data: Feedbacks[] = feedbacks;
-
-  // console.log(feedbacks);
 
   const columns: ColumnDef<Feedbacks>[] = [
     {
@@ -236,7 +242,7 @@ export function FeedbackTable() {
     <div className="w-full py-4">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter company names..."
+          placeholder="Filter feedbacks by name..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)

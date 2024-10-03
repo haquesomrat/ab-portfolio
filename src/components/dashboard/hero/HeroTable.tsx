@@ -1,17 +1,21 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useDropzone, Accept } from "react-dropzone";
 import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
 import { Hero } from "@/types/types";
-import Loading from "@/components/global/Loading";
+import { toast } from "sonner";
+import { getHeroData } from "../../../../actions/hero/get-hero-data";
+import BottomGradient from "@/components/global/BottomGardient";
+import LabelInputContainer from "@/components/global/LabelInputContainer";
+import { addHeroData } from "../../../../actions/hero/add-hero-data";
 
 export function HeroTable() {
   const [files, setFiles] = useState<File[]>([]);
   const [hero, setHero] = useState<Hero[]>([]);
+  const [refetch, setRefetch] = useState<Boolean>(false);
 
   const handleDrop = (acceptedFiles: File[]) => {
     setFiles(acceptedFiles);
@@ -23,7 +27,6 @@ export function HeroTable() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const form = e.currentTarget;
 
     const motto = (form.elements.namedItem("motto") as HTMLInputElement).value;
@@ -31,29 +34,36 @@ export function HeroTable() {
       .value;
     const intro = (form.elements.namedItem("intro") as HTMLInputElement).value;
 
-    const formData = new FormData();
-    formData.append("motto", motto);
-    formData.append("headline", headline);
-    formData.append("intro", intro);
+    // check logo
     if (files.length > 0) {
-      formData.append("logo", files[0]);
-    }
-
-    console.log({ motto, headline, intro, files: files[0] });
-
-    try {
-      const res = await fetch(`/dashboard/hero/api`, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (res.ok) {
-        console.log("Upload successful:", await res.json());
-      } else {
-        console.error("Upload failed:", await res.json());
+      // post/update hero data to database
+      try {
+        const response = await addHeroData({
+          motto,
+          headline,
+          intro,
+          logo: files[0],
+        });
+        const data = await response?.json();
+        if (response?.ok) {
+          form.reset();
+          setFiles([]);
+          toast.success(data?.message, {
+            position: "top-center",
+          });
+          setRefetch(!refetch);
+        } else {
+          toast.success(data?.message, {
+            position: "top-center",
+          });
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
       }
-    } catch (error) {
-      console.error("An error occurred:", error);
+    } else {
+      toast.error("Please provide all data", {
+        position: "top-center",
+      });
     }
   };
 
@@ -68,23 +78,23 @@ export function HeroTable() {
 
   const { getRootProps, getInputProps } = useDropzone(dropzoneOptions);
 
-  // get all services
+  // get hero data
   useEffect(() => {
     const getHero = async () => {
       try {
-        const res = await fetch("/dashboard/hero/api");
-        if (res.ok) {
-          const data: Hero[] = await res.json();
+        const response = await getHeroData();
+        if (response?.ok) {
+          const data: Hero[] = await response.json();
           setHero(data);
         } else {
-          console.error("Failed to fetch services");
+          console.error("Failed to fetch hero data");
         }
       } catch (error) {
-        console.error("An error occurred while fetching services:", error);
+        console.error("An error occurred :", error);
       }
     };
     getHero();
-  }, [setHero]);
+  }, [setHero, refetch]);
 
   return (
     <div className="w-full mx-auto rounded-none md:rounded-2xl shadow-input bg-white dark:bg-transparent">
@@ -127,6 +137,7 @@ export function HeroTable() {
                   <div className="relative group mt-4 w-fit">
                     {hero[0].logo.startsWith("<svg") ? (
                       <div
+                        className="object-contain h-24 w-24 bg-background rounded-md flex items-center justify-center"
                         dangerouslySetInnerHTML={{ __html: hero[0]?.logo }}
                       />
                     ) : (
@@ -138,13 +149,6 @@ export function HeroTable() {
                         className="w-24 h-24 object-contain rounded-md"
                       />
                     )}
-                    <button
-                      type="button"
-                      onClick={handleDelete}
-                      className="mt-2 p-1 bg-black/50 hover:bg-black duration-300 text-xs rounded-md absolute -top-3 -right-3"
-                    >
-                      &#x274c;
-                    </button>
                   </div>
                 )
               )}
@@ -212,26 +216,3 @@ export function HeroTable() {
     </div>
   );
 }
-
-const BottomGradient = () => {
-  return (
-    <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-    </>
-  );
-};
-
-const LabelInputContainer = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return (
-    <div className={cn("flex flex-col space-y-2 w-full", className)}>
-      {children}
-    </div>
-  );
-};

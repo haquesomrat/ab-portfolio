@@ -1,11 +1,16 @@
 "use client";
 import React, { useEffect, useState, useCallback } from "react";
 import { Accept, useDropzone } from "react-dropzone";
-import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import Loading from "@/components/global/Loading";
+import { getSingleCompany } from "../../../../../actions/companies/get-single-company";
+import { updateCompany } from "../../../../../actions/companies/update-company";
+import { toast } from "sonner";
+import LabelInputContainer from "@/components/global/LabelInputContainer";
+import BottomGradient from "@/components/global/BottomGardient";
+import { useRouter } from "next/navigation";
 
 interface CompanyUpdateFormProps {
   id: string;
@@ -18,16 +23,26 @@ interface Company {
 export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [singleCompany, setSingleCompany] = useState<Company | null>(null);
+  const [refetch, setRefetch] = React.useState<boolean>(false);
+  const router = useRouter();
 
   // get single company data
   useEffect(() => {
-    const getSingleCompany = async () => {
-      const res = await fetch(`/dashboard/companies/api/${id}`);
-      const data = await res.json();
-      setSingleCompany(data);
+    const getACompany = async () => {
+      try {
+        const response = await getSingleCompany(id);
+        if (response?.ok) {
+          const data = await response.json();
+          setSingleCompany(data);
+        } else {
+          console.error("Failed to fetch company");
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
     };
-    getSingleCompany();
-  }, [id]);
+    getACompany();
+  }, [id, refetch]);
 
   // handling file upload with Dropzone
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -63,28 +78,34 @@ export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
       form.elements.namedItem("companyName") as HTMLInputElement
     ).value;
 
-    const formData = new FormData();
-    formData.append("companyName", newCompanyName);
-    if (files.length < 1) {
-      formData.append("companyImage", singleCompany?.companyImg);
-    } else {
-      formData.append("companyImage", files[0]);
-    }
-
     // update the company data
-    try {
-      const res = await fetch(`/dashboard/companies/api/update-company/${id}`, {
-        method: "PATCH",
-        body: formData,
-      });
+    if (companyName != newCompanyName || files.length > 0) {
+      try {
+        const response = await updateCompany(id, {
+          companyName: newCompanyName,
+          companyImage: files.length > 0 ? files[0] : singleCompany?.companyImg,
+        });
 
-      if (res.ok) {
-        console.log("Upload successful:", await res.json());
-      } else {
-        console.error("Upload failed:", await res.json());
+        const updateMessage = await response?.data?.message;
+
+        if (response?.status === 200) {
+          toast.success(updateMessage, {
+            position: "top-center",
+          });
+          setRefetch(!refetch);
+          router.push("/dashboard/companies");
+        } else {
+          toast.error(updateMessage, {
+            position: "top-center",
+          });
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
       }
-    } catch (error) {
-      console.error("An error occurred:", error);
+    } else {
+      toast.error("No file changes", {
+        position: "top-center",
+      });
     }
   };
 
@@ -167,26 +188,3 @@ export function CompanyUpdateForm({ id }: CompanyUpdateFormProps) {
     </div>
   );
 }
-
-const BottomGradient = () => {
-  return (
-    <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-    </>
-  );
-};
-
-const LabelInputContainer = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return (
-    <div className={cn("flex flex-col space-y-2 w-full", className)}>
-      {children}
-    </div>
-  );
-};

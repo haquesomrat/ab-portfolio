@@ -9,6 +9,10 @@ import LabelInputContainer from "@/components/global/LabelInputContainer";
 import BottomGradient from "@/components/global/BottomGardient";
 import { Expertises } from "@/types/types";
 import Loading from "@/components/global/Loading";
+import { getSingleExpertise } from "../../../../../actions/expertise/get-single-expertise";
+import { updateExpertise } from "../../../../../actions/expertise/update-expertise";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface CompanyUpdateContainerProps {
   id: string;
@@ -19,15 +23,17 @@ export function UpdateExpertiseForm({ id }: CompanyUpdateContainerProps) {
   const [singleExpertise, setSingleExpertise] = useState<Expertises | null>(
     null
   );
+  const [refetch, setRefetch] = React.useState<boolean>(false);
+  const router = useRouter();
 
   // get single expertise data
   useEffect(() => {
-    const getSingleExpertise = async () => {
-      const res = await fetch(`/dashboard/expertise/api/${id}`);
-      const data = await res.json();
+    const getExpertise = async () => {
+      const response = await getSingleExpertise(id);
+      const data = await response?.json();
       setSingleExpertise(data);
     };
-    getSingleExpertise();
+    getExpertise();
   }, [id]);
 
   const handleFileUpload = (acceptedFiles: File[]) => {
@@ -50,51 +56,57 @@ export function UpdateExpertiseForm({ id }: CompanyUpdateContainerProps) {
 
     const form = e.target as HTMLFormElement;
 
-    const name = (form.elements.namedItem("serviceName") as HTMLInputElement)
+    const newName = (form.elements.namedItem("name") as HTMLInputElement).value;
+    const newDuration = (
+      form.elements.namedItem("duration") as HTMLInputElement
+    ).value;
+    const newDelay = (form.elements.namedItem("delay") as HTMLInputElement)
       .value;
-    const duration = (form.elements.namedItem("duration") as HTMLInputElement)
-      .value;
-    const delay = (form.elements.namedItem("delay") as HTMLInputElement).value;
-    const radiusSmall = (
+    const newRadiusSmall = (
       form.elements.namedItem("smallRadius") as HTMLInputElement
     ).value;
-    const radiusLarge = (
+    const newRadiusLarge = (
       form.elements.namedItem("largeRadius") as HTMLInputElement
     ).value;
 
-    const formData = new FormData();
-
-    formData.append("name", name);
-    formData.append("duration", duration);
-    formData.append("delay", delay);
-    formData.append("radiusSmall", radiusSmall);
-    formData.append("radiusLarge", radiusLarge);
-
-    // Handle the logo file upload
-    if (file.length > 0) {
-      formData.append("logo", file[0]);
-    } else if (typeof icon === "string") {
-      formData.append("logo", icon);
-    }
-
-    // console.log(name, duration, delay, radiusSmall, radiusLarge, file[0], icon);
-
-    try {
-      const res = await fetch(
-        `/dashboard/expertise/api/update-expertise/${id}`,
-        {
-          method: "PATCH",
-          body: formData,
+    if (
+      name != newName ||
+      duration != newDuration ||
+      delay != newDelay ||
+      radiusSmall != newRadiusSmall ||
+      radiusLarge != newRadiusLarge ||
+      file.length > 0
+    ) {
+      // update expertise
+      try {
+        const response = await updateExpertise(id, {
+          name: newName,
+          duration: newDuration,
+          delay: newDelay,
+          radiusSmall: newRadiusSmall,
+          radiusLarge: newRadiusLarge,
+          logo:
+            file.length > 0 ? file[0] : typeof icon === "string" ? icon : "",
+        });
+        const updateMessage = await response?.data?.message;
+        if (response?.status === 200) {
+          toast.success(updateMessage, {
+            position: "top-center",
+          });
+          setRefetch(!refetch);
+          router.push("/dashboard/expertise");
+        } else {
+          toast.error(updateMessage, {
+            position: "top-center",
+          });
         }
-      );
-
-      if (res.ok) {
-        console.log("Upload successful:", await res.json());
-      } else {
-        console.error("Upload failed:", await res.json());
+      } catch (error) {
+        console.error("An error occured", error);
       }
-    } catch (error) {
-      console.error("An error occured", error);
+    } else {
+      toast.error("No file changes", {
+        position: "top-center",
+      });
     }
   };
 
@@ -109,7 +121,7 @@ export function UpdateExpertiseForm({ id }: CompanyUpdateContainerProps) {
             </Label>
             <Input
               id="services_name"
-              name="serviceName"
+              name="name"
               defaultValue={name}
               placeholder="Enter expertise name"
               type="text"

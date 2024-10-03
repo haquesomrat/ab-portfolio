@@ -39,19 +39,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { dummyProjects } from "@/lib/data";
 import { Projects } from "@/types/types";
+import { getAllProjects } from "../../../../actions/projects/get-all-projects";
+import { deleteProject } from "../../../../actions/projects/delete-project";
+import { toast } from "sonner";
 
 export function ProjectTable() {
   // Explicitly define the state type as an array of Companies
-  const [projects, setProjects] = React.useState<Projects[]>(dummyProjects);
-  console.log(projects);
+  const [projects, setProjects] = React.useState<Projects[]>([]);
 
   // Fetch all companies on component mount
   React.useEffect(() => {
-    const getAllProjects = async () => {
+    const getProjects = async () => {
       try {
-        const res = await fetch(`/dashboard/projects/api`);
-        if (res.ok) {
-          const data: Projects[] = await res.json();
+        const response = await getAllProjects();
+        if (response?.ok) {
+          const data: Projects[] = await response.json();
           setProjects(data);
         } else {
           console.error("Failed to fetch projects");
@@ -60,22 +62,30 @@ export function ProjectTable() {
         console.error("An error occurred while fetching projects:", error);
       }
     };
-    getAllProjects();
+    getProjects();
   }, []);
 
   // Handle project deletion
-  const handleDeleteProject = async (id: String) => {
+  const handleDeleteProject = async (id: string) => {
     try {
-      const res = await fetch(`/dashboard/projects/api/delete-project/${id}`, {
-        method: "DELETE",
-      });
-      if (res.ok) {
+      const response = await deleteProject(id);
+      const data = await response?.json();
+      const selectedProject = projects.filter((project) => project._id === id);
+      const deletedProjectName = selectedProject[0]?.title;
+      if (response?.ok) {
+        // Show success toast with the response message
+        toast.success(`${deletedProjectName} is deleted successfully`, {
+          position: "top-center",
+        });
+
+        // Update the companies state by filtering out the updated project
         setProjects((prevProject) =>
           prevProject.filter((project) => project._id !== id)
         );
-        console.log("Upload successful:", await res.json());
       } else {
-        console.error("Upload failed:", await res.json());
+        toast.error(data?.message, {
+          position: "top-center",
+        });
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -235,12 +245,10 @@ export function ProjectTable() {
     <div className="w-full py-4">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter company names..."
-          value={
-            (table.getColumn("companyName")?.getFilterValue() as string) ?? ""
-          }
+          placeholder="Filter project titles..."
+          value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
-            table.getColumn("companyName")?.setFilterValue(event.target.value)
+            table.getColumn("title")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
         />

@@ -13,22 +13,20 @@ export const PATCH = async (
   }
 
   const updateDoc = await req.formData();
-  const logo = updateDoc.get("logo") as File | null;
+  const logo = updateDoc.get("logo") as File | string;
   const name = updateDoc.get("name") as String | null;
   const details = updateDoc.get("details") as String | null;
 
   try {
     console.log(logo);
 
-    let logoUrl: string | null = null;
-
-    // let imageUrl: string | null = null;
+    let logoUrl: string;
 
     // Handle SVG uploads
-    if (logo && logo.type === "image/svg+xml") {
+    if (typeof logo === "object" && logo.type === "image/svg+xml") {
       // SVGs are handled as text, so no need to upload to ImgBB
       logoUrl = await logo.text();
-    } else if (logo) {
+    } else if (typeof logo === "object") {
       // For other image formats, convert to Base64 and upload to ImgBB
       const arrayBuffer = await logo.arrayBuffer();
       const base64String = Buffer.from(arrayBuffer).toString("base64");
@@ -56,26 +54,28 @@ export const PATCH = async (
       }
 
       logoUrl = imgBBData.data.url;
+    } else {
+      logoUrl = logo;
     }
 
-    // Prepare the new company data
-    const newService = {
+    // Prepare the updated service data
+    const updatedService = {
       name,
       details,
-      logo: logoUrl || null,
+      logo: logoUrl,
     };
 
     // Update the company in the database
     const result = await db.collection("services").updateOne(
       { _id: new ObjectId(params.id) },
-      { $set: newService },
+      { $set: updatedService },
       { upsert: false } // Ensures no new document is created if the ID doesn't exist
     );
 
     return NextResponse.json({
       message: "Service updated successfully",
       result,
-      newService,
+      updatedService,
     });
   } catch (error) {
     console.log(error);

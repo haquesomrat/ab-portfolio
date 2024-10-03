@@ -8,6 +8,12 @@ import Image from "next/image";
 import { Textarea } from "@/components/ui/textarea";
 import { Feedbacks } from "@/types/types";
 import Loading from "@/components/global/Loading";
+import { getSingleFeedback } from "../../../../../actions/feedback/get-single-feedback";
+import { updateFeedback } from "../../../../../actions/feedback/update-feedback";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import BottomGradient from "@/components/global/BottomGardient";
+import LabelInputContainer from "@/components/global/LabelInputContainer";
 
 interface CompanyUpdateContainerProps {
   id: string;
@@ -16,19 +22,19 @@ interface CompanyUpdateContainerProps {
 export function UpdateFeedbackForm({ id }: CompanyUpdateContainerProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [singleFeedback, setSingleFeedback] = useState<Feedbacks | null>(null);
-  const [selectedColor, setSelectedColor] = useState("#A8C0D2");
+  const [selectedColor, setSelectedColor] = useState(singleFeedback?.color);
+  const [refetch, setRefetch] = React.useState<boolean>(false);
+  const router = useRouter();
 
   // Fetch single feedback data
   useEffect(() => {
-    const getSingleFeedback = async () => {
-      const res = await fetch(`/dashboard/feedback/api/${id}`);
-      const data = await res.json();
+    const getFeedback = async () => {
+      const response = await getSingleFeedback(id);
+      const data = await response?.json();
       setSingleFeedback(data);
     };
-    getSingleFeedback();
+    getFeedback();
   }, [id]);
-
-  console.log(singleFeedback);
 
   // Handling file upload with Dropzone
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -53,44 +59,63 @@ export function UpdateFeedbackForm({ id }: CompanyUpdateContainerProps) {
   // Fallback loading
   if (!singleFeedback) return <Loading />;
 
+  // destructure single feedback
+  const { name, company, feedback, color, image } = singleFeedback;
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     const form = e.currentTarget;
 
-    const name = (form.elements.namedItem("name") as HTMLInputElement).value;
-    const company = (form.elements.namedItem("company") as HTMLInputElement)
+    const newName = (form.elements.namedItem("name") as HTMLInputElement).value;
+    const newCompany = (form.elements.namedItem("company") as HTMLInputElement)
       .value;
-    const feedback = (form.elements.namedItem("feedback") as HTMLInputElement)
-      .value;
-    const color = (
+    const newFeedback = (
+      form.elements.namedItem("feedback") as HTMLInputElement
+    ).value;
+    const newColor = (
       form.elements.namedItem("feedback_color") as HTMLInputElement
     ).value;
 
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("company", company);
-    formData.append("feedback", feedback);
-    formData.append("color", color);
-    if (files.length > 0) {
-      formData.append("image", files[0]);
-    }
-
-    // console.log(formData);
-
-    try {
-      const res = await fetch(`/dashboard/feedback/api/update-feedback/${id}`, {
-        method: "PATCH",
-        body: formData,
-      });
-
-      if (res.ok) {
-        console.log("Upload successful:", await res.json());
-      } else {
-        console.error("Upload failed:", await res.json());
+    if (
+      name != newName ||
+      company != newCompany ||
+      feedback != newFeedback ||
+      selectedColor !== undefined ||
+      files.length > 0
+    ) {
+      // update feedback
+      try {
+        const response = await updateFeedback(id, {
+          name: newName,
+          company: newCompany,
+          feedback: newFeedback,
+          color: selectedColor === undefined ? color : selectedColor,
+          image:
+            files.length > 0
+              ? files[0]
+              : typeof image === "string"
+              ? image
+              : "",
+        });
+        const updateMessage = await response?.data?.message;
+        if (response?.status === 200) {
+          toast.success(updateMessage, {
+            position: "top-center",
+          });
+          setRefetch(!refetch);
+          router.push("/dashboard/feedback");
+        } else {
+          toast.error(updateMessage, {
+            position: "top-center",
+          });
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
       }
-    } catch (error) {
-      console.error("An error occurred:", error);
+    } else {
+      toast.error("No file changes", {
+        position: "top-center",
+      });
     }
   };
 
@@ -153,7 +178,6 @@ export function UpdateFeedbackForm({ id }: CompanyUpdateContainerProps) {
                       height={200}
                       width={500}
                       src={singleFeedback?.image}
-                      // src={"https://i.ibb.co.com/dGXwX8w/3f480cac7dfc.png"}
                       alt="Preview"
                       className="w-32 h-32 object-cover aspect-square rounded-md"
                     />
@@ -204,7 +228,7 @@ export function UpdateFeedbackForm({ id }: CompanyUpdateContainerProps) {
               type="color"
               id="feedback_color"
               name="feedback_color"
-              defaultValue={singleFeedback?.color}
+              defaultValue={color}
               value={selectedColor}
               onChange={(e) => setSelectedColor(e.target.value)}
               className="rounded-md h-20 w-20"
@@ -224,26 +248,3 @@ export function UpdateFeedbackForm({ id }: CompanyUpdateContainerProps) {
     </div>
   );
 }
-
-const BottomGradient = () => {
-  return (
-    <>
-      <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
-      <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
-    </>
-  );
-};
-
-const LabelInputContainer = ({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) => {
-  return (
-    <div className={cn("flex flex-col space-y-2 w-full", className)}>
-      {children}
-    </div>
-  );
-};
