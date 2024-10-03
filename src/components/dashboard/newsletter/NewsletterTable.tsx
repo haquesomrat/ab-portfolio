@@ -33,6 +33,9 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Newsletter } from "@/types/types";
+import { deleteNewsletter } from "../../../../actions/newsletter/delete-newsletter";
+import { toast } from "sonner";
+import { getAllNewsletters } from "../../../../actions/newsletter/get-all-newsletters";
 
 export function NewsletterTable() {
   // Fetch all services on component mount
@@ -40,11 +43,11 @@ export function NewsletterTable() {
 
   // get all services
   React.useEffect(() => {
-    const getAllNewsletter = async () => {
+    const getNewsletters = async () => {
       try {
-        const res = await fetch("/dashboard/newsletter/api");
-        if (res.ok) {
-          const data: Newsletter[] = await res.json();
+        const response = await getAllNewsletters();
+        if (response?.ok) {
+          const data: Newsletter[] = await response.json();
           setNewsletters(data);
         } else {
           console.error("Failed to fetch newsletter");
@@ -53,27 +56,35 @@ export function NewsletterTable() {
         console.error("An error occurred while fetching newsletter:", error);
       }
     };
-    getAllNewsletter();
+    getNewsletters();
   }, [setNewsletters]);
 
   // Handle company deletion
-  const handleDeleteService = async (id: String) => {
-    console.log(id);
-
+  const handleDeleteService = async (id: string) => {
     try {
-      const res = await fetch(
-        `/dashboard/newsletter/api/delete-newsletter/${id}`,
-        {
-          method: "DELETE",
-        }
+      const response = await deleteNewsletter(id);
+      const data = await response?.json();
+      const selectedNewsletter = newsletters.filter(
+        (newsletter) => newsletter._id === id
       );
-      if (res.ok) {
+      const deletedNewsletterName = selectedNewsletter[0]?.name;
+      if (response?.ok) {
+        // Show success toast with the response message
+        toast.success(
+          `${deletedNewsletterName}'s message is deleted successfully`,
+          {
+            position: "top-center",
+          }
+        );
+
+        // Update the companies state by filtering out the updated project
         setNewsletters((prevNewsletter) =>
           prevNewsletter.filter((newsletter) => newsletter._id !== id)
         );
-        console.log("Upload successful:", await res.json());
       } else {
-        console.error("Upload failed:", await res.json());
+        toast.success(data?.message, {
+          position: "top-center",
+        });
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -199,7 +210,7 @@ export function NewsletterTable() {
     <div className="w-full py-4">
       <div className="flex items-center py-4">
         <Input
-          placeholder="Filter company names..."
+          placeholder="Filter messages by names..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)

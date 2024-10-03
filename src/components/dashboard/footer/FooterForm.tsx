@@ -2,6 +2,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import SocialMediaInput from "./SocialMediaInput";
 import { Platform, SingleSocial, SocialMediaState } from "@/types/types";
+import { toast } from "sonner";
+import { addUpdateSocial } from "../../../../actions/footer/add-update-social";
+import { getAllSocials } from "../../../../actions/footer/get-all-footers";
+import { deleteSocial } from "../../../../actions/footer/delete-social";
 
 export function SocialMediaForm() {
   const [socials, setSocials] = useState<SocialMediaState>({
@@ -12,6 +16,7 @@ export function SocialMediaForm() {
     twitter: { logo: null, link: "" },
     dailydev: { logo: null, link: "" },
   });
+  const [refetch, setRefetch] = React.useState<boolean>(false);
 
   // Memoize platforms array to avoid recreating it on every render
   const platforms = useMemo<Platform[]>(
@@ -44,49 +49,47 @@ export function SocialMediaForm() {
 
   // Correctly type platform as Platform
   const handleSubmit = async (platform: Platform) => {
-    console.log({
-      name: platform,
-      link: socials[platform].link,
-      logo: socials[platform].logo,
-    });
-
-    const formData = new FormData();
-    formData.append("name", platform);
-    formData.append("link", socials[platform].link);
-    if (socials[platform].logo) {
-      formData.append("logo", socials[platform].logo);
-    }
-
-    try {
-      const res = await fetch(`/dashboard/footer/api`, {
-        method: "POST",
-        body: formData,
-      });
-
-      if (res.ok) {
-        console.log("Upload successful:", await res.json());
-      } else {
-        console.error("Upload failed:", await res.json());
+    if (socials[platform].link !== "" || socials[platform].logo !== null) {
+      // post or update socials
+      try {
+        const res = await addUpdateSocial({
+          name: platform,
+          link: socials[platform]?.link,
+          logo: socials[platform]?.logo ? socials[platform]?.logo : "",
+        });
+        const data = await res?.json();
+        if (res?.ok) {
+          toast.success(data?.message, {
+            position: "top-center",
+          });
+          setRefetch(!refetch);
+        } else {
+          toast.error(data?.error, {
+            position: "top-center",
+          });
+        }
+      } catch (error) {
+        console.error("An error occurred:", error);
       }
-    } catch (error) {
-      console.error("An error occurred:", error);
+    } else {
+      toast.error("Please provide all data", {
+        position: "top-center",
+      });
     }
   };
 
   // Handle delete logo with API call
   const handleDelete = async (platform: Platform) => {
     try {
-      const res = await fetch(`/dashboard/footer/api`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: platform }),
-      });
+      const response = await deleteSocial(platform);
+      const data = await response?.json();
+      console.log(data);
 
-      if (res.ok) {
-        console.log(`Deleted logo for ${platform}`);
-        console.log(`Deleted logo for ${platform}:`, await res.json());
+      if (response?.ok) {
+        toast.success(data?.message, {
+          position: "top-center",
+        });
+
         // Remove the logo locally
         setSocials((prev) => ({
           ...prev,
@@ -96,10 +99,9 @@ export function SocialMediaForm() {
           },
         }));
       } else {
-        console.error(
-          `Failed to delete logo for ${platform}:`,
-          await res.json()
-        );
+        toast.error(data?.message, {
+          position: "top-center",
+        });
       }
     } catch (error) {
       console.error(
@@ -111,10 +113,10 @@ export function SocialMediaForm() {
 
   // get all socials
   useEffect(() => {
-    const getSocial = async () => {
+    const getSocials = async () => {
       try {
-        const res = await fetch("/dashboard/footer/api");
-        if (res.ok) {
+        const res = await getAllSocials();
+        if (res?.ok) {
           const data: SingleSocial[] = await res.json();
 
           // Update socials state based on fetched data
@@ -139,10 +141,8 @@ export function SocialMediaForm() {
         console.error("An error occurred while fetching socials:", error);
       }
     };
-    getSocial();
-  }, [setSocials]);
-
-  //   console.log(socials);
+    getSocials();
+  }, [setSocials, refetch]); // do not use platforms and socials as dependenncies
 
   return (
     <div className="space-y-6 pt-6">

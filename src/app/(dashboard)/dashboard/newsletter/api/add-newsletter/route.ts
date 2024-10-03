@@ -37,12 +37,12 @@ export const POST = async (req: Request): Promise<NextResponse> => {
 
     if (result.acknowledged) {
       return NextResponse.json(
-        { message: "New newsletter added successfully." },
+        { message: "Response send successfully." },
         { status: 201 }
       );
     } else {
       return NextResponse.json(
-        { error: "Failed to add the new newsletter." },
+        { error: "Failed to send the response." },
         { status: 500 }
       );
     }

@@ -9,14 +9,11 @@ export const POST = async (req: Request): Promise<NextResponse> => {
     const name = formData.get("name") as String | null;
     const link = formData.get("link") as String | null;
 
-    console.log(logo, name, link);
-
     // Validate input data
     if (!logo || !name || !link) {
       return NextResponse.json(
         {
-          error:
-            "Please provide all the required fields (name, link, and logo).",
+          error: "Please provide all the required fields ( link and logo).",
         },
         { status: 400 }
       );
@@ -74,7 +71,7 @@ export const POST = async (req: Request): Promise<NextResponse> => {
 
     // Update the hero if it already exists (based on headline or motto), or insert a new one
     const result = await socialCollection.updateOne(
-      { $or: [{ name }] }, // Find a hero with the same headline or motto
+      { $or: [{ name }] },
       { $set: newSocial }, // Update the hero with new data
       { upsert: true } // If no hero is found, insert a new one
     );
@@ -104,7 +101,7 @@ export const POST = async (req: Request): Promise<NextResponse> => {
   }
 };
 
-// GET API:: get social data
+// GET API:: get all social data
 export const GET = async () => {
   try {
     // Connect to the database
@@ -121,37 +118,6 @@ export const GET = async () => {
     console.error("Error getting hero data:", error);
     return NextResponse.json(
       { error: "Something went wrong while getting the hero data" },
-      { status: 500 }
-    );
-  }
-};
-
-// DELETE API:: delete social logo
-export const DELETE = async (req: Request): Promise<NextResponse> => {
-  try {
-    const body = await req.json();
-    const { name } = body;
-
-    // Connect to the database
-    const db = await connectDB();
-    if (!db) {
-      return NextResponse.json(
-        { error: "Failed to connect to the database." },
-        { status: 500 }
-      );
-    }
-
-    await db
-      .collection("socials")
-      .updateOne({ name }, { $set: { logo: null } });
-
-    return NextResponse.json({
-      message: `Logo for ${name} deleted successfully`,
-    });
-  } catch (error) {
-    console.error("Error deleting logo:", error);
-    return NextResponse.json(
-      { message: "Failed to delete logo", error },
       { status: 500 }
     );
   }

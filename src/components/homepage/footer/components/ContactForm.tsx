@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ButtonPrimary } from "@/components/global/ButtonPrimary";
+import { addNewsletter } from "../../../../../actions/newsletter/add-newsletter";
+import { toast } from "sonner";
 
 export function ContactForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,17 +30,22 @@ export function ContactForm() {
     console.log({ name, email, subject, message });
 
     try {
-      const res = await fetch("/dashboard/newsletter/api/add-newsletter", {
-        method: "POST",
-        body: formData,
+      const res = await addNewsletter({
+        name,
+        email,
+        subject,
+        message,
       });
-
-      if (res.ok) {
-        console.log("Upload successful:", await res.json());
-        // Reset the form after successful submission
+      const data = await res?.json();
+      if (res?.ok) {
+        toast.success(data?.message, {
+          position: "top-center",
+        });
         form.reset();
       } else {
-        console.error("Upload failed:", await res.json());
+        toast.success(data?.message, {
+          position: "top-center",
+        });
       }
     } catch (error) {
       console.error("An error occured", error);
