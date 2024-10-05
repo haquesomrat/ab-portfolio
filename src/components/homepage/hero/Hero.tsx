@@ -1,6 +1,5 @@
 import React from "react";
 import GridBackground from "./compoents/GridBackground";
-import { Button } from "@/components/ui/button";
 import { RedSpotlight, Spotlight } from "./compoents/Spotlight";
 import { Icons } from "../../global/icons";
 import HeroBubbledIcon from "./compoents/HeroBubbledIcon";

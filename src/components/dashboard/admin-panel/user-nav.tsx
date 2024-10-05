@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { LayoutGrid, LogOut, User } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -25,7 +24,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export function UserNav() {
   const { data: session, status } = useSession();
-  // console.log(session);
 
   if (status === "loading") {
     return (
