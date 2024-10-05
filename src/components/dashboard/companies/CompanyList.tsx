@@ -43,6 +43,8 @@ import { toast } from "sonner";
 export function CompanyList() {
   const [companies, setCompanies] = React.useState<Companies[]>([]);
 
+  console.log(companies);
+
   // Fetch all companies on component mount
   React.useEffect(() => {
     const getCompanies = async () => {

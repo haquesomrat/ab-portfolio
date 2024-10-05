@@ -43,6 +43,8 @@ export function ExpertiseTable() {
   // Explicitly define the state type as an array of Companies
   const [expertises, setExpertises] = React.useState<Expertises[]>([]); //fakeOrbitalsData
 
+  console.log(expertises);
+
   // Fetch all companies on component mount
   React.useEffect(() => {
     const getExpertises = async () => {
