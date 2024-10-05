@@ -5,15 +5,16 @@ import { NextResponse } from "next/server";
 export const POST = async (req: Request): Promise<NextResponse> => {
   try {
     const formData = await req.formData();
-    const logo = formData.get("logo") as File | null;
+    const logo = formData.get("logo") as File | string;
+    const email = formData.get("email") as String | null;
+    const contact = formData.get("contact") as String | null;
     const motto = formData.get("motto") as String | null;
     const headline = formData.get("headline") as String | null;
     const intro = formData.get("intro") as String | null;
-
-    console.log(logo);
+    console.log({ logo, email, contact, motto, headline, intro });
 
     // Validate input data
-    if (!logo || !motto || !headline || !intro) {
+    if (!logo || !email || !contact || !motto || !headline || !intro) {
       return NextResponse.json(
         {
           error: "Please provide all the required fields",
@@ -34,10 +35,10 @@ export const POST = async (req: Request): Promise<NextResponse> => {
     let logoUrl = "";
 
     // Handle SVG uploads
-    if (logo.type === "image/svg+xml") {
+    if (typeof logo === "object" && logo.type === "image/svg+xml") {
       // SVGs are handled as text, so no need to upload to ImgBB
       logoUrl = await logo.text();
-    } else {
+    } else if (typeof logo === "object") {
       // For other image formats, convert to Base64 and upload to ImgBB
       const arrayBuffer = await logo.arrayBuffer();
       const base64String = Buffer.from(arrayBuffer).toString("base64");
@@ -65,10 +66,12 @@ export const POST = async (req: Request): Promise<NextResponse> => {
       }
 
       logoUrl = imgBBData.data.url;
+    } else {
+      logoUrl = logo;
     }
 
     // Insert the new service into the database
-    const newHero = { headline, motto, intro, logo: logoUrl };
+    const newHero = { headline, motto, intro, email, contact, logo: logoUrl };
 
     const heroCollection = db.collection("hero");
 

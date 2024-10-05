@@ -46,6 +46,8 @@ export interface Feedbacks {
 
 export interface Hero {
   _id: string;
+  email: string;
+  contact: string;
   motto: string;
   headline: string;
   intro: string;

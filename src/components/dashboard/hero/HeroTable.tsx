@@ -29,20 +29,36 @@ export function HeroTable() {
     e.preventDefault();
     const form = e.currentTarget;
 
+    const email = (form.elements.namedItem("email") as HTMLInputElement).value;
+    const contact = (form.elements.namedItem("contact") as HTMLInputElement)
+      .value;
     const motto = (form.elements.namedItem("motto") as HTMLInputElement).value;
     const headline = (form.elements.namedItem("headline") as HTMLInputElement)
       .value;
     const intro = (form.elements.namedItem("intro") as HTMLInputElement).value;
 
-    // check logo
-    if (files.length > 0) {
+    if (
+      files.length > 0 ||
+      hero[0].email != email ||
+      hero[0].contact != contact ||
+      hero[0].motto != motto ||
+      hero[0].intro != intro ||
+      hero[0].headline != headline
+    ) {
       // post/update hero data to database
       try {
         const response = await addHeroData({
+          email,
+          contact,
           motto,
           headline,
           intro,
-          logo: files[0],
+          logo:
+            files.length > 0
+              ? files[0]
+              : typeof hero[0]?.logo === "string"
+              ? hero[0]?.logo
+              : "",
         });
         const data = await response?.json();
         if (response?.ok) {
@@ -53,7 +69,7 @@ export function HeroTable() {
           });
           setRefetch(!refetch);
         } else {
-          toast.success(data?.message, {
+          toast.success(data?.error, {
             position: "top-center",
           });
         }
@@ -155,6 +171,38 @@ export function HeroTable() {
             </div>
           </LabelInputContainer>
         </div>
+        {/* Email */}
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <LabelInputContainer>
+            <Label className="mb-2" htmlFor="email">
+              Email
+            </Label>
+            <Input
+              id="email"
+              name="email"
+              defaultValue={hero[0]?.email}
+              placeholder="Enter Your Email"
+              type="text"
+              required
+            />
+          </LabelInputContainer>
+        </div>
+        {/* Contact */}
+        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+          <LabelInputContainer>
+            <Label className="mb-2" htmlFor="contact">
+              Contact
+            </Label>
+            <Input
+              id="contact"
+              name="contact"
+              defaultValue={hero[0]?.contact}
+              placeholder="Enter Your Contact Number"
+              type="text"
+              required
+            />
+          </LabelInputContainer>
+        </div>
         {/* motto */}
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <LabelInputContainer>
@@ -199,7 +247,6 @@ export function HeroTable() {
               name="intro"
               defaultValue={hero[0]?.intro}
               placeholder="Give A Short Introduction"
-              //   type="text"
               required
             />
           </LabelInputContainer>

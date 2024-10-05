@@ -1,6 +1,5 @@
 import AdminPanelLayout from "@/components/dashboard/admin-panel/admin-panel-layout";
 import { ContentLayout } from "@/components/dashboard/admin-panel/content-layout";
-import PlaceholderContent from "@/components/dashboard/admin-panel/placeholder-content";
 import HeroContainer from "@/components/dashboard/hero/HeroContainer";
 import {
   Breadcrumb,
@@ -38,7 +37,6 @@ const HeroPage = () => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        {/* <PlaceholderContent /> */}
         <HeroContainer />
       </ContentLayout>
     </AdminPanelLayout>

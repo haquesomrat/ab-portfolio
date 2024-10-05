@@ -1,14 +1,18 @@
 export const addHeroData = async (formData: {
+  email: string;
+  contact: string;
   motto: string;
   headline: string;
   intro: string;
-  logo: File | null;
+  logo: File | string;
 }) => {
   try {
     // Create a FormData instance
     const formDataToSend = new FormData();
 
     // Append the form fields
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("contact", formData.contact);
     formDataToSend.append("motto", formData.motto);
     formDataToSend.append("headline", formData.headline);
     formDataToSend.append("intro", formData.intro);
