@@ -44,8 +44,6 @@ export function FeedbackTable() {
   // Explicitly define the state type as an array of Companies
   const [feedbacks, setFeedbacks] = React.useState<Feedbacks[]>([]); //dummyFeedbacks
 
-  console.log(feedbacks);
-
   // Fetch all companies on component mount
   React.useEffect(() => {
     const getFeedbacks = async () => {
