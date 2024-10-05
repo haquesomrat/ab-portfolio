@@ -1,5 +1,3 @@
-"use server";
-
 export const getAllCompanies = async () => {
   try {
     const response = await fetch(`/dashboard/companies/api`);
