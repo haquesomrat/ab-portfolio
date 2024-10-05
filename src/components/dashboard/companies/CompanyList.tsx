@@ -42,6 +42,7 @@ import { toast } from "sonner";
 
 export function CompanyList() {
   const [companies, setCompanies] = React.useState<Companies[]>([]);
+  const [refetch, setRefetch] = React.useState<boolean>(false);
 
   // Fetch all companies on component mount
   React.useEffect(() => {
@@ -59,7 +60,7 @@ export function CompanyList() {
       }
     };
     getCompanies();
-  }, []);
+  }, [refetch]);
 
   // Handle company deletion
   const handleDeleteCompany = async (id: string) => {
@@ -74,10 +75,12 @@ export function CompanyList() {
           position: "top-center",
         });
 
+        setRefetch(!refetch);
+
         // Update the companies state by filtering out the updated company
-        setCompanies((prevCompanies) =>
-          prevCompanies.filter((company) => company._id !== id)
-        );
+        // setCompanies((prevCompanies) =>
+        //   prevCompanies.filter((company) => company._id !== id)
+        // );
       } else {
         // Handle unsuccessful response
         toast.error(data?.message, {
