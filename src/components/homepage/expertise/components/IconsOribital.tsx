@@ -24,11 +24,11 @@ export function IconsOribital() {
         <OrbitingCircles
           key={index}
           className="border-none bg-transparent shadow-bubble h-8 w-8 lg:w-20 lg:h-20"
-          duration={data?.duration}
-          delay={data?.delay}
-          radius={isSmallScreen ? data?.radiusSmall : data?.radiusLarge}
+          duration={Number(data?.duration)}
+          delay={Number(data?.delay)}
+          radius={Number(isSmallScreen ? data?.radiusSmall : data?.radiusLarge)}
         >
-          {data.icon}
+          {data?.icon}
           {/* <div
             dangerouslySetInnerHTML={{ __html: icon.svg }} // Inject SVG HTML from the database
             className={`h-${isSmallScreen ? "6" : "8"} w-${isSmallScreen ? "6" : "8"}`}

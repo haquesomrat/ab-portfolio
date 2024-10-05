@@ -420,10 +420,10 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: 60,
-    delay: 50,
-    radiusSmall: 80,
-    radiusLarge: 200,
+    duration: "60",
+    delay: "50",
+    radiusSmall: "80",
+    radiusLarge: "200",
   },
   // vue js
   {
@@ -461,10 +461,10 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: 60,
-    delay: 30,
-    radiusSmall: 80,
-    radiusLarge: 200,
+    duration: "60",
+    delay: "30",
+    radiusSmall: "80",
+    radiusLarge: "200",
   },
   // second orbit::2
   // python
@@ -503,10 +503,10 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: 60,
-    delay: 60,
-    radiusSmall: 130,
-    radiusLarge: 300,
+    duration: "60",
+    delay: "60",
+    radiusSmall: "130",
+    radiusLarge: "300",
   },
   // golang
   {
@@ -544,10 +544,10 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: 60,
-    delay: 20,
-    radiusSmall: 130,
-    radiusLarge: 300,
+    duration: "60",
+    delay: "20",
+    radiusSmall: "130",
+    radiusLarge: "300",
   },
   // third orbit::3
   // figma
@@ -586,10 +586,10 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: 60,
-    delay: 30,
-    radiusSmall: 180,
-    radiusLarge: 400,
+    duration: "60",
+    delay: "30",
+    radiusSmall: "180",
+    radiusLarge: "400",
   },
   // flutter
   {
@@ -624,10 +624,10 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: 60,
-    delay: 40,
-    radiusSmall: 180,
-    radiusLarge: 400,
+    duration: "60",
+    delay: "40",
+    radiusSmall: "180",
+    radiusLarge: "400",
   },
   // react
   {
@@ -665,10 +665,10 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: 60,
-    delay: 50,
-    radiusSmall: 180,
-    radiusLarge: 400,
+    duration: "60",
+    delay: "50",
+    radiusSmall: "180",
+    radiusLarge: "400",
   },
   // forth orbit::4
   // java
@@ -707,10 +707,10 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: 60,
-    delay: 60,
-    radiusSmall: 230,
-    radiusLarge: 500,
+    duration: "60",
+    delay: "60",
+    radiusSmall: "230",
+    radiusLarge: "500",
   },
   // dot net
   {
@@ -745,10 +745,10 @@ export const fakeOrbitalIconsData: Expertises[] = [
         </defs>
       </svg>
     ),
-    duration: 60,
-    delay: 20,
-    radiusSmall: 230,
-    radiusLarge: 500,
+    duration: "60",
+    delay: "20",
+    radiusSmall: "230",
+    radiusLarge: "500",
   },
 ];
 
