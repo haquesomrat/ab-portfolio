@@ -167,7 +167,7 @@ export function FeedbackTable() {
     },
     {
       accessorKey: "color",
-      header: "Background",
+      header: "Color",
       cell: ({ row }) => (
         <div
           className="p-2 rounded text-center font-semibold"

@@ -13,7 +13,7 @@ import LabelInputContainer from "@/components/global/LabelInputContainer";
 
 export function AddFeedbackForm() {
   const [files, setFiles] = useState<File[]>([]);
-  const [selectedColor, setSelectedColor] = useState("#A8C0D2");
+  const [selectedColor, setSelectedColor] = useState("#144366");
 
   const handleDrop = (acceptedFiles: File[]) => {
     setFiles(acceptedFiles);

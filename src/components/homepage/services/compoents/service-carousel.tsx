@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import Splide from "@splidejs/splide";
 import ServiceCarouselPagination from "./service-carousel-pagination";
-import { fakeServices } from "@/lib/data";
 import { Services } from "@/types/types";
 import { getAllServices } from "../../../../../actions/services/get-all-services";
 import Image from "next/image";
