@@ -1,12 +1,34 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Splide from "@splidejs/splide";
 import { AutoScroll } from "@splidejs/splide-extension-auto-scroll";
 import Image from "next/image";
-import { getAllCompanies } from "@/lib/company-logos";
+import { Companies } from "@/types/types";
+import { getAllCompanies } from "../../../actions/companies/get-all-companies";
 
 const LogoSlider: React.FC = () => {
+  const [companies, setCompanies] = useState<Companies[]>([]);
+
+  // Fetch all companies on component mount
+  useEffect(() => {
+    const getCompanies = async () => {
+      try {
+        const response = await getAllCompanies();
+        if (response?.ok) {
+          const data: Companies[] = await response.json();
+          setCompanies(data);
+        } else {
+          console.error("Failed to fetch companies");
+        }
+      } catch (error) {
+        console.error("An error occurred while fetching companies:", error);
+      }
+    };
+    getCompanies();
+  }, []);
+
+  // logo slider options
   useEffect(() => {
     const companiesSplide = new Splide(".companies__splide.splide", {
       type: "loop",
@@ -39,10 +61,7 @@ const LogoSlider: React.FC = () => {
     return () => {
       companiesSplide.destroy();
     };
-  }, []);
-
-  const companies = getAllCompanies();
-  // console.log(companies);
+  }, [companies]);
 
   return (
     <div>
@@ -51,14 +70,14 @@ const LogoSlider: React.FC = () => {
           <ul className="splide__list">
             {companies.map((company) => (
               <li
-                key={company?.id}
+                key={company?._id}
                 className="splide__slide flex justify-center items-center"
               >
                 <Image
-                  src={company?.src}
+                  src={company?.companyImg}
                   height={32}
                   width={127}
-                  alt={company?.name}
+                  alt={company?.companyName}
                 />
               </li>
             ))}

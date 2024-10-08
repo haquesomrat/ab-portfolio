@@ -30,14 +30,15 @@ const HeroTextContainer = () => {
   return (
     <div className="relative my-24 py-2 z-30 text-center left-[50%] translate-x-[-50%]">
       <div className="max-w-[89vw] md:max-w-2xl lg:max-w-3xl mx-auto space-y-6 lg:space-y-8 ">
+        {/* motto */}
         {hero[0]?.motto ? (
           <div className="border border-[#FFFFFF1A] inline-flex items-center justify-center py-0.5 px-3 rounded-full shadow-bubble">
             <p className="text-center md:tracking-wider text-[11px] lg:text-sm text-t-900 uppercase">
               <>
                 <span className="text-primary">
-                  {hero[0].headline.split(" ").slice(0, 2).join(" ")}
+                  {hero[0].motto.split(" ").slice(0, 2).join(" ")}
                 </span>{" "}
-                {hero[0].headline.split(" ").slice(2).join(" ")}
+                {hero[0].motto.split(" ").slice(2).join(" ")}
               </>
             </p>
           </div>
@@ -45,16 +46,45 @@ const HeroTextContainer = () => {
           <Skeleton className="h-6 w-[300px] mx-auto rounded-full" />
         )}
         <div className="space-y-4 lg:space-y-6">
-          <h2 className="uppercase tracking-[-0.0375em] text-2xl lg:text-[54px] leading-[1.2] text-center text-blue-100">
-            Turning{" "}
-            <Highlight className="font-semibold border-l-[3px] border-[#FFEBA8] bg-gradient-to-r dark:from-[#E5B30A] dark:to-[#E5B30A00]">
-              Ideas
-            </Highlight>{" "}
-            into Reality with{" "}
-            <Highlight className="font-semibold border-l-[3px] border-[#FF96A2] bg-gradient-to-r dark:from-[#F06373] dark:to-[#F0637300]">
-              Code
-            </Highlight>
-          </h2>
+          {/* headline */}
+          {hero[0]?.headline ? (
+            <h2 className="uppercase tracking-[-0.0375em] text-2xl lg:text-[54px] leading-[1.2] text-center text-blue-100">
+              {hero[0]?.headline.split(" ").map((word, index, array) => {
+                // Highlight the second word
+                if (index === 1) {
+                  return (
+                    <Highlight
+                      key={index}
+                      className="font-semibold border-l-[3px] border-[#FFEBA8] bg-gradient-to-r dark:from-[#E5B30A] dark:to-[#E5B30A00]"
+                    >
+                      {word}{" "}
+                    </Highlight>
+                  );
+                }
+
+                // Highlight the last word
+                if (index === array.length - 1) {
+                  return (
+                    <Highlight
+                      key={index}
+                      className="font-semibold border-l-[3px] border-[#FF96A2] bg-gradient-to-r dark:from-[#F06373] dark:to-[#F0637300]"
+                    >
+                      {word}
+                    </Highlight>
+                  );
+                }
+
+                // Return all other words unstyled
+                return word + " ";
+              })}
+            </h2>
+          ) : (
+            <div className="space-y-2">
+              <Skeleton className="h-16 w-[90%] mx-auto" />
+              <Skeleton className="h-16 w-[90%] mx-auto" />
+            </div>
+          )}
+          {/* introduction */}
           {hero[0]?.intro ? (
             <TextGenerateEffect
               className="text-base lg:text-lg font-normal dark:text-t-900/90 md:w-[90%] mx-auto"

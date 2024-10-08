@@ -1,6 +1,7 @@
 import React from "react";
 import LogoSlider from "../../ui/logo-slider";
 import HyperText from "@/components/magicui/hyper-text";
+import Container from "@/components/global/Container";
 
 const Companies = () => {
   return (
@@ -12,7 +13,9 @@ const Companies = () => {
         ></HyperText> */}
         Companies I&apos;ve contributed
       </h6>
-      <LogoSlider />
+      <Container>
+        <LogoSlider />
+      </Container>
     </section>
   );
 };
