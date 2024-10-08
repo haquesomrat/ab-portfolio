@@ -1,12 +1,35 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ContactForm } from "./ContactForm";
 import { ClipboardCheck, ClipboardPlus } from "lucide-react";
 import MagicButton from "@/components/global/MagicButton";
 import confetti from "canvas-confetti";
+import { Hero } from "@/types/types";
+import { getHeroData } from "../../../../../actions/hero/get-hero-data";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const FooterContent = () => {
   const [copied, setCopied] = useState(false);
+  const [hero, setHero] = useState<Hero[]>([]);
+  // get hero data
+  useEffect(() => {
+    const getHero = async () => {
+      try {
+        const response = await getHeroData();
+        if (response?.ok) {
+          const data: Hero[] = await response.json();
+          setHero(data);
+        } else {
+          console.error("Failed to fetch hero data");
+        }
+      } catch (error) {
+        console.error("An error occurred :", error);
+      }
+    };
+    getHero();
+  }, [setHero]);
+
+  // handle copy email
   const handleCopy = () => {
     navigator.clipboard.writeText("amin.babu.bd@gmail.com");
     setCopied(true);
@@ -58,26 +81,37 @@ const FooterContent = () => {
             <span className="inline-block text-xl animate-wave">👋</span>
           </p>
           <br />
-          <p className="text-[#8F9AB2] text-base lg:text-lg leading-relaxed">
+          <div className="text-[#8F9AB2] text-base lg:text-lg leading-relaxed flex items-center">
             Email :{" "}
-            <a href="mailto:amin.babu.bd@gmail.com">amin.babu.bd@gmail.com</a>
-          </p>
-          <p className="text-[#8F9AB2] text-base lg:text-lg leading-relaxed">
-            Contact : <a href="tel:+880 1621-990178">+880 1621-990178</a>
-          </p>
-          <MagicButton
-            title={copied ? "Email copied" : "Copy my email"}
-            icon={
-              copied ? (
-                <ClipboardCheck size={16} />
-              ) : (
-                <ClipboardPlus size={16} />
-              )
-            }
-            position="left"
-            otherClasses="!bg-[#161a31]"
-            handleClick={handleCopy}
-          />
+            {hero[0]?.email ? (
+              <a href={`mailto:${hero[0]?.email}`}>{hero[0]?.email}</a>
+            ) : (
+              <Skeleton className="h-6 w-[250px]" />
+            )}
+          </div>
+          <div className="text-[#8F9AB2] text-base lg:text-lg leading-relaxed flex items-center">
+            Contact :{" "}
+            {hero[0]?.contact ? (
+              <a href={`tel:${hero[0]?.contact}`}>{hero[0]?.contact}</a>
+            ) : (
+              <Skeleton className="h-6 w-[200px]" />
+            )}
+          </div>
+          {hero[0]?.email && (
+            <MagicButton
+              title={copied ? "Email copied" : "Copy my email"}
+              icon={
+                copied ? (
+                  <ClipboardCheck size={16} />
+                ) : (
+                  <ClipboardPlus size={16} />
+                )
+              }
+              position="left"
+              otherClasses="!bg-[#161a31]"
+              handleClick={handleCopy}
+            />
+          )}
         </div>
         <div className="col-span-2 md:col-span-1">
           <ContactForm />
