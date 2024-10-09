@@ -1,6 +1,21 @@
 "use client";
 import Image from "next/image";
 import React from "react";
+import { motion, Variants } from "framer-motion";
+
+const cardVariants: Variants = {
+  offscreen: {
+    y: 300,
+  },
+  onscreen: {
+    y: 0,
+    transition: {
+      type: "spring",
+      bounce: 0.4,
+      duration: 0.8,
+    },
+  },
+};
 
 const ProjectCard = ({
   title,
@@ -14,8 +29,13 @@ const ProjectCard = ({
   color: string;
 }) => {
   return (
-    <div className="flex flex-col md:flex-row gap-6 items-center">
-      <div className="md:w-1/3">
+    <motion.div
+      className="flex flex-col md:flex-row gap-6 items-center "
+      initial="offscreen"
+      whileInView="onscreen"
+      viewport={{ once: true, amount: 0.8 }}
+    >
+      <motion.div className="md:w-1/3" variants={cardVariants}>
         <h1 className="text-xl font-bold leading-relaxed mb-3">{title}</h1>
         <p className="line-clamp-3 text-sm leading-relaxed text-[#8F9AB2]">
           {description}
@@ -26,7 +46,7 @@ const ProjectCard = ({
         >
           View Project{" "}
           <svg
-            className="group-hover:traslate-x-6"
+            className="group-hover:translate-x-6 transition-transform duration-300"
             width="16"
             height="16"
             viewBox="0 0 16 16"
@@ -41,10 +61,11 @@ const ProjectCard = ({
             />
           </svg>
         </a>
-      </div>
-      <div
+      </motion.div>
+      <motion.div
+        variants={cardVariants}
         style={{ backgroundColor: color }}
-        className={`flex-1 px-5 md:w-2/3 h-auto flex items-center justify-center overflow-hidden rounded-3xl`}
+        className="flex-1 px-5 md:w-2/3 h-auto flex items-center justify-center overflow-hidden rounded-3xl"
       >
         <Image
           className="-mb-6 pt-8 md:pt-14"
@@ -52,9 +73,10 @@ const ProjectCard = ({
           alt={title}
           width={595}
           height={426}
-        ></Image>
-      </div>
-    </div>
+          priority={true} // Optional: Use loading="lazy" if not priority.
+        />
+      </motion.div>
+    </motion.div>
   );
 };
 

@@ -94,6 +94,9 @@ const config: Config = {
         wave: "wave 2.5s infinite",
         orbit: "orbit calc(var(--duration)*1s) linear infinite",
         "meteor-effect": "meteor 5s linear infinite",
+        "spin-slow": "spin 3s linear infinite",
+        glitch: "glitch 3s infinite",
+        flip: "flip 3s ease-in-out infinite",
       },
       keyframes: {
         shimmer: {
@@ -147,6 +150,16 @@ const config: Config = {
           "100%": {
             transform: "rotate(215deg) translateX(-500px)",
             opacity: "0",
+          },
+        },
+        glitch: {
+          "50%": {
+            transform: "skew(180deg)",
+          },
+        },
+        flip: {
+          "100%": {
+            transform: "rotateY(180deg)",
           },
         },
       },

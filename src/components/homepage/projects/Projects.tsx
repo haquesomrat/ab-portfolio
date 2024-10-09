@@ -41,7 +41,7 @@ const Projects = () => {
         malesuada massa in vel tincidunt nec egestas.
       </p>
 
-      <div className="space-y-10">
+      <div className="flex flex-col gap-10">
         {fakeProjects.map(({ title, description, src, color }, id) => (
           <ProjectCard
             key={id}

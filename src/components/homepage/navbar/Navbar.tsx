@@ -6,6 +6,7 @@ import SheetMenu from "./components/SheetMenu";
 import Menus from "./components/Menus";
 import Link from "next/link";
 import { ButtonPrimary } from "../../global/ButtonPrimary";
+import MagneticButton from "@/components/ui/magnetic-button";
 
 const Navbar: React.FC = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -48,7 +49,9 @@ const Navbar: React.FC = () => {
         </Link>
         <Menus />
         <div className="hidden md:block">
-          <ButtonPrimary>Contact</ButtonPrimary>
+          <MagneticButton>
+            <ButtonPrimary>Contact</ButtonPrimary>
+          </MagneticButton>
         </div>
         <div className="md:hidden">
           <SheetMenu />
