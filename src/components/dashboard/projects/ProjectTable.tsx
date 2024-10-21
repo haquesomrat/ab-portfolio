@@ -43,6 +43,8 @@ import { getAllProjects } from "../../../../actions/projects/get-all-projects";
 import { deleteProject } from "../../../../actions/projects/delete-project";
 import { toast } from "sonner";
 
+export const revalidate = 3600;
+
 export function ProjectTable() {
   // Explicitly define the state type as an array of Companies
   const [projects, setProjects] = React.useState<Projects[]>([]);
