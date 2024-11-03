@@ -7,6 +7,7 @@ import confetti from "canvas-confetti";
 import { Hero } from "@/types/types";
 import { getHeroData } from "../../../../../actions/hero/get-hero-data";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Cover } from "@/components/ui/cover";
 
 const FooterContent = () => {
   const [copied, setCopied] = useState(false);
@@ -71,7 +72,10 @@ const FooterContent = () => {
         <div className="col-span-2 md:col-span-1">
           <h2 className="text-2xl lg:text-4xl font-light uppercase mb-6 text-[#F6F7FB]">
             Have a project in mind?
-            <br /> Get in <span className="font-semibold">touch</span>
+            <br /> Get in{" "}
+            <span className="font-semibold">
+              <Cover>touch</Cover>
+            </span>
           </h2>
           <p className="text-[#8F9AB2] text-base lg:text-lg leading-relaxed">
             Let&apos;s do something great!

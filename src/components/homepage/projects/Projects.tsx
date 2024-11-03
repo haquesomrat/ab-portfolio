@@ -1,5 +1,6 @@
 import { projects } from "@/lib/data";
 import ProjectCard from "./components/ProjectCard";
+import { Cover } from "@/components/ui/cover";
 export const fakeProjects = [
   {
     id: 1,
@@ -34,7 +35,10 @@ const Projects = () => {
   return (
     <section id="work" className="p-6 lg:mb-24 xl:p-0 text-white">
       <h2 className="text-2xl lg:text-4xl font-light text-center uppercase mb-6">
-        Work i&apos;m <span className="font-semibold">proud</span> of
+        Work i&apos;m{" "}
+        <span className="font-semibold">
+          <Cover>proud</Cover> of
+        </span>
       </h2>
       <p className="text-sm max-w-[515px] mx-auto text-center text-[#8F9AB2] mb-16">
         Proin blandit molestie neque orci pellentesque curabitur. Consectetur
