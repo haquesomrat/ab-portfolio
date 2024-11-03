@@ -61,7 +61,7 @@ const FeedbackCarouselCard = ({
         </div>
 
         {/* Meaty part - Meteor effect */}
-        <Meteors number={20} />
+        <Meteors number={10} />
       </div>
     </div>
   );
