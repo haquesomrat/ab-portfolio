@@ -48,6 +48,7 @@ AB - The Developer Portfolio is a showcase of my work as a developer. It include
 5. Access the application at http://localhost:3000.
 
 ## Credentials for Admin Dashboard
+Access the dashboard at https://aminbabu-inj.netlify.app/dashboard.
 
 - Username: ihsomrat.official@gmail.com
 - Password: somrat
